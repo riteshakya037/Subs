@@ -3,6 +3,7 @@ package io.subs.android.di.components;
 import android.content.Context;
 import dagger.Component;
 import io.subs.android.di.modules.ApplicationModule;
+import io.subs.android.imageloader.IImageLoader;
 import io.subs.android.views.BaseActivity;
 import io.subs.domain.executor.PostExecutionThread;
 import io.subs.domain.executor.ThreadExecutor;
@@ -24,4 +25,6 @@ import javax.inject.Singleton;
     PostExecutionThread postExecutionThread();
 
     SubscriptionRepository subscriptionRepository();
+
+    IImageLoader imageLoader();
 }

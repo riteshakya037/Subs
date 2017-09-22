@@ -13,6 +13,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.subs.android.R;
+import io.subs.android.imageloader.IImageLoader;
 import io.subs.domain.models.Subscription;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,10 +28,12 @@ public class AddSubscriptionAdaptor
         extends RecyclerView.Adapter<AddSubscriptionAdaptor.ViewHolder> {
     private List<Subscription> mData = new ArrayList<>();
     private Context mContext;
+    private IImageLoader iImageLoader;
     private OnItemClickListener onItemClickListener;
 
-    @Inject public AddSubscriptionAdaptor(Context mContext) {
+    @Inject public AddSubscriptionAdaptor(Context mContext, IImageLoader iImageLoader) {
         this.mContext = mContext;
+        this.iImageLoader = iImageLoader;
     }
 
     @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -89,10 +92,7 @@ public class AddSubscriptionAdaptor
 
         public void bind(Subscription subscription) {
             this.subscription = subscription;
-            //Glide.with(mContext)
-            //        .using(new FirebaseImageLoader())
-            //        .load(storageReference.child(subscription.getIcon()))
-            //        .into(ivIcon);
+            iImageLoader.loadFirebaseImage(subscription.getIcon(), ivIcon);
             tvTitle.setText(subscription.getName());
             cvRootView.setCardBackgroundColor(Color.parseColor(subscription.getColor()));
         }

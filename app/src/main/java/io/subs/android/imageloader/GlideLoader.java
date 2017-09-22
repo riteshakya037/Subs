@@ -9,6 +9,8 @@ import com.bumptech.glide.MemoryCategory;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 /**
  * @author Ritesh Shakya
@@ -16,6 +18,7 @@ import com.bumptech.glide.request.target.Target;
 
 public class GlideLoader implements IImageLoader {
     private final Application context;
+    StorageReference storageReference = FirebaseStorage.getInstance().getReference();
 
     public GlideLoader(Application context) {
         this.context = context;
@@ -53,6 +56,14 @@ public class GlideLoader implements IImageLoader {
                         return false;
                     }
                 })
+                .into(holder);
+    }
+
+    @Override public void loadFirebaseImage(String firebaseRelativeUrl, ImageView holder) {
+        clear(holder);
+        Glide.with(context)
+                .using(new FirebaseImageLoader())
+                .load(storageReference.child(firebaseRelativeUrl))
                 .into(holder);
     }
 
