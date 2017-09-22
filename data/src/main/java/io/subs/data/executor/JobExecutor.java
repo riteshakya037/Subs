@@ -28,11 +28,13 @@ import javax.inject.Singleton;
  * Decorated {@link java.util.concurrent.ThreadPoolExecutor}
  */
 @Singleton public class JobExecutor implements ThreadExecutor {
+    private static final int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
     private final ThreadPoolExecutor threadPoolExecutor;
 
     @Inject JobExecutor() {
         this.threadPoolExecutor =
-                new ThreadPoolExecutor(3, 5, 10, TimeUnit.SECONDS, new LinkedBlockingQueue<>(),
+                new ThreadPoolExecutor(NUMBER_OF_CORES * 2, NUMBER_OF_CORES * 2, 10L,
+                        TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(),
                         new JobThreadFactory());
     }
 

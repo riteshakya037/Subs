@@ -32,4 +32,13 @@ public class SubscriptionEntity {
     public void setColor(String color) {
         this.color = color;
     }
+
+    @Override public String toString() {
+        final StringBuffer sb = new StringBuffer("SubscriptionEntity{");
+        sb.append("name='").append(name).append('\'');
+        sb.append(", icon='").append(icon).append('\'');
+        sb.append(", color='").append(color).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

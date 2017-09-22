@@ -16,7 +16,6 @@ import io.subs.android.R;
 import io.subs.domain.models.Subscription;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -32,7 +31,6 @@ public class AddSubscriptionAdaptor
 
     @Inject public AddSubscriptionAdaptor(Context mContext) {
         this.mContext = mContext;
-        this.mData = Collections.emptyList();
     }
 
     @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

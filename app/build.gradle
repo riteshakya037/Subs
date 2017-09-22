@@ -1,12 +1,5 @@
 apply plugin: 'com.android.application'
-allprojects {
-    repositories {
-        jcenter()
-        maven {
-            url 'https://maven.google.com'
-        }
-    }
-}
+
 android {
     def globalConfiguration = rootProject.extensions.getByName("ext")
 
@@ -44,13 +37,22 @@ dependencies {
     compile project(':domain')
     compile project(':data')
 
+
+    compile presentationDependencies.appCompat
+    compile presentationDependencies.designLibrary
+    compile presentationDependencies.recyclerView
+    compile presentationDependencies.cardView
+
     compile presentationDependencies.dagger
     annotationProcessor presentationDependencies.daggerCompiler
+
     compile presentationDependencies.butterKnife
     annotationProcessor presentationDependencies.butterKnifeCompiler
+
     compile presentationDependencies.glide
-    compile presentationDependencies.recyclerView
+
     compile presentationDependencies.calligraphy
+
     compile presentationDependencies.rxJava
     compile presentationDependencies.rxAndroid
 

@@ -1,6 +1,10 @@
 package io.subs.android.views.screens.login;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import io.subs.android.R;
+import io.subs.android.views.screens.add_subscription.AddSubscriptionActivity;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = LoginActivity.class.getSimpleName();
@@ -14,37 +18,37 @@ public class LoginActivity extends AppCompatActivity {
     //    startActivityForResult(signInIntent, RC_SIGN_IN);
     //}
     //
-    //@Override protected void onCreate(Bundle savedInstanceState) {
-    //    super.onCreate(savedInstanceState);
-    //
-    //    setContentView(R.layout.activity_login);
-    //    ButterKnife.bind(this);
-    //
-    //    GoogleSignInOptions gso =
-    //            new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(
-    //                    getString(R.string.default_web_client_id)).requestEmail().build();
-    //    mGoogleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this,
-    //            new GoogleApiClient.OnConnectionFailedListener() {
-    //                @Override
-    //                public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-    //
-    //                }
-    //            } /* OnConnectionFailedListener */).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
-    //    mAuth = FirebaseAuth.getInstance();
-    //    mAuthListener = new FirebaseAuth.AuthStateListener() {
-    //        @Override public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-    //            FirebaseUser user = firebaseAuth.getCurrentUser();
-    //            if (user != null) {
-    //                startActivity(new Intent(LoginActivity.this, AddSubscriptionActivity.class));
-    //                finish();
-    //            } else {
-    //                // User is signed out
-    //                Log.d(TAG, "onAuthStateChanged:signed_out");
-    //            }
-    //        }
-    //    };
-    //}
-    //
+    @Override protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.activity_login);
+        //ButterKnife.bind(this);
+        //
+        //GoogleSignInOptions gso =
+        //        new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(
+        //                getString(R.string.default_web_client_id)).requestEmail().build();
+        //mGoogleApiClient = new GoogleApiClient.Builder(this).enableAutoManage(this,
+        //        new GoogleApiClient.OnConnectionFailedListener() {
+        //            @Override
+        //            public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        //
+        //            }
+        //        } /* OnConnectionFailedListener */).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
+        //mAuth = FirebaseAuth.getInstance();
+        //mAuthListener = new FirebaseAuth.AuthStateListener() {
+        //    @Override public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+        //        FirebaseUser user = firebaseAuth.getCurrentUser();
+        //        if (user != null) {
+                    startActivity(new Intent(LoginActivity.this, AddSubscriptionActivity.class));
+                    finish();
+        //        } else {
+        //            // User is signed out
+        //            Log.d(TAG, "onAuthStateChanged:signed_out");
+        //        }
+        //    }
+        //};
+    }
+
     //@Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
     //    super.onActivityResult(requestCode, resultCode, data);
     //    Log.i(TAG, "onActivityResult: ");

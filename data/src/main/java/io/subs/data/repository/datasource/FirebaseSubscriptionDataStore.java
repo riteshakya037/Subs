@@ -1,12 +1,16 @@
 package io.subs.data.repository.datasource;
 
+import android.util.Log;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Cancellable;
 import io.reactivex.subjects.PublishSubject;
 import io.subs.data.DatabaseNames;
 import io.subs.data.entity.SubscriptionEntity;
@@ -17,6 +21,7 @@ import javax.inject.Singleton;
  * {@link SubscriptionDataStore} implementation based on connections to Firebase.
  */
 @Singleton public class FirebaseSubscriptionDataStore implements SubscriptionDataStore {
+    private static final String TAG = "FirebaseSubscriptionDat";
     private final PublishSubject<SubscriptionEntity> mUpdatePublisher = PublishSubject.create();
     private DatabaseReference databaseReference;
 
@@ -35,30 +40,44 @@ import javax.inject.Singleton;
     }
 
     private Observable<Void> observe(final DatabaseReference ref) {
-        return Observable.create((ObservableOnSubscribe<DataSnapshot>) emitter -> {
-            final ChildEventListener listener = ref.addChildEventListener(new ChildEventListener() {
-                @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    mUpdatePublisher.onNext(dataSnapshot.getValue(SubscriptionEntity.class));
-                }
+        return Observable.create(new ObservableOnSubscribe<DataSnapshot>() {
+            @Override public void subscribe(@NonNull ObservableEmitter<DataSnapshot> emitter)
+                    throws Exception {
+                final ChildEventListener listener =
+                        ref.addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                Log.e(TAG, "onChildAdded: " + dataSnapshot.getValue(
+                                        SubscriptionEntity.class));
+                                mUpdatePublisher.onNext(
+                                        dataSnapshot.getValue(SubscriptionEntity.class));
+                            }
 
-                @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                            @Override
+                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                }
+                            }
 
-                @Override public void onChildRemoved(DataSnapshot dataSnapshot) {
+                            @Override public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                }
+                            }
 
-                @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                            @Override
+                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                }
+                            }
 
-                @Override public void onCancelled(DatabaseError databaseError) {
+                            @Override public void onCancelled(DatabaseError databaseError) {
 
-                }
-            });
+                            }
+                        });
 
-            emitter.setCancellable(() -> ref.removeEventListener(listener));
+                emitter.setCancellable(new Cancellable() {
+                    @Override public void cancel() throws Exception {
+                        ref.removeEventListener(listener);
+                    }
+                });
+            }
         }).cast(Void.TYPE);
     }
 }

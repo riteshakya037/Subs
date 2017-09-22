@@ -1,6 +1,9 @@
 package io.subs.data.repository;
 
 import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
+import io.subs.data.entity.SubscriptionEntity;
 import io.subs.data.entity.mapper.SubscriptionEntityDataMapper;
 import io.subs.data.repository.datasource.SubscriptionDataStore;
 import io.subs.domain.models.Subscription;
@@ -34,6 +37,13 @@ import javax.inject.Singleton;
     }
 
     @Override public Observable<Subscription> subscribe() {
-        return subscriptionDataStore.subscribe().map(subscriptionEntityDataMapper::transform);
+        return subscriptionDataStore.subscribe().map(
+                new Function<SubscriptionEntity, Subscription>() {
+                    @Override
+                    public Subscription apply(@NonNull SubscriptionEntity subscriptionEntity)
+                            throws Exception {
+                        return subscriptionEntityDataMapper.transform(subscriptionEntity);
+                    }
+                });
     }
 }

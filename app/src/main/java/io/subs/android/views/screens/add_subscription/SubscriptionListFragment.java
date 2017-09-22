@@ -14,9 +14,7 @@ import io.subs.android.R;
 import io.subs.android.di.components.SubscriptionComponent;
 import io.subs.android.views.BaseFragment;
 import io.subs.android.views.adapters.AddSubscriptionAdaptor;
-import io.subs.domain.interactor.subscription.SubscribeToSubscriptionUpdates;
 import io.subs.domain.models.Subscription;
-import java.util.Collection;
 import javax.inject.Inject;
 
 /**
@@ -29,11 +27,14 @@ public class SubscriptionListFragment extends BaseFragment implements Subscripti
     @Inject SubscriptionListPresenter subscriptionListPresenter;
 
     private SubscriptionListListener subscriptionListListener;
-    private AddSubscriptionAdaptor.OnItemClickListener onItemClickListener = userModel -> {
-        if (subscriptionListPresenter != null && userModel != null) {
-            subscriptionListPresenter.onItemClicked(userModel);
-        }
-    };
+    private AddSubscriptionAdaptor.OnItemClickListener onItemClickListener =
+            new AddSubscriptionAdaptor.OnItemClickListener() {
+                @Override public void onItemClicked(Subscription subscription) {
+                    if (subscriptionListPresenter != null && subscription != null) {
+                        subscriptionListPresenter.onItemClicked(subscription);
+                    }
+                }
+            };
 
     public SubscriptionListFragment() {
         setRetainInstance(true);

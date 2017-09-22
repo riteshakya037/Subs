@@ -1,17 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'me.tatarka.retrolambda'
-
-buildscript {
-    repositories {
-        mavenCentral()
-        maven {
-            url 'https://maven.google.com'
-        }
-    }
-    dependencies {
-        classpath 'me.tatarka:gradle-retrolambda:3.2.3'
-    }
-}
 
 android {
     defaultPublishConfig "debug"
@@ -27,10 +14,6 @@ android {
         versionCode globalConfiguration["androidVersionCode"]
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
 }
 
 dependencies {
@@ -44,7 +27,10 @@ dependencies {
     compile dataDependencies.rxJava
     compile dataDependencies.rxAndroid
     compile dataDependencies.androidAnnotations
+
     compile dataDependencies.firebaseCore
+    compile dataDependencies.firebaseAuth
+    compile dataDependencies.playServicesAuth
     compile dataDependencies.firebaseDatabase
     compile dataDependencies.firebaseStorage
 

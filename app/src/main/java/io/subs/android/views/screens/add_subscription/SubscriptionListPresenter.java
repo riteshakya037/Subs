@@ -54,6 +54,7 @@ import javax.inject.Inject;
 
     @Override public void destroy() {
         this.getSubscriptionList.dispose();
+        this.subscribeToSubscriptionUpdates.dispose();
         this.viewListView = null;
     }
 
