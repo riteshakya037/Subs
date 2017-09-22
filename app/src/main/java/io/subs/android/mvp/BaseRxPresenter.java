@@ -1,0 +1,36 @@
+package io.subs.android.mvp;
+
+import io.reactivex.disposables.Disposable;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * A base class for presenters to provider some utility functionality to manage rx Disposables.
+ * When using this presenter it's important
+ * that the lifecycle methods are called at the relevant times.
+ */
+public abstract class BaseRxPresenter implements IPresenter {
+
+    private List<Disposable> mDisposables = new ArrayList<>();
+
+    /**
+     * Add a Disposable to be tracked such that when this presenter is destroyed the Disposable
+     * will be unsubscribed from.
+     */
+    protected void manage(Disposable Disposable) {
+        mDisposables.add(Disposable);
+    }
+
+    @Override public void onStart() {
+    }
+
+    @Override public void onCreate() {
+    }
+
+    @Override public void onStop() {
+        for (Disposable disposable : mDisposables) {
+            disposable.dispose();
+        }
+        mDisposables.clear();
+    }
+}

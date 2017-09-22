@@ -13,20 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.subs.data.repository.datasource;
+package io.subs.android.di.components;
 
-import io.reactivex.Observable;
-import io.subs.data.entity.SubscriptionEntity;
-import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates;
+import dagger.Component;
+import io.subs.android.di.PerActivity;
+import io.subs.android.di.modules.ActivityModule;
+import io.subs.android.di.modules.LoginModule;
 
 /**
- * Interface that represents a data store from where data is retrieved.
+ * A scope {@link PerActivity} component.
+ * Injects user specific Fragments.
  */
-public interface SubscriptionDataStore {
-    /**
-     * Get an {@link Observable} which will emit a List of {@link SubscriptionEntity}.
-     */
-    Observable<Void> subscriptionEntityList();
-
-    Observable<SubscribeToSubscriptionUpdates.SubscriptionDto> subscribe();
+@PerActivity @Component(dependencies = ApplicationComponent.class, modules = {
+        ActivityModule.class, LoginModule.class
+}) public interface LoginComponent extends ActivityComponent {
 }

@@ -1,6 +1,5 @@
 package io.subs.android.views.adapters;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +15,6 @@ import io.subs.android.R;
 import io.subs.android.imageloader.IImageLoader;
 import io.subs.domain.models.Subscription;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -27,12 +25,10 @@ import javax.inject.Inject;
 public class AddSubscriptionAdaptor
         extends RecyclerView.Adapter<AddSubscriptionAdaptor.ViewHolder> {
     private List<Subscription> mData = new ArrayList<>();
-    private Context mContext;
     private IImageLoader iImageLoader;
     private OnItemClickListener onItemClickListener;
 
-    @Inject public AddSubscriptionAdaptor(Context mContext, IImageLoader iImageLoader) {
-        this.mContext = mContext;
+    @Inject public AddSubscriptionAdaptor(IImageLoader iImageLoader) {
         this.iImageLoader = iImageLoader;
     }
 
@@ -54,18 +50,28 @@ public class AddSubscriptionAdaptor
         return position;
     }
 
-    public void setSubscriptionCollection(Subscription subscriptions) {
-        this.mData.add(subscriptions);
-        this.notifyDataSetChanged();
+    public void addSubscription(Subscription subscription) {
+        if (!mData.contains(subscription)) {
+            this.mData.add(subscription);
+            this.notifyDataSetChanged();
+        }
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 
-    private void validateCollection(Collection<Subscription> subscriptions) {
-        if (subscriptions == null) {
-            throw new IllegalArgumentException("The list cannot be null");
+    public void updateSubscription(Subscription subscription) {
+        if (mData.contains(subscription)) {
+            this.mData.set(mData.indexOf(subscription), subscription);
+            this.notifyDataSetChanged();
+        }
+    }
+
+    public void removeSubscription(Subscription subscription) {
+        if (mData.contains(subscription)) {
+            this.mData.remove(subscription);
+            this.notifyDataSetChanged();
         }
     }
 

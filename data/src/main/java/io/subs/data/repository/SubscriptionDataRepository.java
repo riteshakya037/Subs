@@ -7,20 +7,21 @@ import io.subs.data.entity.SubscriptionEntity;
 import io.subs.data.entity.mapper.SubscriptionEntityDataMapper;
 import io.subs.data.repository.datasource.SubscriptionDataStore;
 import io.subs.domain.models.Subscription;
-import io.subs.domain.repository.SubscriptionRepository;
+import io.subs.domain.repository.ISubscriptionRepository;
+import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
- * {@link SubscriptionRepository} for retrieving Subscription data.
+ * {@link ISubscriptionRepository} for retrieving Subscription data.
  */
-@Singleton public class SubscriptionDataRepository implements SubscriptionRepository {
+@Singleton public class SubscriptionDataRepository implements ISubscriptionRepository {
 
     private final SubscriptionDataStore subscriptionDataStore;
     private final SubscriptionEntityDataMapper subscriptionEntityDataMapper;
 
     /**
-     * Constructs a {@link SubscriptionRepository}.
+     * Constructs a {@link ISubscriptionRepository}.
      *
      * @param subscriptionDataStore A factory to construct different data source implementations.
      * @param subscriptionEntityDataMapper {@link SubscriptionEntityDataMapper}.
@@ -36,14 +37,7 @@ import javax.inject.Singleton;
         return subscriptionDataStore.subscriptionEntityList();
     }
 
-    @Override public Observable<Subscription> subscribe() {
-        return subscriptionDataStore.subscribe().map(
-                new Function<SubscriptionEntity, Subscription>() {
-                    @Override
-                    public Subscription apply(@NonNull SubscriptionEntity subscriptionEntity)
-                            throws Exception {
-                        return subscriptionEntityDataMapper.transform(subscriptionEntity);
-                    }
-                });
+    @Override public Observable<SubscribeToSubscriptionUpdates.SubscriptionDto> subscribe() {
+        return subscriptionDataStore.subscribe();
     }
 }

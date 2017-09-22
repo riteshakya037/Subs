@@ -1,6 +1,6 @@
 package io.subs.domain.executor;
 
-import io.subs.domain.interactor.UseCase;
+import io.subs.domain.usecases.UseCase;
 import java.util.concurrent.Executor;
 
 /**
@@ -8,5 +8,5 @@ import java.util.concurrent.Executor;
  * execution, but every implementation will execute the
  * {@link UseCase} out of the UI thread.
  */
-public interface ThreadExecutor extends Executor {
+public interface IThreadExecutor extends Executor {
 }

@@ -5,9 +5,9 @@ import dagger.Component;
 import io.subs.android.di.modules.ApplicationModule;
 import io.subs.android.imageloader.IImageLoader;
 import io.subs.android.views.BaseActivity;
-import io.subs.domain.executor.PostExecutionThread;
-import io.subs.domain.executor.ThreadExecutor;
-import io.subs.domain.repository.SubscriptionRepository;
+import io.subs.domain.executor.IPostExecutionThread;
+import io.subs.domain.executor.IThreadExecutor;
+import io.subs.domain.repository.ISubscriptionRepository;
 import javax.inject.Singleton;
 
 /**
@@ -20,11 +20,11 @@ import javax.inject.Singleton;
     //Exposed to sub-graphs.
     Context context();
 
-    ThreadExecutor threadExecutor();
+    IThreadExecutor threadExecutor();
 
-    PostExecutionThread postExecutionThread();
+    IPostExecutionThread postExecutionThread();
 
-    SubscriptionRepository subscriptionRepository();
+    ISubscriptionRepository subscriptionRepository();
 
     IImageLoader imageLoader();
 }

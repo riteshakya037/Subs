@@ -23,34 +23,6 @@ public class AddSubscriptionActivity extends DaggerBaseActivity<SubscriptionComp
         if (savedInstanceState == null) {
             addFragment(R.id.fragmentContainer, new SubscriptionListFragment());
         }
-        //StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        //addSubscriptionAdaptor = new AddSubscriptionAdaptor(this, storageReference);
-        //rvSubscriptions.setAdapter(addSubscriptionAdaptor);
-        //rvSubscriptions.setLayoutManager(new LinearLayoutManager(this));
-        //rvSubscriptions.addItemDecoration(new TopPaddingDecoration(60));
-        //DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("subs");
-        //mDatabase.addChildEventListener(new ChildEventListener() {
-        //    @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-        //        Subscription subscription = dataSnapshot.getValue(Subscription.class);
-        //        addSubscriptionAdaptor.updateData(subscription);
-        //    }
-        //
-        //    @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-        //
-        //    }
-        //
-        //    @Override public void onChildRemoved(DataSnapshot dataSnapshot) {
-        //
-        //    }
-        //
-        //    @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-        //
-        //    }
-        //
-        //    @Override public void onCancelled(DatabaseError databaseError) {
-        //        Log.w(TAG, "Failed to read value.", databaseError.toException());
-        //    }
-        //});
     }
 
     @Override protected int getContextView() {
@@ -65,6 +37,6 @@ public class AddSubscriptionActivity extends DaggerBaseActivity<SubscriptionComp
     }
 
     @Override public void onSubscriptionClicked(Subscription subscription) {
-        Toast.makeText(this, subscription.getName(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, subscription.getName(), Toast.LENGTH_SHORT).show();
     }
 }

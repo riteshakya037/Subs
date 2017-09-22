@@ -1,4 +1,4 @@
-package io.subs.domain.interactor;
+package io.subs.domain.usecases;
 
 import io.reactivex.observers.DisposableObserver;
 

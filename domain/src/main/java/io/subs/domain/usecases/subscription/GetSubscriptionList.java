@@ -1,12 +1,11 @@
-package io.subs.domain.interactor.subscription;
+package io.subs.domain.usecases.subscription;
 
 import io.reactivex.Observable;
-import io.subs.domain.executor.PostExecutionThread;
-import io.subs.domain.executor.ThreadExecutor;
-import io.subs.domain.interactor.UseCase;
+import io.subs.domain.executor.IPostExecutionThread;
+import io.subs.domain.executor.IThreadExecutor;
+import io.subs.domain.usecases.UseCase;
 import io.subs.domain.models.Subscription;
-import io.subs.domain.repository.SubscriptionRepository;
-import java.util.List;
+import io.subs.domain.repository.ISubscriptionRepository;
 import javax.inject.Inject;
 
 /**
@@ -15,10 +14,10 @@ import javax.inject.Inject;
  */
 public class GetSubscriptionList extends UseCase<Void, Void> {
 
-    private final SubscriptionRepository subscriptionRepository;
+    private final ISubscriptionRepository subscriptionRepository;
 
-    @Inject GetSubscriptionList(SubscriptionRepository subscriptionRepository,
-            ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
+    @Inject GetSubscriptionList(ISubscriptionRepository subscriptionRepository,
+            IThreadExecutor threadExecutor, IPostExecutionThread postExecutionThread) {
         super(threadExecutor, postExecutionThread);
         this.subscriptionRepository = subscriptionRepository;
     }

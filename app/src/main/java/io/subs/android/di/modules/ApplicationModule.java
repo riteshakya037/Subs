@@ -11,9 +11,9 @@ import io.subs.data.executor.JobExecutor;
 import io.subs.data.repository.SubscriptionDataRepository;
 import io.subs.data.repository.datasource.FirebaseSubscriptionDataStore;
 import io.subs.data.repository.datasource.SubscriptionDataStore;
-import io.subs.domain.executor.PostExecutionThread;
-import io.subs.domain.executor.ThreadExecutor;
-import io.subs.domain.repository.SubscriptionRepository;
+import io.subs.domain.executor.IPostExecutionThread;
+import io.subs.domain.executor.IThreadExecutor;
+import io.subs.domain.repository.ISubscriptionRepository;
 import javax.inject.Singleton;
 
 /**
@@ -30,15 +30,15 @@ import javax.inject.Singleton;
         return this.application;
     }
 
-    @Provides @Singleton ThreadExecutor provideThreadExecutor(JobExecutor jobExecutor) {
+    @Provides @Singleton IThreadExecutor provideThreadExecutor(JobExecutor jobExecutor) {
         return jobExecutor;
     }
 
-    @Provides @Singleton PostExecutionThread providePostExecutionThread(UIThread uiThread) {
+    @Provides @Singleton IPostExecutionThread providePostExecutionThread(UIThread uiThread) {
         return uiThread;
     }
 
-    @Provides @Singleton SubscriptionRepository provideUserRepository(
+    @Provides @Singleton ISubscriptionRepository provideUserRepository(
             SubscriptionDataRepository userDataRepository) {
         return userDataRepository;
     }

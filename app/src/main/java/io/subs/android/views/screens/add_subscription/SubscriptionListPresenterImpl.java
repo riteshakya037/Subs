@@ -4,26 +4,28 @@ import android.support.annotation.NonNull;
 import io.reactivex.observers.DisposableObserver;
 import io.subs.android.di.PerActivity;
 import io.subs.android.exception.ErrorMessageFactory;
+import io.subs.android.mvp.BaseRxPresenter;
 import io.subs.android.views.base.Presenter;
 import io.subs.domain.exception.DefaultErrorBundle;
 import io.subs.domain.exception.ErrorBundle;
-import io.subs.domain.interactor.DefaultObserver;
-import io.subs.domain.interactor.subscription.GetSubscriptionList;
-import io.subs.domain.interactor.subscription.SubscribeToSubscriptionUpdates;
 import io.subs.domain.models.Subscription;
+import io.subs.domain.usecases.DefaultObserver;
+import io.subs.domain.usecases.subscription.GetSubscriptionList;
+import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates;
+import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates.SubscriptionDto;
 import javax.inject.Inject;
 
 /**
  * {@link Presenter} that controls communication between views and models of the presentation
  * layer.
  */
-@PerActivity class SubscriptionListPresenter implements Presenter {
+@PerActivity class SubscriptionListPresenterImpl extends BaseRxPresenter {
 
     private final GetSubscriptionList getSubscriptionList;
     private SubscribeToSubscriptionUpdates subscribeToSubscriptionUpdates;
     private SubscriptionListView viewListView;
 
-    @Inject public SubscriptionListPresenter(GetSubscriptionList getUserListUserCase,
+    @Inject public SubscriptionListPresenterImpl(GetSubscriptionList getUserListUserCase,
             SubscribeToSubscriptionUpdates subscribeToSubscriptionUpdates) {
         this.getSubscriptionList = getUserListUserCase;
         this.subscribeToSubscriptionUpdates = subscribeToSubscriptionUpdates;
@@ -33,10 +35,10 @@ import javax.inject.Inject;
         this.viewListView = view;
     }
 
-    @Override public void resume() {
-        subscribeToSubscriptionUpdates.execute(new DisposableObserver<Subscription>() {
-            @Override public void onNext(@NonNull Subscription subscription) {
-                showUsersCollectionInView(subscription);
+    @Override public void onStart() {
+        manage(subscribeToSubscriptionUpdates.execute(new DisposableObserver<SubscriptionDto>() {
+            @Override public void onNext(@NonNull SubscriptionDto subscriptionDto) {
+                showUsersCollectionInView(subscriptionDto);
             }
 
             @Override public void onError(@NonNull Throwable throwable) {
@@ -46,16 +48,7 @@ import javax.inject.Inject;
             @Override public void onComplete() {
 
             }
-        }, null);
-    }
-
-    @Override public void pause() {
-    }
-
-    @Override public void destroy() {
-        this.getSubscriptionList.dispose();
-        this.subscribeToSubscriptionUpdates.dispose();
-        this.viewListView = null;
+        }, null));
     }
 
     /**
@@ -100,7 +93,7 @@ import javax.inject.Inject;
         this.viewListView.showError(errorMessage);
     }
 
-    private void showUsersCollectionInView(Subscription subscriptions) {
+    private void showUsersCollectionInView(SubscriptionDto subscriptions) {
         this.viewListView.renderSubscriptions(subscriptions);
     }
 
@@ -111,13 +104,14 @@ import javax.inject.Inject;
     private final class UserListObserver extends DefaultObserver<Void> {
 
         @Override public void onComplete() {
-            SubscriptionListPresenter.this.hideViewLoading();
+            SubscriptionListPresenterImpl.this.hideViewLoading();
         }
 
         @Override public void onError(Throwable e) {
-            SubscriptionListPresenter.this.hideViewLoading();
-            SubscriptionListPresenter.this.showErrorMessage(new DefaultErrorBundle((Exception) e));
-            SubscriptionListPresenter.this.showViewRetry();
+            SubscriptionListPresenterImpl.this.hideViewLoading();
+            SubscriptionListPresenterImpl.this.showErrorMessage(
+                    new DefaultErrorBundle((Exception) e));
+            SubscriptionListPresenterImpl.this.showViewRetry();
         }
 
         @Override public void onNext(Void users) {

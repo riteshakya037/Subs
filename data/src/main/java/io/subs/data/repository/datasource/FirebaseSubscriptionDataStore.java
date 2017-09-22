@@ -14,6 +14,9 @@ import io.reactivex.functions.Cancellable;
 import io.reactivex.subjects.PublishSubject;
 import io.subs.data.DatabaseNames;
 import io.subs.data.entity.SubscriptionEntity;
+import io.subs.domain.models.Subscription;
+import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates.Action;
+import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates.SubscriptionDto;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -22,7 +25,7 @@ import javax.inject.Singleton;
  */
 @Singleton public class FirebaseSubscriptionDataStore implements SubscriptionDataStore {
     private static final String TAG = "FirebaseSubscriptionDat";
-    private final PublishSubject<SubscriptionEntity> mUpdatePublisher = PublishSubject.create();
+    private final PublishSubject<SubscriptionDto> mUpdatePublisher = PublishSubject.create();
     private DatabaseReference databaseReference;
 
     @Inject public FirebaseSubscriptionDataStore() {
@@ -35,7 +38,7 @@ import javax.inject.Singleton;
         return observe(databaseReference.child(DatabaseNames.TABLE_SUBSCRIPTIONS));
     }
 
-    @Override public Observable<SubscriptionEntity> subscribe() {
+    @Override public Observable<SubscriptionDto> subscribe() {
         return mUpdatePublisher;
     }
 
@@ -49,17 +52,23 @@ import javax.inject.Singleton;
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                                 Log.e(TAG, "onChildAdded: " + dataSnapshot.getValue(
                                         SubscriptionEntity.class));
-                                mUpdatePublisher.onNext(
-                                        dataSnapshot.getValue(SubscriptionEntity.class));
+                                mUpdatePublisher.onNext(new SubscriptionDto(
+                                        dataSnapshot.getValue(Subscription.class), Action.ADDED));
                             }
 
                             @Override
                             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                                Log.e(TAG, "onChildAdded: " + dataSnapshot.getValue(
+                                        SubscriptionEntity.class));
+                                mUpdatePublisher.onNext(new SubscriptionDto(
+                                        dataSnapshot.getValue(Subscription.class), Action.UPDATED));
                             }
 
                             @Override public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                                Log.e(TAG, "onChildAdded: " + dataSnapshot.getValue(
+                                        SubscriptionEntity.class));
+                                mUpdatePublisher.onNext(new SubscriptionDto(
+                                        dataSnapshot.getValue(Subscription.class), Action.REMOVED));
                             }
 
                             @Override

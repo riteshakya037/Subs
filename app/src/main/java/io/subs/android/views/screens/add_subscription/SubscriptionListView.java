@@ -2,6 +2,7 @@ package io.subs.android.views.screens.add_subscription;
 
 import io.subs.android.views.base.LoadDataView;
 import io.subs.domain.models.Subscription;
+import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates;
 
 /**
  * @author Ritesh Shakya
@@ -13,7 +14,7 @@ interface SubscriptionListView extends LoadDataView {
      *
      * @param subscriptions The collection of {@link Subscription} that will be shown.
      */
-    void renderSubscriptions(Subscription subscriptions);
+    void renderSubscriptions(SubscribeToSubscriptionUpdates.SubscriptionDto subscriptions);
 
     /**
      * View a {@link Subscription} profile/details.

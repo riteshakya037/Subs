@@ -1,13 +1,12 @@
-package io.subs.domain.interactor;
+package io.subs.domain.usecases;
 
 import com.fernandocejas.arrow.checks.Preconditions;
 import io.reactivex.Observable;
-import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
-import io.subs.domain.executor.PostExecutionThread;
-import io.subs.domain.executor.ThreadExecutor;
+import io.subs.domain.executor.IPostExecutionThread;
+import io.subs.domain.executor.IThreadExecutor;
 
 /**
  * Abstract class for a Use Case (Interactor in terms of Clean Architecture).
@@ -20,14 +19,12 @@ import io.subs.domain.executor.ThreadExecutor;
  */
 public abstract class UseCase<T, Params> {
 
-    private final ThreadExecutor threadExecutor;
-    private final PostExecutionThread postExecutionThread;
-    private final CompositeDisposable disposables;
+    private final IThreadExecutor threadExecutor;
+    private final IPostExecutionThread postExecutionThread;
 
-    public UseCase(ThreadExecutor threadExecutor, PostExecutionThread postExecutionThread) {
+    public UseCase(IThreadExecutor threadExecutor, IPostExecutionThread postExecutionThread) {
         this.threadExecutor = threadExecutor;
         this.postExecutionThread = postExecutionThread;
-        this.disposables = new CompositeDisposable();
     }
 
     /**
@@ -42,29 +39,11 @@ public abstract class UseCase<T, Params> {
      * by {@link #buildUseCaseObservable(Params)} ()} method.
      * @param params Parameters (Optional) used to build/execute this use case.
      */
-    public void execute(DisposableObserver<T> observer, Params params) {
+    public Disposable execute(DisposableObserver<T> observer, Params params) {
         Preconditions.checkNotNull(observer);
         final Observable<T> observable = this.buildUseCaseObservable(params)
                 .subscribeOn(Schedulers.from(threadExecutor))
                 .observeOn(postExecutionThread.getScheduler());
-        addDisposable(observable.subscribeWith(observer));
-    }
-
-    /**
-     * Dispose from current {@link CompositeDisposable}.
-     */
-    public void dispose() {
-        if (!disposables.isDisposed()) {
-            disposables.dispose();
-        }
-    }
-
-    /**
-     * Dispose from current {@link CompositeDisposable}.
-     */
-    private void addDisposable(Disposable disposable) {
-        Preconditions.checkNotNull(disposable);
-        Preconditions.checkNotNull(disposables);
-        disposables.add(disposable);
+        return observable.subscribeWith(observer);
     }
 }

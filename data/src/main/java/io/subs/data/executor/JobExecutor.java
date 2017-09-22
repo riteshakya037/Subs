@@ -16,7 +16,7 @@
 package io.subs.data.executor;
 
 import android.support.annotation.NonNull;
-import io.subs.domain.executor.ThreadExecutor;
+import io.subs.domain.executor.IThreadExecutor;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -27,7 +27,7 @@ import javax.inject.Singleton;
 /**
  * Decorated {@link java.util.concurrent.ThreadPoolExecutor}
  */
-@Singleton public class JobExecutor implements ThreadExecutor {
+@Singleton public class JobExecutor implements IThreadExecutor {
     private static final int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
     private final ThreadPoolExecutor threadPoolExecutor;
 
