@@ -5,6 +5,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.subs.android.di.PerActivity;
 import io.subs.android.exception.ErrorMessageFactory;
 import io.subs.android.mvp.BaseRxPresenter;
+import io.subs.android.views.adapters.AddSubscriptionAdaptor;
 import io.subs.android.views.base.Presenter;
 import io.subs.domain.exception.DefaultErrorBundle;
 import io.subs.domain.exception.ErrorBundle;
@@ -19,20 +20,32 @@ import javax.inject.Inject;
  * {@link Presenter} that controls communication between views and models of the presentation
  * layer.
  */
-@PerActivity class SubscriptionListPresenterImpl extends BaseRxPresenter {
+@PerActivity public class SubscriptionListPresenterImpl extends BaseRxPresenter
+        implements SubscriptionListPresenter {
 
     private final GetSubscriptionList getSubscriptionList;
+    private AddSubscriptionAdaptor addSubscriptionAdaptor;
     private SubscribeToSubscriptionUpdates subscribeToSubscriptionUpdates;
     private SubscriptionListView viewListView;
+    private AddSubscriptionAdaptor.OnItemClickListener onItemClickListener =
+            new AddSubscriptionAdaptor.OnItemClickListener() {
+                @Override public void onItemClicked(Subscription subscription) {
+                    if (subscription != null) {
+                        viewListView.createSubscription(subscription);
+                    }
+                }
+            };
 
-    @Inject public SubscriptionListPresenterImpl(GetSubscriptionList getUserListUserCase,
+    @Inject public SubscriptionListPresenterImpl(AddSubscriptionAdaptor addSubscriptionAdaptor,
+            GetSubscriptionList getUserListUserCase,
             SubscribeToSubscriptionUpdates subscribeToSubscriptionUpdates) {
+        this.addSubscriptionAdaptor = addSubscriptionAdaptor;
         this.getSubscriptionList = getUserListUserCase;
         this.subscribeToSubscriptionUpdates = subscribeToSubscriptionUpdates;
     }
 
-    public void setView(@NonNull SubscriptionListView view) {
-        this.viewListView = view;
+    public void setView(@NonNull SubscriptionListView subscriptionListView) {
+        this.viewListView = subscriptionListView;
     }
 
     @Override public void onStart() {
@@ -56,6 +69,11 @@ import javax.inject.Inject;
      */
     public void initialize() {
         this.loadUserList();
+    }
+
+    @Override public void initializeAdaptor() {
+        this.addSubscriptionAdaptor.setOnItemClickListener(onItemClickListener);
+        this.viewListView.setAdapter(addSubscriptionAdaptor);
     }
 
     /**
@@ -93,8 +111,22 @@ import javax.inject.Inject;
         this.viewListView.showError(errorMessage);
     }
 
-    private void showUsersCollectionInView(SubscriptionDto subscriptions) {
-        this.viewListView.renderSubscriptions(subscriptions);
+    private void showUsersCollectionInView(SubscriptionDto subscriptionDto) {
+        if (subscriptionDto != null) {
+            switch (subscriptionDto.getAction()) {
+                case ADDED:
+                    this.addSubscriptionAdaptor.addSubscription(subscriptionDto.getSubscription());
+                    break;
+                case UPDATED:
+                    this.addSubscriptionAdaptor.updateSubscription(
+                            subscriptionDto.getSubscription());
+                    break;
+                case REMOVED:
+                    this.addSubscriptionAdaptor.removeSubscription(
+                            subscriptionDto.getSubscription());
+                    break;
+            }
+        }
     }
 
     private void getSubscriptionList() {

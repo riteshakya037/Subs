@@ -40,7 +40,7 @@ public class SubsApplication extends Application {
 
     private void initializeLeakDetection() {
         if (BuildConfig.DEBUG) {
-            LeakCanary.install(this);
+            //LeakCanary.install(this);
         }
     }
 }

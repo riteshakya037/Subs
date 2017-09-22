@@ -1,6 +1,6 @@
 package io.subs.android.views.screens.add_subscription;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,38 +9,33 @@ import butterknife.BindView;
 import io.subs.android.R;
 import io.subs.android.di.components.SubscriptionComponent;
 import io.subs.android.views.BaseFragment;
-import io.subs.android.views.adapters.AddSubscriptionAdaptor;
+import io.subs.android.views.component.TopPaddingDecoration;
 import io.subs.domain.models.Subscription;
-import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates;
 import javax.inject.Inject;
 
 /**
  * @author Ritesh Shakya
  */
 
-public class SubscriptionListFragment extends BaseFragment implements SubscriptionListView {
+public class SubscriptionListFragment extends BaseFragment
+        implements SubscriptionListPresenter.SubscriptionListView {
     @BindView(R.id.rv_subscription_list) RecyclerView rvSubscriptions;
-    @Inject AddSubscriptionAdaptor addSubscriptionAdaptor;
-    @Inject SubscriptionListPresenterImpl subscriptionListPresenter;
-
+    @Inject SubscriptionListPresenter subscriptionListPresenter;
     private SubscriptionListListener subscriptionListListener;
-    private AddSubscriptionAdaptor.OnItemClickListener onItemClickListener =
-            new AddSubscriptionAdaptor.OnItemClickListener() {
-                @Override public void onItemClicked(Subscription subscription) {
-                    if (subscriptionListPresenter != null && subscription != null) {
-                        subscriptionListPresenter.onItemClicked(subscription);
-                    }
-                }
-            };
 
-    @Override public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        if (activity instanceof AddSubscriptionActivity) {
-            this.subscriptionListListener = (SubscriptionListListener) activity;
+    @Override public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof AddSubscriptionActivity) {
+            this.subscriptionListListener = (SubscriptionListListener) context;
         }
     }
 
+    @Override protected int getLayout() {
+        return R.layout.fragment_subscription_list;
+    }
+
     @Override protected void initializeViews() {
+        this.subscriptionListPresenter.setView(this);
         setupRecyclerView();
     }
 
@@ -51,7 +46,6 @@ public class SubscriptionListFragment extends BaseFragment implements Subscripti
     @Override public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.registerPresenter(subscriptionListPresenter);
-        this.subscriptionListPresenter.setView(this);
         if (savedInstanceState == null) {
             this.loadSubscriptions();
         }
@@ -78,9 +72,9 @@ public class SubscriptionListFragment extends BaseFragment implements Subscripti
     }
 
     private void setupRecyclerView() {
-        this.addSubscriptionAdaptor.setOnItemClickListener(onItemClickListener);
+        this.subscriptionListPresenter.initializeAdaptor();
         this.rvSubscriptions.setLayoutManager(new LinearLayoutManager(context()));
-        this.rvSubscriptions.setAdapter(addSubscriptionAdaptor);
+        this.rvSubscriptions.addItemDecoration(new TopPaddingDecoration(60));
     }
 
     /**
@@ -90,28 +84,15 @@ public class SubscriptionListFragment extends BaseFragment implements Subscripti
         this.subscriptionListPresenter.initialize();
     }
 
-    @Override public void renderSubscriptions(
-            SubscribeToSubscriptionUpdates.SubscriptionDto subscriptionDto) {
-        if (subscriptionDto != null) {
-            switch (subscriptionDto.getAction()) {
-                case ADDED:
-                    this.addSubscriptionAdaptor.addSubscription(subscriptionDto.getSubscription());
-                    break;
-                case UPDATED:
-                    this.addSubscriptionAdaptor.updateSubscription(
-                            subscriptionDto.getSubscription());
-                    break;
-                case REMOVED:
-                    this.addSubscriptionAdaptor.removeSubscription(
-                            subscriptionDto.getSubscription());
-                    break;
-            }
-        }
-    }
-
     @Override public void createSubscription(Subscription subscription) {
         if (this.subscriptionListListener != null) {
             this.subscriptionListListener.onSubscriptionClicked(subscription);
+        }
+    }
+
+    @Override public void setAdapter(RecyclerView.Adapter addSubscriptionAdaptor) {
+        if (addSubscriptionAdaptor != null) {
+            rvSubscriptions.setAdapter(addSubscriptionAdaptor);
         }
     }
 

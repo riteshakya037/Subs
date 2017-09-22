@@ -13,7 +13,6 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Cancellable;
 import io.reactivex.subjects.PublishSubject;
 import io.subs.data.DatabaseNames;
-import io.subs.data.entity.SubscriptionEntity;
 import io.subs.domain.models.Subscription;
 import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates.Action;
 import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates.SubscriptionDto;
@@ -50,25 +49,24 @@ import javax.inject.Singleton;
                         ref.addChildEventListener(new ChildEventListener() {
                             @Override
                             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                Log.e(TAG, "onChildAdded: " + dataSnapshot.getValue(
-                                        SubscriptionEntity.class));
-                                mUpdatePublisher.onNext(new SubscriptionDto(
-                                        dataSnapshot.getValue(Subscription.class), Action.ADDED));
+                                publishEvent("onChildAdded: ", dataSnapshot, Action.ADDED);
+                            }
+
+                            private void publishEvent(String msg, DataSnapshot dataSnapshot,
+                                    Action action) {
+                                Subscription value = dataSnapshot.getValue(Subscription.class);
+                                value.setId(dataSnapshot.getKey());
+                                Log.e(TAG, msg + value);
+                                mUpdatePublisher.onNext(new SubscriptionDto(value, action));
                             }
 
                             @Override
                             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                                Log.e(TAG, "onChildAdded: " + dataSnapshot.getValue(
-                                        SubscriptionEntity.class));
-                                mUpdatePublisher.onNext(new SubscriptionDto(
-                                        dataSnapshot.getValue(Subscription.class), Action.UPDATED));
+                                publishEvent("onChildChanged: ", dataSnapshot, Action.UPDATED);
                             }
 
                             @Override public void onChildRemoved(DataSnapshot dataSnapshot) {
-                                Log.e(TAG, "onChildAdded: " + dataSnapshot.getValue(
-                                        SubscriptionEntity.class));
-                                mUpdatePublisher.onNext(new SubscriptionDto(
-                                        dataSnapshot.getValue(Subscription.class), Action.REMOVED));
+                                publishEvent("onChildRemoved: ", dataSnapshot, Action.REMOVED);
                             }
 
                             @Override

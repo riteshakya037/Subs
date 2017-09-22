@@ -29,11 +29,13 @@ public abstract class BaseFragment extends Fragment {
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         final View fragmentView =
-                inflater.inflate(R.layout.fragment_subscription_list, container, false);
+                inflater.inflate(getLayout(), container, false);
         ButterKnife.bind(this, fragmentView);
         initializeViews();
         return fragmentView;
     }
+
+    protected abstract int getLayout();
 
     protected abstract void initializeViews();
 

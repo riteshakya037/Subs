@@ -16,7 +16,6 @@
 package io.subs.data.repository.datasource;
 
 import io.reactivex.Observable;
-import io.subs.data.entity.SubscriptionEntity;
 import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates;
 
 /**
