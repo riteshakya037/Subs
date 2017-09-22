@@ -1,0 +1,20 @@
+apply plugin: 'java'
+
+//noinspection GroovyUnusedAssignment
+targetCompatibility = JavaVersion.VERSION_1_8
+//noinspection GroovyUnusedAssignment
+sourceCompatibility = JavaVersion.VERSION_1_8
+
+
+dependencies {
+    def domainDependencies = rootProject.ext.domainDependencies
+    def domainTestDependencies = rootProject.ext.domainTestDependencies
+
+    compile domainDependencies.javaxInject
+    compile domainDependencies.rxJava
+    compile domainDependencies.arrow
+
+    testCompile domainTestDependencies.junit
+    testCompile domainTestDependencies.mockito
+    testCompile domainTestDependencies.assertj
+}

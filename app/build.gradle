@@ -2,27 +2,26 @@ apply plugin: 'com.android.application'
 allprojects {
     repositories {
         jcenter()
-        google()
+        maven {
+            url 'https://maven.google.com'
+        }
     }
 }
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    def globalConfiguration = rootProject.extensions.getByName("ext")
+
+    compileSdkVersion globalConfiguration["androidCompileSdkVersion"]
+    buildToolsVersion globalConfiguration["androidBuildToolsVersion"]
     defaultConfig {
-        applicationId "io.subs.android"
-        minSdkVersion 16
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        minSdkVersion globalConfiguration["androidMinSdkVersion"]
+        targetSdkVersion globalConfiguration["androidTargetSdkVersion"]
+
+        applicationId globalConfiguration["androidApplicationId"]
+        versionCode globalConfiguration["androidVersionCode"]
+        versionName globalConfiguration["androidVersionName"]
+        testInstrumentationRunner globalConfiguration["testInstrumentationRunner"]
+        testApplicationId globalConfiguration["testApplicationId"]
         multiDexEnabled true
-        jackOptions {
-            enabled true
-        }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
     }
     buildTypes {
         release {
@@ -31,22 +30,39 @@ android {
         }
     }
 }
+configurations.all {
+    resolutionStrategy {
+        force 'com.android.support:support-annotations:26.0.1'
+    }
+}
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    testCompile 'junit:junit:4.12'
+    def presentationDependencies = rootProject.ext.presentationDependencies
+    def presentationTestDependencies = rootProject.ext.presentationTestDependencies
+    def developmentDependencies = rootProject.ext.developmentDependencies
 
-    compile 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    compile project(':domain')
+    compile project(':data')
 
-    //noinspection GradleDependency
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.firebaseui:firebase-ui:2.3.0'
+    compile presentationDependencies.dagger
+    annotationProcessor presentationDependencies.daggerCompiler
+    compile presentationDependencies.butterKnife
+    annotationProcessor presentationDependencies.butterKnifeCompiler
+    compile presentationDependencies.glide
+    compile presentationDependencies.recyclerView
+    compile presentationDependencies.calligraphy
+    compile presentationDependencies.rxJava
+    compile presentationDependencies.rxAndroid
 
-    compile 'uk.co.chrisjenx:calligraphy:2.3.0'
+    //    Testing
+    androidTestCompile presentationTestDependencies.mockito
+    androidTestCompile presentationTestDependencies.dexmaker
+    androidTestCompile presentationTestDependencies.dexmakerMockito
+    androidTestCompile presentationTestDependencies.espresso
+    androidTestCompile presentationTestDependencies.testingSupportLib
+
+    //Development
+    compile developmentDependencies.leakCanary
 }
 apply plugin: 'com.google.gms.google-services'
 
