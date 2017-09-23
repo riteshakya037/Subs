@@ -1,5 +1,7 @@
 package io.subs.domain.models;
 
+import com.google.gson.annotations.SerializedName;
+import io.subs.domain.models.base.BaseModel;
 import io.subs.domain.models.enums.Currency;
 import io.subs.domain.models.enums.Cycle;
 import io.subs.domain.models.enums.Duration;
@@ -10,61 +12,56 @@ import java.util.Date;
  * @author Ritesh Shakya
  */
 
-public class UserSubscription {
+@SuppressWarnings("unused") public class UserSubscription extends BaseModel {
 
-    public String name;
-    public String icon;
-    public String description;
-    public Cycle subCycle;
-    public Date firstBill;
-    public Duration subDuration;
-    public Reminder subReminder;
-    public Currency currency;
-    public String color;
-    private String id;
+    @SerializedName("name") private String subscriptionName;
+    @SerializedName("icon") private String subscriptionIcon;
+    @SerializedName("description") private String subscriptionDescription;
+    @SerializedName("cycle") private Cycle subscriptionCycle;
+    @SerializedName("firstBill") private Date firstBill;
+    @SerializedName("duration") private Duration subscriptionDuration;
+    @SerializedName("reminder") private Reminder subscriptionReminder;
+    @SerializedName("subscriptionCurrency") private Currency subscriptionCurrency;
+    @SerializedName("layoutColor") private String layoutColor;
 
-    public String getName() {
-        return name;
+    public String getSubscriptionName() {
+        return subscriptionName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSubscriptionName(String subscriptionName) {
+        this.subscriptionName = subscriptionName;
     }
 
-    public String getIcon() {
-        return icon;
+    public String getSubscriptionIcon() {
+        return subscriptionIcon;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
+    public void setSubscriptionIcon(String subscriptionIcon) {
+        this.subscriptionIcon = subscriptionIcon;
     }
 
-    public String getColor() {
-        return color;
+    public String getLayoutColor() {
+        return layoutColor;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setLayoutColor(String layoutColor) {
+        this.layoutColor = layoutColor;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public String getSubscriptionDescription() {
+        return subscriptionDescription;
     }
 
-    public String getDescription() {
-        return description;
+    public void setSubscriptionDescription(String subscriptionDescription) {
+        this.subscriptionDescription = subscriptionDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public Cycle getSubscriptionCycle() {
+        return subscriptionCycle;
     }
 
-    public Cycle getSubCycle() {
-        return subCycle;
-    }
-
-    public void setSubCycle(Cycle subCycle) {
-        this.subCycle = subCycle;
+    public void setSubscriptionCycle(Cycle subscriptionCycle) {
+        this.subscriptionCycle = subscriptionCycle;
     }
 
     public Date getFirstBill() {
@@ -75,55 +72,41 @@ public class UserSubscription {
         this.firstBill = firstBill;
     }
 
-    public Duration getSubDuration() {
-        return subDuration;
+    public Duration getSubscriptionDuration() {
+        return subscriptionDuration;
     }
 
-    public void setSubDuration(Duration subDuration) {
-        this.subDuration = subDuration;
+    public void setSubscriptionDuration(Duration subscriptionDuration) {
+        this.subscriptionDuration = subscriptionDuration;
     }
 
-    public Reminder getSubReminder() {
-        return subReminder;
+    public Reminder getSubscriptionReminder() {
+        return subscriptionReminder;
     }
 
-    public void setSubReminder(Reminder subReminder) {
-        this.subReminder = subReminder;
+    public void setSubscriptionReminder(Reminder subscriptionReminder) {
+        this.subscriptionReminder = subscriptionReminder;
     }
 
-    public Currency getCurrency() {
-        return currency;
+    public Currency getSubscriptionCurrency() {
+        return subscriptionCurrency;
     }
 
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
+    public void setSubscriptionCurrency(Currency subscriptionCurrency) {
+        this.subscriptionCurrency = subscriptionCurrency;
     }
 
-    @Override public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        UserSubscription that = (UserSubscription) o;
-
-        return id.equals(that.id);
-    }
-
-    @Override public int hashCode() {
-        return id.hashCode();
-    }
-
-    @Override public String toString() {
+    @SuppressWarnings("StringBufferReplaceableByString") @Override public String toString() {
         final StringBuilder sb = new StringBuilder("UserSubscription{");
-        sb.append("name='").append(name).append('\'');
-        sb.append(", icon='").append(icon).append('\'');
-        sb.append(", description='").append(description).append('\'');
-        sb.append(", subCycle=").append(subCycle);
+        sb.append("name='").append(subscriptionName).append('\'');
+        sb.append(", icon='").append(subscriptionIcon).append('\'');
+        sb.append(", description='").append(subscriptionDescription).append('\'');
+        sb.append(", subscriptionCycle=").append(subscriptionCycle);
         sb.append(", firstBill=").append(firstBill);
-        sb.append(", subDuration=").append(subDuration);
-        sb.append(", subReminder=").append(subReminder);
-        sb.append(", currency=").append(currency);
-        sb.append(", color='").append(color).append('\'');
-        sb.append(", id='").append(id).append('\'');
+        sb.append(", subscriptionDuration=").append(subscriptionDuration);
+        sb.append(", subscriptionReminder=").append(subscriptionReminder);
+        sb.append(", subscriptionCurrency=").append(subscriptionCurrency);
+        sb.append(", layoutColor='").append(layoutColor).append('\'');
         sb.append('}');
         return sb.toString();
     }

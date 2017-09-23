@@ -13,6 +13,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Cancellable;
 import io.reactivex.subjects.PublishSubject;
 import io.subs.data.DatabaseNames;
+import io.subs.data.listeners.FirebaseChildListener;
 import io.subs.data.repository.datasource.sessions.ISessionDataStore;
 import io.subs.domain.models.UserSubscription;
 import io.subs.domain.usecases.user_subscriptions.GetUserSubscriptionList;
@@ -51,37 +52,26 @@ import javax.inject.Singleton;
             @Override public void subscribe(@NonNull ObservableEmitter<DataSnapshot> emitter)
                     throws Exception {
                 final ChildEventListener listener =
-                        ref.addChildEventListener(new ChildEventListener() {
+                        ref.addChildEventListener(new FirebaseChildListener<UserSubscription>() {
                             @Override
-                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                publishEvent("onChildAdded: ", dataSnapshot, Action.ADDED);
-                            }
-
-                            private void publishEvent(String msg, DataSnapshot dataSnapshot,
-                                    Action action) {
-                                UserSubscription value =
-                                        dataSnapshot.getValue(UserSubscription.class);
-                                value.setId(dataSnapshot.getKey());
-                                Log.e(TAG, msg + value);
-                                mUpdatePublisher.onNext(new UserSubscriptionDto(value, action));
+                            public void onChildAdded(UserSubscription dataSnapshot, String s) {
+                                mUpdatePublisher.onNext(
+                                        new UserSubscriptionDto(dataSnapshot, Action.ADDED));
                             }
 
                             @Override
-                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                                publishEvent("onChildChanged: ", dataSnapshot, Action.UPDATED);
+                            public void onChildChanged(UserSubscription dataSnapshot, String s) {
+                                mUpdatePublisher.onNext(
+                                        new UserSubscriptionDto(dataSnapshot, Action.UPDATED));
                             }
 
-                            @Override public void onChildRemoved(DataSnapshot dataSnapshot) {
-                                publishEvent("onChildRemoved: ", dataSnapshot, Action.REMOVED);
-                            }
-
-                            @Override
-                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
+                            @Override public void onChildRemoved(UserSubscription dataSnapshot) {
+                                mUpdatePublisher.onNext(
+                                        new UserSubscriptionDto(dataSnapshot, Action.REMOVED));
                             }
 
                             @Override public void onCancelled(DatabaseError databaseError) {
-
+                                mUpdatePublisher.onError(databaseError.toException());
                             }
                         });
 

@@ -10,7 +10,6 @@ import io.subs.android.views.base.Presenter;
 import io.subs.domain.exception.DefaultErrorBundle;
 import io.subs.domain.exception.ErrorBundle;
 import io.subs.domain.models.UserSubscription;
-import io.subs.domain.models.enums.Cycle;
 import io.subs.domain.usecases.DefaultObserver;
 import io.subs.domain.usecases.user_subscriptions.GetUserSubscriptionList;
 import io.subs.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionUpdates;
@@ -133,7 +132,7 @@ import javax.inject.Inject;
 
     private void getSubscriptionList() {
         this.getSubscriptionList.execute(new SubscriptionListObserver(),
-                GetUserSubscriptionList.Params.forCase(Cycle.ALL));
+                GetUserSubscriptionList.Params.forCaseAll());
     }
 
     private final class SubscriptionListObserver extends DefaultObserver<Void> {

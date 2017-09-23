@@ -37,6 +37,6 @@ public class AddSubscriptionActivity extends DaggerBaseActivity<SubscriptionComp
     }
 
     @Override public void onSubscriptionClicked(Subscription subscription) {
-        Toast.makeText(this, subscription.getName(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, subscription.getSubscriptionName(), Toast.LENGTH_SHORT).show();
     }
 }

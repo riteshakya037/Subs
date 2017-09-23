@@ -23,7 +23,6 @@ dependencies {
     compile project(':domain')
     compile dataDependencies.javaxInject
     compile dataDependencies.okHttp
-    compile dataDependencies.gson
     compile dataDependencies.rxJava
     compile dataDependencies.rxAndroid
     compile dataDependencies.androidAnnotations

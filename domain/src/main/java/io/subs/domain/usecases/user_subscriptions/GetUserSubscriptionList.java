@@ -30,13 +30,31 @@ public class GetUserSubscriptionList extends UseCase<Void, GetUserSubscriptionLi
 
     public static class Params {
         private Cycle subscriptionCycle;
+        private boolean isAll;
 
         public Params(Cycle subscriptionCycle) {
             this.subscriptionCycle = subscriptionCycle;
+            this.isAll = false;
+        }
+
+        public Params() {
+            this.isAll = true;
         }
 
         public static Params forCase(Cycle subscriptionCycle) {
             return new Params(subscriptionCycle);
+        }
+
+        public static Params forCaseAll() {
+            return new Params();
+        }
+
+        public Cycle getSubscriptionCycle() {
+            return subscriptionCycle;
+        }
+
+        public boolean isAll() {
+            return isAll;
         }
     }
 }

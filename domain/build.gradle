@@ -13,6 +13,7 @@ dependencies {
     compile domainDependencies.javaxInject
     compile domainDependencies.rxJava
     compile domainDependencies.arrow
+    compile domainDependencies.gson
 
     testCompile domainTestDependencies.junit
     testCompile domainTestDependencies.mockito

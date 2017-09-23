@@ -98,9 +98,9 @@ public class AddSubscriptionAdaptor
 
         public void bind(Subscription subscription) {
             this.subscription = subscription;
-            iImageLoader.loadFirebaseImage(subscription.getIcon(), ivIcon);
-            tvTitle.setText(subscription.getName());
-            cvRootView.setCardBackgroundColor(Color.parseColor(subscription.getColor()));
+            iImageLoader.loadFirebaseImage(subscription.getSubscriptionIcon(), ivIcon);
+            tvTitle.setText(subscription.getSubscriptionName());
+            cvRootView.setCardBackgroundColor(Color.parseColor(subscription.getLayoutColor()));
         }
     }
 }

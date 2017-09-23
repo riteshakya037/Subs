@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#EEEEEE</color>
-    <color name="colorPrimaryDark">#EEEEEE</color>
-    <color name="colorAccent">@android:color/black</color>
+    <layoutColor name="colorPrimary">#EEEEEE</layoutColor>
+    <layoutColor name="colorPrimaryDark">#EEEEEE</layoutColor>
+    <layoutColor name="colorAccent">@android:layoutColor/black</layoutColor>
 </resources>

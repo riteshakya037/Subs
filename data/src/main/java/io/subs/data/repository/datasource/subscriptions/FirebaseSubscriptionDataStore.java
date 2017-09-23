@@ -1,6 +1,5 @@
 package io.subs.data.repository.datasource.subscriptions;
 
-import android.util.Log;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -13,8 +12,9 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Cancellable;
 import io.reactivex.subjects.PublishSubject;
 import io.subs.data.DatabaseNames;
+import io.subs.data.listeners.FirebaseChildListener;
 import io.subs.domain.models.Subscription;
-import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates.Action;
+import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates;
 import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates.SubscriptionDto;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -45,36 +45,25 @@ import javax.inject.Singleton;
             @Override public void subscribe(@NonNull ObservableEmitter<DataSnapshot> emitter)
                     throws Exception {
                 final ChildEventListener listener =
-                        ref.addChildEventListener(new ChildEventListener() {
-                            @Override
-                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                publishEvent("onChildAdded: ", dataSnapshot, Action.ADDED);
+                        ref.addChildEventListener(new FirebaseChildListener<Subscription>() {
+
+                            @Override public void onChildAdded(Subscription snapShot, String s) {
+                                mUpdatePublisher.onNext(new SubscriptionDto(snapShot,
+                                        SubscribeToSubscriptionUpdates.Action.ADDED));
                             }
 
-                            private void publishEvent(String msg, DataSnapshot dataSnapshot,
-                                    Action action) {
-                                Subscription value = dataSnapshot.getValue(Subscription.class);
-                                value.setId(dataSnapshot.getKey());
-                                Log.e(TAG, msg + value);
-                                mUpdatePublisher.onNext(new SubscriptionDto(value, action));
+                            @Override public void onChildChanged(Subscription snapShot, String s) {
+                                mUpdatePublisher.onNext(new SubscriptionDto(snapShot,
+                                        SubscribeToSubscriptionUpdates.Action.UPDATED));
                             }
 
-                            @Override
-                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                                publishEvent("onChildChanged: ", dataSnapshot, Action.UPDATED);
-                            }
-
-                            @Override public void onChildRemoved(DataSnapshot dataSnapshot) {
-                                publishEvent("onChildRemoved: ", dataSnapshot, Action.REMOVED);
-                            }
-
-                            @Override
-                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
+                            @Override public void onChildRemoved(Subscription snapShot) {
+                                mUpdatePublisher.onNext(new SubscriptionDto(snapShot,
+                                        SubscribeToSubscriptionUpdates.Action.REMOVED));
                             }
 
                             @Override public void onCancelled(DatabaseError databaseError) {
-
+                                mUpdatePublisher.onError(databaseError.toException());
                             }
                         });
 

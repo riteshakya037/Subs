@@ -66,6 +66,7 @@ ext {
             [javaxAnnotation: "javax.annotation:javax.annotation-api:${javaxAnnotationVersion}",
              javaxInject    : "javax.inject:javax.inject:${javaxInjectVersion}",
              rxJava         : "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
+             gson           : "com.google.code.gson:gson:${gsonVersion}",
              arrow          : "com.fernandocejas:arrow:${arrowVersion}"]
 
     domainTestDependencies = [junit  : "junit:junit:${jUnitVersion}",
@@ -75,7 +76,6 @@ ext {
     dataDependencies = [daggerCompiler    : "com.google.dagger:dagger-compiler:${daggerVersion}",
                         dagger            : "com.google.dagger:dagger:${daggerVersion}",
                         okHttp            : "com.squareup.okhttp3:okhttp:${okHttpVersion}",
-                        gson              : "com.google.code.gson:gson:${gsonVersion}",
                         rxJava            : "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
                         rxAndroid         : "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
                         javaxAnnotation   : "javax.annotation:javax.annotation-api:${javaxAnnotationVersion}",
