@@ -1,9 +1,26 @@
 package io.subs.data;
 
+import java.io.File;
+
 /**
  * @author Ritesh Shakya
  */
 
 public class DatabaseNames {
     public static final String TABLE_SUBSCRIPTIONS = "subs";
+    public static final String TALBE_USER_DATA = "users";
+
+    public static String createPath(String... individualTables) {
+        StringBuilder output = new StringBuilder();
+        String delimiter = File.separator;
+        boolean and = false;
+        for (String e : individualTables) {
+            if (and) {
+                output.append(delimiter);
+            }
+            output.append(e);
+            and = true;
+        }
+        return output.toString();
+    }
 }

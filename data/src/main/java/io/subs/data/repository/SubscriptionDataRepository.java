@@ -1,7 +1,7 @@
 package io.subs.data.repository;
 
 import io.reactivex.Observable;
-import io.subs.data.repository.datasource.SubscriptionDataStore;
+import io.subs.data.repository.datasource.subscriptions.ISubscriptionDataStore;
 import io.subs.domain.repository.ISubscriptionRepository;
 import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates;
 import javax.inject.Inject;
@@ -12,14 +12,14 @@ import javax.inject.Singleton;
  */
 @Singleton public class SubscriptionDataRepository implements ISubscriptionRepository {
 
-    private final SubscriptionDataStore subscriptionDataStore;
+    private final ISubscriptionDataStore subscriptionDataStore;
 
     /**
      * Constructs a {@link ISubscriptionRepository}.
      *
      * @param subscriptionDataStore A factory to construct different data source implementations.
      */
-    @Inject SubscriptionDataRepository(SubscriptionDataStore subscriptionDataStore) {
+    @Inject SubscriptionDataRepository(ISubscriptionDataStore subscriptionDataStore) {
         this.subscriptionDataStore = subscriptionDataStore;
     }
 
