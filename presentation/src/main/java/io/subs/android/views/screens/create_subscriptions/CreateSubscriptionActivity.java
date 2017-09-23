@@ -33,6 +33,11 @@ import org.parceler.Parcels;
         return R.layout.activity_fragment_container;
     }
 
+    @Override public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
     @Override protected void onSaveInstanceState(Bundle outState) {
         if (outState != null) {
             outState.putParcelable(INSTANCE_STATE_PARAM_SUBSCRIPTION,

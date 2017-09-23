@@ -21,7 +21,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".views.screens.user_subscription.UserSubscriptionActivity"/>
-        <activity android:name=".views.screens.create_subscriptions.CreateSubscriptionActivity"/>
+        <activity
+                android:name=".views.screens.create_subscriptions.CreateSubscriptionActivity"
+                android:theme="@style/AppTheme.SlideTransition"/>
     </application>
 
 </manifest>
