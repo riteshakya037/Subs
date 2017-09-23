@@ -19,6 +19,7 @@ import dagger.Component;
 import io.subs.android.di.PerActivity;
 import io.subs.android.di.modules.ActivityModule;
 import io.subs.android.di.modules.UserSubscriptionModule;
+import io.subs.android.views.screens.create_subscriptions.CreateSubscriptionFragment;
 import io.subs.android.views.screens.user_subscription.UserSubscriptionListFragment;
 
 /**
@@ -29,4 +30,6 @@ import io.subs.android.views.screens.user_subscription.UserSubscriptionListFragm
         ActivityModule.class, UserSubscriptionModule.class
 }) public interface UserSubscriptionComponent extends ActivityComponent {
     void inject(UserSubscriptionListFragment userSubscriptionListFragment);
+
+    void inject(CreateSubscriptionFragment createSubscriptionFragment);
 }

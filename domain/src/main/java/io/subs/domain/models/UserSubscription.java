@@ -1,5 +1,6 @@
 package io.subs.domain.models;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import io.subs.domain.models.base.BaseModel;
 import io.subs.domain.models.enums.Currency;
@@ -7,22 +8,31 @@ import io.subs.domain.models.enums.Cycle;
 import io.subs.domain.models.enums.Duration;
 import io.subs.domain.models.enums.Reminder;
 import java.util.Date;
+import org.parceler.Parcel;
 
 /**
  * @author Ritesh Shakya
  */
+@Parcel @SuppressWarnings("unused") public class UserSubscription implements BaseModel {
+    @Expose protected String id;
+    @SerializedName("name") protected String subscriptionName;
+    @SerializedName("icon") protected String subscriptionIcon;
+    @SerializedName("description") protected String subscriptionDescription;
+    @SerializedName("cycle") protected Cycle subscriptionCycle;
+    @SerializedName("firstBill") protected Date firstBill;
+    @SerializedName("duration") protected Duration subscriptionDuration;
+    @SerializedName("reminder") protected Reminder subscriptionReminder;
+    @SerializedName("subscriptionCurrency") protected Currency subscriptionCurrency;
+    @SerializedName("color") protected String layoutColor;
 
-@SuppressWarnings("unused") public class UserSubscription extends BaseModel {
+    public UserSubscription() {
+    }
 
-    @SerializedName("name") private String subscriptionName;
-    @SerializedName("icon") private String subscriptionIcon;
-    @SerializedName("description") private String subscriptionDescription;
-    @SerializedName("cycle") private Cycle subscriptionCycle;
-    @SerializedName("firstBill") private Date firstBill;
-    @SerializedName("duration") private Duration subscriptionDuration;
-    @SerializedName("reminder") private Reminder subscriptionReminder;
-    @SerializedName("subscriptionCurrency") private Currency subscriptionCurrency;
-    @SerializedName("color") private String layoutColor;
+    public UserSubscription(Subscription subscription) {
+        this.subscriptionName = subscription.getSubscriptionName();
+        this.subscriptionIcon = subscription.getSubscriptionIcon();
+        this.layoutColor = subscription.getLayoutColor();
+    }
 
     public String getSubscriptionName() {
         return subscriptionName;
@@ -94,6 +104,23 @@ import java.util.Date;
 
     public void setSubscriptionCurrency(Currency subscriptionCurrency) {
         this.subscriptionCurrency = subscriptionCurrency;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    @Override public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Subscription that = (Subscription) o;
+
+        return id.equals(that.getId());
     }
 
     @SuppressWarnings("StringBufferReplaceableByString") @Override public String toString() {

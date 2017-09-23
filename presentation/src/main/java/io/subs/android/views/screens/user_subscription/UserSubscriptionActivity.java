@@ -16,7 +16,7 @@ public class UserSubscriptionActivity extends DaggerBaseActivity<UserSubscriptio
     }
 
     @Override protected int getContextView() {
-        return R.layout.activity_add_subscription;
+        return R.layout.activity_fragment_container;
     }
 
     @Override protected void initializeActivity(Bundle savedInstanceState) {

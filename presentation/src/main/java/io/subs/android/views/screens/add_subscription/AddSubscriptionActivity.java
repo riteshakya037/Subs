@@ -3,7 +3,6 @@ package io.subs.android.views.screens.add_subscription;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 import io.subs.android.R;
 import io.subs.android.di.components.DaggerSubscriptionComponent;
 import io.subs.android.di.components.SubscriptionComponent;
@@ -25,7 +24,7 @@ public class AddSubscriptionActivity extends DaggerBaseActivity<SubscriptionComp
     }
 
     @Override protected int getContextView() {
-        return R.layout.activity_add_subscription;
+        return R.layout.activity_fragment_container;
     }
 
     @Override protected SubscriptionComponent getInjector() {
@@ -36,6 +35,10 @@ public class AddSubscriptionActivity extends DaggerBaseActivity<SubscriptionComp
     }
 
     @Override public void onSubscriptionClicked(Subscription subscription) {
-        Toast.makeText(this, subscription.getSubscriptionName(), Toast.LENGTH_SHORT).show();
+        navigator.navigateToCreateSubscription(this, subscription);
+    }
+
+    @Override public void onCustomSubscriberCreate() {
+        navigator.navigateToCreateSubscription(this, new Subscription());
     }
 }

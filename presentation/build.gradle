@@ -42,6 +42,7 @@ dependencies {
     compile presentationDependencies.designLibrary
     compile presentationDependencies.recyclerView
     compile presentationDependencies.cardView
+    compile 'org.parceler:parceler:1.1.9'
 
     compile presentationDependencies.dagger
     annotationProcessor presentationDependencies.daggerCompiler

@@ -3,6 +3,8 @@ package io.subs.android.di.modules;
 import dagger.Module;
 import dagger.Provides;
 import io.subs.android.di.PerActivity;
+import io.subs.android.views.screens.create_subscriptions.CreateSubscriptionPresenter;
+import io.subs.android.views.screens.create_subscriptions.CreateSubscriptionPresenterImpl;
 import io.subs.android.views.screens.user_subscription.UserSubscriptionListPresenter;
 import io.subs.android.views.screens.user_subscription.UserSubscriptionListPresenterImpl;
 
@@ -17,5 +19,10 @@ import io.subs.android.views.screens.user_subscription.UserSubscriptionListPrese
     @Provides @PerActivity UserSubscriptionListPresenter provideUserSubscriptionListPresenter(
             UserSubscriptionListPresenterImpl subscriptionListPresenter) {
         return subscriptionListPresenter;
+    }
+
+    @Provides @PerActivity CreateSubscriptionPresenter provideCreateSubscriptionPresenter(
+            CreateSubscriptionPresenterImpl createSubscriptionPresenter) {
+        return createSubscriptionPresenter;
     }
 }

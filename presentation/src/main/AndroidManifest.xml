@@ -21,6 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".views.screens.user_subscription.UserSubscriptionActivity"/>
+        <activity android:name=".views.screens.create_subscriptions.CreateSubscriptionActivity"/>
     </application>
 
 </manifest>

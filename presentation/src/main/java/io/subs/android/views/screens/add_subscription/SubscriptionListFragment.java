@@ -120,5 +120,7 @@ public class SubscriptionListFragment extends BaseFragment
      */
     public interface SubscriptionListListener {
         void onSubscriptionClicked(final Subscription subscription);
+
+        void onCustomSubscriberCreate();
     }
 }

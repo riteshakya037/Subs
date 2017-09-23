@@ -7,6 +7,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import butterknife.BindView;
+import butterknife.OnClick;
 import io.subs.android.R;
 import io.subs.android.di.components.SubscriptionComponent;
 import io.subs.android.views.base.BaseFragment;
@@ -30,6 +31,10 @@ public class AddSubscriptionFragment extends BaseFragment
             this.subscriptionListListener =
                     (SubscriptionListFragment.SubscriptionListListener) context;
         }
+    }
+
+    @OnClick(R.id.fragment_add_subs_custom) void addCustomSubscription() {
+        subscriptionListListener.onCustomSubscriberCreate();
     }
 
     @Override protected int getLayout() {
