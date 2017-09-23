@@ -73,6 +73,10 @@ public class LoginActivity extends DaggerBaseActivity<LoginComponent> {
         return R.layout.activity_login;
     }
 
+    @Override protected void initializeActivity(Bundle savedInstanceState) {
+
+    }
+
     @Override protected LoginComponent getInjector() {
         return DaggerLoginComponent.builder()
                 .applicationComponent(getApplicationComponent())

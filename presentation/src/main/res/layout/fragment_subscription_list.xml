@@ -1,76 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/fragment_add_subscription_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".views.screens.add_subscription.AddSubscriptionActivity"
-        >
-    <android.support.design.widget.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-
-        <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                >
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="Add Subscription"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
-                    />
-            <android.support.v7.widget.SearchView
-                    android:id="@+id/search_view_collateral"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="end"
-                    android:inputType="text"
-                    android:paddingRight="16dp"
-                    style="@style/SearchViewStyle"
-                    />
-        </android.support.v7.widget.Toolbar>
-        <android.support.design.widget.TabLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:tabGravity="fill"
-                app:tabMode="fixed"
-                app:tabSelectedTextColor="@color/colorAccent"
-                app:tabTextAppearance="@style/TextAppearance.AppCompat.Medium"
-                >
-            <android.support.design.widget.TabItem
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="Popular"
-                    />
-            <android.support.design.widget.TabItem
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="All"
-                    />
-        </android.support.design.widget.TabLayout>
-    </android.support.design.widget.AppBarLayout>
-    <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context=".views.screens.add_subscription.AddSubscriptionActivity"
-            >
-
-        <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_subscription_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:listitem="@layout/item_subscription"
-                />
-    </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+        tools:listitem="@layout/item_subscription"
+        />

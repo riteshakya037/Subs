@@ -10,6 +10,7 @@ import io.subs.android.views.base.Presenter;
 import io.subs.domain.exception.DefaultErrorBundle;
 import io.subs.domain.exception.ErrorBundle;
 import io.subs.domain.models.Subscription;
+import io.subs.domain.models.enums.SubscriptionType;
 import io.subs.domain.usecases.DefaultObserver;
 import io.subs.domain.usecases.subscription.GetSubscriptionList;
 import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates;
@@ -64,11 +65,8 @@ import javax.inject.Inject;
         }, null));
     }
 
-    /**
-     * Initializes the presenter by start retrieving the user list.
-     */
-    public void initialize() {
-        this.loadUserList();
+    public void initialize(SubscriptionType subscriptionType) {
+        this.loadSubscriptionList(subscriptionType);
     }
 
     @Override public void initializeAdaptor() {
@@ -76,13 +74,10 @@ import javax.inject.Inject;
         this.viewListView.setAdapter(addSubscriptionAdaptor);
     }
 
-    /**
-     * Loads all users.
-     */
-    private void loadUserList() {
+    private void loadSubscriptionList(SubscriptionType subscriptionType) {
         this.hideViewRetry();
         this.showViewLoading();
-        this.getSubscriptionList();
+        this.getSubscriptionList(subscriptionType);
     }
 
     public void onItemClicked(Subscription subscription) {
@@ -129,8 +124,9 @@ import javax.inject.Inject;
         }
     }
 
-    private void getSubscriptionList() {
-        this.getSubscriptionList.execute(new UserListObserver(), null);
+    private void getSubscriptionList(SubscriptionType subscriptionType) {
+        this.getSubscriptionList.execute(new UserListObserver(),
+                GetSubscriptionList.Params.forCase(subscriptionType));
     }
 
     private final class UserListObserver extends DefaultObserver<Void> {

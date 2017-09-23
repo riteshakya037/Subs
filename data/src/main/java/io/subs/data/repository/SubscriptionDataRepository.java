@@ -3,6 +3,7 @@ package io.subs.data.repository;
 import io.reactivex.Observable;
 import io.subs.data.repository.datasource.subscriptions.ISubscriptionDataStore;
 import io.subs.domain.repository.ISubscriptionRepository;
+import io.subs.domain.usecases.subscription.GetSubscriptionList;
 import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -23,9 +24,9 @@ import javax.inject.Singleton;
         this.subscriptionDataStore = subscriptionDataStore;
     }
 
-    @Override public Observable<Void> subscriptions() {
+    @Override public Observable<Void> subscriptions(GetSubscriptionList.Params params) {
         //we always get all users from the cloud
-        return subscriptionDataStore.subscriptionEntityList();
+        return subscriptionDataStore.subscriptionEntityList(params);
     }
 
     @Override public Observable<SubscribeToSubscriptionUpdates.SubscriptionDto> subscribe() {

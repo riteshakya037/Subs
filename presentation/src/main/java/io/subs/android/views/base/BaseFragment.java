@@ -1,15 +1,14 @@
 package io.subs.android.views.base;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import butterknife.ButterKnife;
-import io.subs.android.R;
 import io.subs.android.di.HasComponent;
 import io.subs.android.mvp.IPresenter;
 import java.util.ArrayList;
@@ -28,8 +27,7 @@ public abstract class BaseFragment extends Fragment {
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        final View fragmentView =
-                inflater.inflate(getLayout(), container, false);
+        final View fragmentView = inflater.inflate(getLayout(), container, false);
         ButterKnife.bind(this, fragmentView);
         initializeViews();
         return fragmentView;

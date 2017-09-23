@@ -18,7 +18,7 @@ import javax.inject.Inject;
 
 public class UserSubscriptionListFragment extends BaseFragment
         implements UserSubscriptionListPresenter.UserSubscriptionListView {
-    @BindView(R.id.rv_subscription_list) RecyclerView rvSubscriptions;
+    @BindView(R.id.fragment_add_subscription_list) RecyclerView rvSubscriptions;
     @Inject UserSubscriptionListPresenter userSubscriptionListPresenter;
 
     @Override protected int getLayout() {

@@ -18,15 +18,14 @@ public class AddSubscriptionActivity extends DaggerBaseActivity<SubscriptionComp
         return new Intent(context, AddSubscriptionActivity.class);
     }
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void initializeActivity(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            addFragment(R.id.fragmentContainer, new SubscriptionListFragment());
+            addFragment(R.id.fragmentContainer, new AddSubscriptionFragment());
         }
     }
 
     @Override protected int getContextView() {
-        return R.layout.activity_main;
+        return R.layout.activity_add_subscription;
     }
 
     @Override protected SubscriptionComponent getInjector() {

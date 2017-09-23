@@ -1,9 +1,9 @@
 package io.subs.android.views.base;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import butterknife.ButterKnife;
 import io.subs.android.SubsApplication;
@@ -29,9 +29,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         this.getApplicationComponent().inject(this);
         setContentView(getContextView());
         ButterKnife.bind(this);
+        this.initializeActivity(savedInstanceState);
     }
 
     protected abstract int getContextView();
+
+    protected abstract void initializeActivity(Bundle savedInstanceState);
 
     /**
      * Adds a {@link Fragment} to this activity's layout.
@@ -41,7 +44,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     protected void addFragment(int containerViewId, Fragment fragment) {
         final FragmentTransaction fragmentTransaction =
-                this.getFragmentManager().beginTransaction();
+                this.getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(containerViewId, fragment);
         fragmentTransaction.commit();
     }

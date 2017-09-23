@@ -2,8 +2,16 @@
     <string name="app_name">Subscription</string>
 
 
-    //Exception messages
+    <!--Exception messages-->
     <string name="exception_message_generic">There was an application error</string>
     <string name="exception_message_no_connection">There is no internet connection</string>
     <string name="exception_message_user_not_found">Cannot retrieve user data. Check your internet connection</string>
+
+    <!--Add Subscription-->
+    <string name="txt_add_subscription">Add Subscription</string>
+    <string name="txt_popular">Popular</string>
+    <string name="txt_all">All</string>
+    <string name="txt_create_custom_subscription">Create custom subscription</string>
+
+
 </resources>

@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import io.subs.android.mvp.IPresenter;
 import io.subs.android.views.base.LoadDataView;
 import io.subs.domain.models.Subscription;
+import io.subs.domain.models.enums.SubscriptionType;
 
 /**
  * @author Ritesh Shakya
@@ -13,7 +14,7 @@ public interface SubscriptionListPresenter extends IPresenter {
 
     void setView(SubscriptionListView subscriptionListView);
 
-    void initialize();
+    void initialize(SubscriptionType subscriptionType);
 
     void initializeAdaptor();
 
