@@ -24,7 +24,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:text="Add Subscription"
-                    android:textColor="@android:layoutColor/black"
+                    android:textColor="@android:color/black"
                     android:textSize="18sp"
                     />
             <android.support.v7.widget.SearchView
@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 app:tabGravity="fill"
                 app:tabMode="fixed"
-                app:tabSelectedTextColor="@layoutColor/colorAccent"
+                app:tabSelectedTextColor="@color/colorAccent"
                 app:tabTextAppearance="@style/TextAppearance.AppCompat.Medium"
                 >
             <android.support.design.widget.TabItem

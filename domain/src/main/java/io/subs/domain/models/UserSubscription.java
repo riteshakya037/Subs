@@ -22,7 +22,7 @@ import java.util.Date;
     @SerializedName("duration") private Duration subscriptionDuration;
     @SerializedName("reminder") private Reminder subscriptionReminder;
     @SerializedName("subscriptionCurrency") private Currency subscriptionCurrency;
-    @SerializedName("layoutColor") private String layoutColor;
+    @SerializedName("color") private String layoutColor;
 
     public String getSubscriptionName() {
         return subscriptionName;

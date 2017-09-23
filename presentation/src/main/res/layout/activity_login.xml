@@ -3,7 +3,7 @@
         android:id="@+id/fullscreen_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:layoutColor/white"
+        android:background="@android:color/white"
         android:orientation="vertical"
         tools:context=".views.screens.login.LoginActivity"
         >
