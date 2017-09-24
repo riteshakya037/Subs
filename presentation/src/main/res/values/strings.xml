@@ -12,6 +12,11 @@
     <string name="txt_popular">Popular</string>
     <string name="txt_all">All</string>
     <string name="txt_create_custom_subscription">Create custom subscription</string>
+    <string name="number_format_text">%1$,.2f</string>
 
-
+    <string-array name="array_name">
+        <item>Array Item One</item>
+        <item>Array Item Two</item>
+        <item>Array Item Three</item>
+    </string-array>
 </resources>

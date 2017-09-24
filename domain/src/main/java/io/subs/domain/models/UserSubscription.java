@@ -15,14 +15,14 @@ import org.parceler.Parcel;
  */
 @Parcel @SuppressWarnings("unused") public class UserSubscription implements BaseModel {
     @Expose protected String id;
-    @SerializedName("name") protected String subscriptionName;
+    @SerializedName("name") protected String subscriptionName = "";
     @SerializedName("icon") protected String subscriptionIcon;
-    @SerializedName("description") protected String subscriptionDescription;
-    @SerializedName("cycle") protected Cycle subscriptionCycle;
-    @SerializedName("firstBill") protected Date firstBill;
-    @SerializedName("duration") protected Duration subscriptionDuration;
-    @SerializedName("reminder") protected Reminder subscriptionReminder;
-    @SerializedName("subscriptionCurrency") protected Currency subscriptionCurrency;
+    @SerializedName("description") protected String subscriptionDescription = "";
+    @SerializedName("cycle") protected Cycle subscriptionCycle = Cycle.MONTHLY;
+    @SerializedName("firstBill") protected Date firstBill = new Date();
+    @SerializedName("duration") protected Duration subscriptionDuration = Duration.INDEFINITE;
+    @SerializedName("reminder") protected Reminder subscriptionReminder = Reminder.NEVER;
+    @SerializedName("subscriptionCurrency") protected Currency subscriptionCurrency = Currency.USD;
     @SerializedName("color") protected String layoutColor;
 
     public UserSubscription() {

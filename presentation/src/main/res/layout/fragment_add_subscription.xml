@@ -57,7 +57,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:background="?android:selectableItemBackgroundBorderless"
                 android:text="@string/txt_create_custom_subscription"
+                tools:targetApi="lollipop"
                 style="?android:attr/borderlessButtonStyle"
                 />
         <android.support.v4.view.ViewPager

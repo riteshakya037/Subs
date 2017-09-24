@@ -29,13 +29,13 @@ public abstract class BaseFragment extends Fragment {
             Bundle savedInstanceState) {
         final View fragmentView = inflater.inflate(getLayout(), container, false);
         ButterKnife.bind(this, fragmentView);
-        initializeViews();
+        initializeViews(savedInstanceState);
         return fragmentView;
     }
 
     protected abstract int getLayout();
 
-    protected abstract void initializeViews();
+    protected abstract void initializeViews(Bundle savedInstanceState);
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

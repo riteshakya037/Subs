@@ -30,10 +30,56 @@
         <item name="fontPath">fonts/ProductSansRegular.ttf</item>
     </style>
 
+    <style name="AppTheme.Widget.TextView.Inverse" parent="android:Widget.Holo.TextView">
+        <item name="fontPath">fonts/ProductSansRegular.ttf</item>
+    </style>
+
+    <style name="ProductSansFont">
+        <item name="fontPath">fonts/ProductSans-Regular.ttf</item>
+    </style>
+
+    <style name="ProductSansFont.Bold">
+        <item name="fontPath">fonts/ProductSans-Bold.ttf</item>
+    </style>
+
     <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
         <item name="searchHintIcon">@null</item>
         <item name="searchIcon">@drawable/ic_search</item>
     </style>
 
+
+    <style name="CreateSubForm" parent="AppTheme">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
+
+    <style name="CreateSubForm.Row" parent="CreateSubForm">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">42dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@drawable/top_white_border</item>
+    </style>
+
+    <style name="CreateSubForm.Row.Label" parent="CreateSubForm">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">left|center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColorHint">@color/colorOffWhite</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Medium
+        </item>
+        <item name="fontPath">fonts/ProductSansBold.ttf</item>
+    </style>
+
+    <style name="CreateSubForm.Row.EditText" parent="CreateSubForm.Row.Label">
+        <item name="android:layout_gravity">end</item>
+        <item name="android:gravity">end|center</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="fontPath">fonts/ProductSansRegular.ttf</item>
+        <item name="android:background">@null</item>
+        <item name="android:inputType">textCapSentences</item>
+    </style>
 
 </resources>

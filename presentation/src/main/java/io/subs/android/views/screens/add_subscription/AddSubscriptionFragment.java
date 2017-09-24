@@ -41,7 +41,7 @@ public class AddSubscriptionFragment extends BaseFragment
         return R.layout.fragment_add_subscription;
     }
 
-    @Override protected void initializeViews() {
+    @Override protected void initializeViews(Bundle savedInstanceState) {
         this.addSubscriptionPresenter.setView(this);
         setupViewPager();
     }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CustomView">
+        <attr name="android:entries"/>
+        <attr format="string" name="maskText"/>
+        <attr format="string" name="hint"/>
+        <attr name="android:inputType"/>
+
+    </declare-styleable>
+</resources>

@@ -42,7 +42,10 @@ dependencies {
     compile presentationDependencies.designLibrary
     compile presentationDependencies.recyclerView
     compile presentationDependencies.cardView
-    compile 'org.parceler:parceler:1.1.9'
+    compile presentationDependencies.parceler
+    compile presentationDependencies.constraintLayout
+    compile 'com.github.yuhaocan:CurrencyEditText:1.0'
+
 
     compile presentationDependencies.dagger
     annotationProcessor presentationDependencies.daggerCompiler

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:focusable="false"
+        >
+
+    <TextView
+            android:id="@+id/custom_date_view.text_main"
+            android:layout_width="match_parent"
+            tools:ignore="UnusedAttribute"
+            style="@style/CreateSubForm.Row.EditText"
+            />
+
+    <!--<com.coinupp.android.views.customs.FormButton-->
+    <!--android:id="@+id/custom_date_view.drop_button"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--app:buttonIcon="@drawable/ic_calendar"-->
+    <!--tools:ignore="RelativeOverlap,RtlHardcoded" />-->
+</RelativeLayout>

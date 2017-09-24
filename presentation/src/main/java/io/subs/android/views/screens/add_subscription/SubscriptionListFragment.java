@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import butterknife.BindView;
 import com.fernandocejas.arrow.checks.Preconditions;
 import io.subs.android.R;
@@ -47,21 +46,17 @@ public class SubscriptionListFragment extends BaseFragment
         return R.layout.fragment_subscription_list;
     }
 
-    @Override protected void initializeViews() {
+    @Override protected void initializeViews(Bundle savedInstanceState) {
         this.subscriptionListPresenter.setView(this);
         setupRecyclerView();
-    }
-
-    @Override protected void injectDagger() {
-        getComponent(SubscriptionComponent.class).inject(this);
-    }
-
-    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         this.registerPresenter(subscriptionListPresenter);
         if (savedInstanceState == null) {
             this.loadSubscriptions();
         }
+    }
+
+    @Override protected void injectDagger() {
+        getComponent(SubscriptionComponent.class).inject(this);
     }
 
     @Override public void showLoading() {

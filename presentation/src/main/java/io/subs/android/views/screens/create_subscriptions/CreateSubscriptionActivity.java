@@ -53,6 +53,9 @@ import org.parceler.Parcels;
         if (savedInstanceState == null) {
             this.userSubscription =
                     Parcels.unwrap(getIntent().getParcelableExtra(INTENT_EXTRA_PARAM_SUBSCRIPTION));
+            if (userSubscription == null) {
+                userSubscription = new UserSubscription();
+            }
             addFragment(R.id.fragmentContainer,
                     CreateSubscriptionFragment.forSubscription(userSubscription));
         } else {

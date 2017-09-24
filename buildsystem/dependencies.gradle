@@ -27,6 +27,8 @@ ext {
     firebaseUIVersion = '2.3.0'
     calligraphyVersion = '2.3.0'
     firebaseVersion = '11.4.0'
+    parcelerVersion = '1.1.9'
+    constraintLayoutVersion = '1.0.2'
 
     //Testing
     robolectricVersion = '3.4.2'
@@ -46,6 +48,8 @@ ext {
              designLibrary      : "com.android.support:design:${supportLibraryVersion}",
              cardView           : "com.android.support:cardview-v7:${supportLibraryVersion}",
              recyclerView       : "com.android.support:recyclerview-v7:${supportLibraryVersion}",
+             parceler           : "org.parceler:parceler:${parcelerVersion}",
+             constraintLayout   : "com.android.support.constraint:constraint-layout:${constraintLayoutVersion}",
              daggerCompiler     : "com.google.dagger:dagger-compiler:${daggerVersion}",
              dagger             : "com.google.dagger:dagger:${daggerVersion}",
              butterKnifeCompiler: "com.jakewharton:butterknife-compiler:${butterKnifeVersion}",
@@ -67,6 +71,7 @@ ext {
              javaxInject    : "javax.inject:javax.inject:${javaxInjectVersion}",
              rxJava         : "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
              gson           : "com.google.code.gson:gson:${gsonVersion}",
+             parcelerApi    : "org.parceler:parceler-api:${parcelerVersion}",
              arrow          : "com.fernandocejas:arrow:${arrowVersion}"]
 
     domainTestDependencies = [junit  : "junit:junit:${jUnitVersion}",

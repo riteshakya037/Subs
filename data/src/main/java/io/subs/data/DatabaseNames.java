@@ -9,6 +9,7 @@ import java.io.File;
 public class DatabaseNames {
     public static final String TABLE_SUBSCRIPTIONS = "subs";
     public static final String TALBE_USER_DATA = "users";
+    public static final String PATH_DEFAULT_IMAGE = "generic/default.png";
 
     public static String createPath(String... individualTables) {
         StringBuilder output = new StringBuilder();

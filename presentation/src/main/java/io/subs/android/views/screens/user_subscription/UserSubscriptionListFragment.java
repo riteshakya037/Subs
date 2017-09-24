@@ -25,7 +25,7 @@ public class UserSubscriptionListFragment extends BaseFragment
         return R.layout.fragment_subscription_list;
     }
 
-    @Override protected void initializeViews() {
+    @Override protected void initializeViews(Bundle savedInstanceState) {
         this.userSubscriptionListPresenter.setView(this);
         setupRecyclerView();
     }
