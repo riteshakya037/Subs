@@ -11,12 +11,11 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Cancellable;
 import io.reactivex.subjects.PublishSubject;
-import io.subs.domain.DatabaseNames;
 import io.subs.data.listeners.FirebaseChildListener;
+import io.subs.domain.DatabaseNames;
 import io.subs.domain.models.Subscription;
-import io.subs.domain.models.enums.SubscriptionType;
-import io.subs.domain.usecases.subscription.GetSubscriptionList;
-import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates;
+import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates.Action;
+import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates.Params;
 import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates.SubscriptionDto;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -34,16 +33,15 @@ import javax.inject.Singleton;
         databaseReference = firebaseDatabase.getReference();
     }
 
-    @Override public Observable<Void> subscriptionEntityList(GetSubscriptionList.Params params) {
-        return observe(databaseReference.child(DatabaseNames.TABLE_SUBSCRIPTIONS), params);
+    @Override public Observable<Void> subscriptionEntityList() {
+        return observe(databaseReference.child(DatabaseNames.TABLE_SUBSCRIPTIONS));
     }
 
-    @Override public Observable<SubscriptionDto> subscribe() {
+    @Override public Observable<SubscriptionDto> subscribe(Params params) {
         return mUpdatePublisher;
     }
 
-    private Observable<Void> observe(final DatabaseReference ref,
-            final GetSubscriptionList.Params params) {
+    private Observable<Void> observe(final DatabaseReference ref) {
         return Observable.create(new ObservableOnSubscribe<DataSnapshot>() {
             @Override public void subscribe(@NonNull ObservableEmitter<DataSnapshot> emitter)
                     throws Exception {
@@ -51,20 +49,18 @@ import javax.inject.Singleton;
                         ref.addChildEventListener(new FirebaseChildListener<Subscription>() {
 
                             @Override public void onChildAdded(Subscription snapShot, String s) {
-                                if (params.getSubscriptionType() == SubscriptionType.POPULAR) {
                                     mUpdatePublisher.onNext(new SubscriptionDto(snapShot,
-                                            SubscribeToSubscriptionUpdates.Action.ADDED));
-                                }
+                                            Action.ADDED));
                             }
 
                             @Override public void onChildChanged(Subscription snapShot, String s) {
                                 mUpdatePublisher.onNext(new SubscriptionDto(snapShot,
-                                        SubscribeToSubscriptionUpdates.Action.UPDATED));
+                                        Action.UPDATED));
                             }
 
                             @Override public void onChildRemoved(Subscription snapShot) {
                                 mUpdatePublisher.onNext(new SubscriptionDto(snapShot,
-                                        SubscribeToSubscriptionUpdates.Action.REMOVED));
+                                        Action.REMOVED));
                             }
 
                             @Override public void onCancelled(DatabaseError databaseError) {

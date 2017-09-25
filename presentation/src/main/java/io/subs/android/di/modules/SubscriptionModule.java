@@ -16,7 +16,7 @@ import io.subs.android.views.screens.add_subscription.SubscriptionListPresenterI
     public SubscriptionModule() {
     }
 
-    @Provides @PerActivity SubscriptionListPresenter provideSubscriptionListPresenter(
+    @Provides SubscriptionListPresenter provideSubscriptionListPresenter(
             SubscriptionListPresenterImpl subscriptionListPresenter) {
         return subscriptionListPresenter;
     }

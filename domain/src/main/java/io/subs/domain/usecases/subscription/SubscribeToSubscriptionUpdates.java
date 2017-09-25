@@ -5,6 +5,7 @@ import io.reactivex.annotations.NonNull;
 import io.subs.domain.executor.IPostExecutionThread;
 import io.subs.domain.executor.IThreadExecutor;
 import io.subs.domain.models.Subscription;
+import io.subs.domain.models.enums.SubscriptionType;
 import io.subs.domain.repository.ISubscriptionRepository;
 import io.subs.domain.usecases.UseCase;
 import javax.inject.Inject;
@@ -12,8 +13,8 @@ import javax.inject.Inject;
 /**
  * Use case for subscribing to new messages in a conversation
  */
-public class SubscribeToSubscriptionUpdates
-        extends UseCase<SubscribeToSubscriptionUpdates.SubscriptionDto, Void> {
+public class SubscribeToSubscriptionUpdates extends
+        UseCase<SubscribeToSubscriptionUpdates.SubscriptionDto, SubscribeToSubscriptionUpdates.Params> {
 
     private ISubscriptionRepository subscriptionRepository;
 
@@ -23,8 +24,8 @@ public class SubscribeToSubscriptionUpdates
         this.subscriptionRepository = subscriptionRepository;
     }
 
-    @Override public Observable<SubscriptionDto> buildUseCaseObservable(Void params) {
-        return subscriptionRepository.subscribe();
+    @Override public Observable<SubscriptionDto> buildUseCaseObservable(Params params) {
+        return subscriptionRepository.subscribe(params);
     }
 
     public enum Action {
@@ -46,6 +47,22 @@ public class SubscribeToSubscriptionUpdates
 
         public Action getAction() {
             return mAction;
+        }
+    }
+
+    public static class Params {
+        private SubscriptionType subscriptionType;
+
+        public Params(SubscriptionType subscriptionType) {
+            this.subscriptionType = subscriptionType;
+        }
+
+        public static Params forCase(SubscriptionType subscriptionType) {
+            return new Params(subscriptionType);
+        }
+
+        public SubscriptionType getSubscriptionType() {
+            return subscriptionType;
         }
     }
 }

@@ -59,7 +59,7 @@ public class LoginActivity extends DaggerBaseActivity<LoginComponent> {
             @Override public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    navigator.navigateToUserSubscriptionList(LoginActivity.this);
+                    navigator.navigateToSubscriptionList(LoginActivity.this);
                     finish();
                 } else {
                     // User is signed out

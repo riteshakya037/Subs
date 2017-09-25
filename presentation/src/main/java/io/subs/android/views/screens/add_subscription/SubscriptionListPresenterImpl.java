@@ -1,8 +1,8 @@
 package io.subs.android.views.screens.add_subscription;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 import io.reactivex.observers.DisposableObserver;
-import io.subs.android.di.PerActivity;
 import io.subs.android.exception.ErrorMessageFactory;
 import io.subs.android.mvp.BaseRxPresenter;
 import io.subs.android.views.adapters.AddSubscriptionAdaptor;
@@ -21,7 +21,7 @@ import javax.inject.Inject;
  * {@link Presenter} that controls communication between views and models of the presentation
  * layer.
  */
-@PerActivity public class SubscriptionListPresenterImpl extends BaseRxPresenter
+public class SubscriptionListPresenterImpl extends BaseRxPresenter
         implements SubscriptionListPresenter {
 
     private final GetSubscriptionList getSubscriptionList;
@@ -36,6 +36,8 @@ import javax.inject.Inject;
                     }
                 }
             };
+    private static final String TAG = "SubscriptionListPresent";
+    private SubscriptionType subscriptionType;
 
     @Inject public SubscriptionListPresenterImpl(AddSubscriptionAdaptor addSubscriptionAdaptor,
             GetSubscriptionList getUserListUserCase,
@@ -49,7 +51,8 @@ import javax.inject.Inject;
         this.viewListView = subscriptionListView;
     }
 
-    @Override public void onStart() {
+    public void initialize(SubscriptionType subscriptionType) {
+        this.subscriptionType = subscriptionType;
         manage(subscribeToSubscriptionUpdates.execute(new DisposableObserver<SubscriptionDto>() {
             @Override public void onNext(@NonNull SubscriptionDto subscriptionDto) {
                 showUsersCollectionInView(subscriptionDto);
@@ -63,10 +66,7 @@ import javax.inject.Inject;
 
             }
         }, null));
-    }
-
-    public void initialize(SubscriptionType subscriptionType) {
-        this.loadSubscriptionList(subscriptionType);
+        this.loadSubscriptionList();
     }
 
     @Override public void initializeAdaptor() {
@@ -74,10 +74,10 @@ import javax.inject.Inject;
         this.viewListView.setAdapter(addSubscriptionAdaptor);
     }
 
-    private void loadSubscriptionList(SubscriptionType subscriptionType) {
+    private void loadSubscriptionList() {
         this.hideViewRetry();
         this.showViewLoading();
-        this.getSubscriptionList(subscriptionType);
+        this.getSubscriptionList();
     }
 
     public void onItemClicked(Subscription subscription) {
@@ -107,26 +107,22 @@ import javax.inject.Inject;
     }
 
     private void showUsersCollectionInView(SubscriptionDto subscriptionDto) {
-        if (subscriptionDto != null) {
-            switch (subscriptionDto.getAction()) {
-                case ADDED:
-                    this.addSubscriptionAdaptor.addSubscription(subscriptionDto.getSubscription());
-                    break;
-                case UPDATED:
-                    this.addSubscriptionAdaptor.updateSubscription(
-                            subscriptionDto.getSubscription());
-                    break;
-                case REMOVED:
-                    this.addSubscriptionAdaptor.removeSubscription(
-                            subscriptionDto.getSubscription());
-                    break;
-            }
+        switch (subscriptionDto.getAction()) {
+            case ADDED:
+                Log.e(TAG, "showUsersCollectionInView: " + subscriptionType);
+                this.addSubscriptionAdaptor.addSubscription(subscriptionDto.getSubscription());
+                break;
+            case UPDATED:
+                this.addSubscriptionAdaptor.updateSubscription(subscriptionDto.getSubscription());
+                break;
+            case REMOVED:
+                this.addSubscriptionAdaptor.removeSubscription(subscriptionDto.getSubscription());
+                break;
         }
     }
 
-    private void getSubscriptionList(SubscriptionType subscriptionType) {
-        this.getSubscriptionList.execute(new UserListObserver(),
-                GetSubscriptionList.Params.forCase(subscriptionType));
+    private void getSubscriptionList() {
+        this.getSubscriptionList.execute(new UserListObserver(), null);
     }
 
     private final class UserListObserver extends DefaultObserver<Void> {

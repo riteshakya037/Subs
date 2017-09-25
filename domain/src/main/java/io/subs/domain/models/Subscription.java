@@ -2,6 +2,7 @@ package io.subs.domain.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import io.subs.domain.DatabaseNames;
 import io.subs.domain.models.base.BaseModel;
 import org.parceler.Parcel;
 
@@ -13,6 +14,7 @@ import org.parceler.Parcel;
     @SerializedName("name") protected String subscriptionName;
     @SerializedName("icon") protected String subscriptionIcon;
     @SerializedName("color") protected String layoutColor;
+    @SerializedName(DatabaseNames.POPULAR_FLAG) protected boolean isPopular;
     @Expose protected String id;
 
     public String getSubscriptionName() {
@@ -33,6 +35,10 @@ import org.parceler.Parcel;
 
     @Override public void setId(String id) {
         this.id = id;
+    }
+
+    public boolean isPopular() {
+        return isPopular;
     }
 
     @Override public boolean equals(Object o) {
