@@ -43,7 +43,17 @@ public class AddSubscriptionFragment extends BaseFragment
 
     @Override protected void initializeViews(Bundle savedInstanceState) {
         this.addSubscriptionPresenter.setView(this);
-        setupViewPager();
+        if (savedInstanceState == null) {
+            setupViewPager();
+            loadSubscriptions();
+        }
+    }
+
+    /**
+     * Loads all subscriptions.
+     */
+    private void loadSubscriptions() {
+        this.addSubscriptionPresenter.initialize();
     }
 
     private void setupViewPager() {

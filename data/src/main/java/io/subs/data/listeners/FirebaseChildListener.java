@@ -26,7 +26,6 @@ import org.json.JSONObject;
     }
 
     @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-        Log.e(TAG, "onChildAdded: " + s);
         onChildAdded(publishEvent("onChildAdded: ", dataSnapshot), s);
     }
 

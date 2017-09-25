@@ -7,12 +7,9 @@ import io.subs.android.exception.ErrorMessageFactory;
 import io.subs.android.mvp.BaseRxPresenter;
 import io.subs.android.views.adapters.AddSubscriptionAdaptor;
 import io.subs.android.views.base.Presenter;
-import io.subs.domain.exception.DefaultErrorBundle;
 import io.subs.domain.exception.ErrorBundle;
 import io.subs.domain.models.Subscription;
 import io.subs.domain.models.enums.SubscriptionType;
-import io.subs.domain.usecases.DefaultObserver;
-import io.subs.domain.usecases.subscription.GetSubscriptionList;
 import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates;
 import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates.SubscriptionDto;
 import javax.inject.Inject;
@@ -24,7 +21,6 @@ import javax.inject.Inject;
 public class SubscriptionListPresenterImpl extends BaseRxPresenter
         implements SubscriptionListPresenter {
 
-    private final GetSubscriptionList getSubscriptionList;
     private AddSubscriptionAdaptor addSubscriptionAdaptor;
     private SubscribeToSubscriptionUpdates subscribeToSubscriptionUpdates;
     private SubscriptionListView viewListView;
@@ -40,10 +36,8 @@ public class SubscriptionListPresenterImpl extends BaseRxPresenter
     private SubscriptionType subscriptionType;
 
     @Inject public SubscriptionListPresenterImpl(AddSubscriptionAdaptor addSubscriptionAdaptor,
-            GetSubscriptionList getUserListUserCase,
             SubscribeToSubscriptionUpdates subscribeToSubscriptionUpdates) {
         this.addSubscriptionAdaptor = addSubscriptionAdaptor;
-        this.getSubscriptionList = getUserListUserCase;
         this.subscribeToSubscriptionUpdates = subscribeToSubscriptionUpdates;
     }
 
@@ -65,19 +59,14 @@ public class SubscriptionListPresenterImpl extends BaseRxPresenter
             @Override public void onComplete() {
 
             }
-        }, null));
-        this.loadSubscriptionList();
+        }, SubscribeToSubscriptionUpdates.Params.forCase(subscriptionType)));
+        this.hideViewRetry();
+        this.showViewLoading();
     }
 
     @Override public void initializeAdaptor() {
         this.addSubscriptionAdaptor.setOnItemClickListener(onItemClickListener);
         this.viewListView.setAdapter(addSubscriptionAdaptor);
-    }
-
-    private void loadSubscriptionList() {
-        this.hideViewRetry();
-        this.showViewLoading();
-        this.getSubscriptionList();
     }
 
     public void onItemClicked(Subscription subscription) {
@@ -118,27 +107,6 @@ public class SubscriptionListPresenterImpl extends BaseRxPresenter
             case REMOVED:
                 this.addSubscriptionAdaptor.removeSubscription(subscriptionDto.getSubscription());
                 break;
-        }
-    }
-
-    private void getSubscriptionList() {
-        this.getSubscriptionList.execute(new UserListObserver(), null);
-    }
-
-    private final class UserListObserver extends DefaultObserver<Void> {
-
-        @Override public void onComplete() {
-            SubscriptionListPresenterImpl.this.hideViewLoading();
-        }
-
-        @Override public void onError(Throwable e) {
-            SubscriptionListPresenterImpl.this.hideViewLoading();
-            SubscriptionListPresenterImpl.this.showErrorMessage(
-                    new DefaultErrorBundle((Exception) e));
-            SubscriptionListPresenterImpl.this.showViewRetry();
-        }
-
-        @Override public void onNext(Void users) {
         }
     }
 }
