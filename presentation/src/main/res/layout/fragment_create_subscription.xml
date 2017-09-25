@@ -18,6 +18,7 @@
                 >
 
             <TextView
+                    android:id="@+id/fragment_create_subscription_title"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
@@ -96,6 +97,7 @@
             <Button
                     android:id="@+id/fragment_create_subscription_delete"
                     android:layout_width="0dp"
+                    android:visibility="invisible"
                     android:layout_height="wrap_content"
                     android:background="?android:selectableItemBackgroundBorderless"
                     android:text="Delete"

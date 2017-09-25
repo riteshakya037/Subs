@@ -24,7 +24,7 @@ public interface CreateSubscriptionPresenter extends IPresenter {
 
     List<BaseSpinner> getCurrencyList();
 
-    Observable<Boolean> addCard(UserSubscription userSubscription);
+    void addCard(UserSubscription userSubscription);
 
     void initializeValidationObservers(List<ObservableSource<Boolean>> textValidationObservable);
 
@@ -54,5 +54,10 @@ public interface CreateSubscriptionPresenter extends IPresenter {
         void setAmountCurrencyMask(String symbol);
 
         void setAmount(float subscriptionAmount);
+
+        void cardCreationError(String message);
+
+        void cardSuccessfullyCreated();
+
     }
 }

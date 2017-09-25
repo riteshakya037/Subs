@@ -7,8 +7,10 @@ import io.subs.android.R;
 import io.subs.android.di.components.DaggerUserSubscriptionComponent;
 import io.subs.android.di.components.UserSubscriptionComponent;
 import io.subs.android.views.base.DaggerBaseActivity;
+import io.subs.domain.models.UserSubscription;
 
-public class UserSubscriptionActivity extends DaggerBaseActivity<UserSubscriptionComponent> {
+public class UserSubscriptionActivity extends DaggerBaseActivity<UserSubscriptionComponent>
+        implements UserSubscriptionListFragment.SubscriptionListListener {
     private static final String TAG = "UserSubscriptionActivity";
 
     public static Intent getCallingIntent(Context context) {
@@ -30,5 +32,9 @@ public class UserSubscriptionActivity extends DaggerBaseActivity<UserSubscriptio
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
                 .build();
+    }
+
+    @Override public void onSubscriptionClicked(UserSubscription userSubscription) {
+        navigator.navigateToCreateSubscription(this, userSubscription);
     }
 }

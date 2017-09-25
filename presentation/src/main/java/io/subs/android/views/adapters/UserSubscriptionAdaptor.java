@@ -1,5 +1,6 @@
 package io.subs.android.views.adapters;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -25,16 +26,18 @@ import javax.inject.Inject;
 public class UserSubscriptionAdaptor
         extends RecyclerView.Adapter<UserSubscriptionAdaptor.ViewHolder> {
     private List<UserSubscription> mData = new ArrayList<>();
+    private Context mContext;
     private IImageLoader iImageLoader;
     private OnItemClickListener onItemClickListener;
 
-    @Inject public UserSubscriptionAdaptor(IImageLoader iImageLoader) {
+    @Inject public UserSubscriptionAdaptor(Context context, IImageLoader iImageLoader) {
+        mContext = context;
         this.iImageLoader = iImageLoader;
     }
 
     @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_subscription, parent, false);
+                .inflate(R.layout.item_user_subscription, parent, false);
         return new ViewHolder(v);
     }
 
@@ -82,6 +85,7 @@ public class UserSubscriptionAdaptor
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.item_subscription_icon) ImageView ivIcon;
         @BindView(R.id.item_subscription_text) TextView tvTitle;
+        @BindView(R.id.item_subscription_amount) TextView tvAmount;
         @BindView(R.id.item_subscription_root) CardView cvRootView;
         private UserSubscription subscription;
 
@@ -90,7 +94,7 @@ public class UserSubscriptionAdaptor
             ButterKnife.bind(this, itemView);
         }
 
-        @OnClick(R.id.item_subscription_add) public void addSubscription() {
+        @OnClick(R.id.item_subscription_root) public void addSubscription() {
             if (onItemClickListener != null) {
                 onItemClickListener.onItemClicked(subscription);
             }
@@ -100,6 +104,9 @@ public class UserSubscriptionAdaptor
             this.subscription = subscription;
             iImageLoader.loadFirebaseImage(subscription.getSubscriptionIcon(), ivIcon);
             tvTitle.setText(subscription.getSubscriptionName());
+            tvAmount.setText(mContext.getString(R.string.number_format_text_with_currency,
+                    subscription.getSubscriptionCurrency().getSymbol(),
+                    subscription.getSubscriptionAmount()));
             cvRootView.setCardBackgroundColor(Color.parseColor(subscription.getLayoutColor()));
         }
     }

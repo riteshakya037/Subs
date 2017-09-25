@@ -19,6 +19,8 @@ public abstract class DaggerBaseActivity<C> extends BaseActivity implements HasC
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.initializeInjector();
+        this.getApplicationComponent().inject(this);
+        this.initializeActivity(savedInstanceState);
     }
 
     @Override protected void onResume() {

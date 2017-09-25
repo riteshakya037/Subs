@@ -1,5 +1,6 @@
 package io.subs.android.views.screens.user_subscription;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +21,15 @@ public class UserSubscriptionListFragment extends BaseFragment
         implements UserSubscriptionListPresenter.UserSubscriptionListView {
     @BindView(R.id.fragment_add_subscription_list) RecyclerView rvSubscriptions;
     @Inject UserSubscriptionListPresenter userSubscriptionListPresenter;
+    private SubscriptionListListener subscriptionListListener;
+
+    @Override public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof UserSubscriptionActivity) {
+            this.subscriptionListListener =
+                    (UserSubscriptionListFragment.SubscriptionListListener) context;
+        }
+    }
 
     @Override protected int getLayout() {
         return R.layout.fragment_subscription_list;
@@ -75,13 +85,17 @@ public class UserSubscriptionListFragment extends BaseFragment
         this.userSubscriptionListPresenter.initialize();
     }
 
-    @Override public void createSubscription(UserSubscription subscription) {
-
+    @Override public void createSubscription(UserSubscription userSubscription) {
+        subscriptionListListener.onSubscriptionClicked(userSubscription);
     }
 
     @Override public void setAdapter(RecyclerView.Adapter addSubscriptionAdaptor) {
         if (addSubscriptionAdaptor != null) {
             rvSubscriptions.setAdapter(addSubscriptionAdaptor);
         }
+    }
+
+    public interface SubscriptionListListener {
+        void onSubscriptionClicked(final UserSubscription userSubscription);
     }
 }

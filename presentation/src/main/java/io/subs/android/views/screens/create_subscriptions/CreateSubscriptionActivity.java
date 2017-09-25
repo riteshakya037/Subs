@@ -19,6 +19,7 @@ import org.parceler.Parcels;
         extends DaggerBaseActivity<UserSubscriptionComponent> {
     private static final String INTENT_EXTRA_PARAM_SUBSCRIPTION = "subscription_id";
     private static final String INSTANCE_STATE_PARAM_SUBSCRIPTION = "state_subscription_id";
+    private static final String INTENT_EXTRA_EDIT_MODE = "edit_mode";
 
     private UserSubscription userSubscription;
 
@@ -26,6 +27,13 @@ import org.parceler.Parcels;
         Intent callingIntent = new Intent(context, CreateSubscriptionActivity.class);
         callingIntent.putExtra(INTENT_EXTRA_PARAM_SUBSCRIPTION,
                 Parcels.wrap(new UserSubscription(subscription)));
+        return callingIntent;
+    }
+
+    public static Intent getCallingIntent(Context context, UserSubscription userSubscription) {
+        Intent callingIntent = new Intent(context, CreateSubscriptionActivity.class);
+        callingIntent.putExtra(INTENT_EXTRA_EDIT_MODE, true);
+        callingIntent.putExtra(INTENT_EXTRA_PARAM_SUBSCRIPTION, Parcels.wrap(userSubscription));
         return callingIntent;
     }
 
@@ -57,7 +65,8 @@ import org.parceler.Parcels;
                 userSubscription = new UserSubscription();
             }
             addFragment(R.id.fragmentContainer,
-                    CreateSubscriptionFragment.forSubscription(userSubscription));
+                    CreateSubscriptionFragment.forSubscription(userSubscription,
+                            getIntent().hasExtra(INTENT_EXTRA_EDIT_MODE)));
         } else {
             this.userSubscription = Parcels.unwrap(
                     savedInstanceState.getParcelable(INSTANCE_STATE_PARAM_SUBSCRIPTION));

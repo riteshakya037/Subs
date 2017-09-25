@@ -1,13 +1,11 @@
 package io.subs.domain.models.enums;
 
-import com.google.gson.annotations.SerializedName;
-
 /**
  * @author Ritesh Shakya
  */
 
 public enum Reminder {
-    @SerializedName("never")NEVER("Never");
+    NEVER("Never");
     private String friendlyName;
 
     Reminder(String friendlyName) {

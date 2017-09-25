@@ -7,8 +7,14 @@ import io.subs.domain.models.enums.Currency;
 import io.subs.domain.models.enums.Cycle;
 import io.subs.domain.models.enums.Duration;
 import io.subs.domain.models.enums.Reminder;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 import org.parceler.Parcel;
+
+import static io.subs.domain.models.constants.Constants.DATE_FORMAT;
 
 /**
  * @author Ritesh Shakya
@@ -30,9 +36,10 @@ import org.parceler.Parcel;
         // required by parcel
     }
 
-    public UserSubscription(String name, String amount, String icon, String description,
+    public UserSubscription(String id, String name, String amount, String icon, String description,
             String cycle, Date firstBill, String duration, String reminder,
             String subscriptionCurrency, String color) {
+        this.id = id;
         this.subscriptionName = name;
         this.subscriptionAmount = Float.parseFloat(amount.replace(",", ""));
         this.subscriptionIcon = icon;
@@ -143,7 +150,7 @@ import org.parceler.Parcel;
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Subscription that = (Subscription) o;
+        UserSubscription that = (UserSubscription) o;
 
         return id.equals(that.getId());
     }
@@ -162,5 +169,21 @@ import org.parceler.Parcel;
         sb.append(", layoutColor='").append(layoutColor).append('\'');
         sb.append('}');
         return sb.toString();
+    }
+
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("name", subscriptionName);
+        result.put("amount", subscriptionAmount);
+        result.put("icon", subscriptionIcon);
+        result.put("description", subscriptionDescription);
+        result.put("cycle", subscriptionCycle.name());
+        result.put("firstBill",
+                new SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(getFirstBill()));
+        result.put("duration", subscriptionDuration);
+        result.put("reminder", subscriptionReminder);
+        result.put("subscriptionCurrency", subscriptionCurrency);
+        result.put("color", layoutColor);
+        return result;
     }
 }

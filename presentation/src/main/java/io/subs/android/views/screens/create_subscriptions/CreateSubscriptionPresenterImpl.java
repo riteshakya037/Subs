@@ -5,11 +5,13 @@ import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.observers.DisposableObserver;
 import io.subs.android.mvp.BaseRxPresenter;
 import io.subs.android.repository.SpinnerDataRepository;
 import io.subs.android.views.component.BaseSpinner;
 import io.subs.domain.models.UserSubscription;
 import io.subs.domain.models.enums.Currency;
+import io.subs.domain.usecases.user_subscriptions.CreateOrUpdateSubscription;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
@@ -25,8 +27,11 @@ public class CreateSubscriptionPresenterImpl extends BaseRxPresenter
         implements CreateSubscriptionPresenter {
 
     private CreateSubscriptionView createSubscriptionView;
+    private CreateOrUpdateSubscription createOrUpdateSubscription;
 
-    @Inject public CreateSubscriptionPresenterImpl() {
+    @Inject
+    public CreateSubscriptionPresenterImpl(CreateOrUpdateSubscription createOrUpdateSubscription) {
+        this.createOrUpdateSubscription = createOrUpdateSubscription;
     }
 
     @Override public void setView(CreateSubscriptionView createSubscriptionView) {
@@ -65,9 +70,19 @@ public class CreateSubscriptionPresenterImpl extends BaseRxPresenter
         return SpinnerDataRepository.getCurrencyList();
     }
 
-    @Override public Observable<Boolean> addCard(UserSubscription userSubscription) {
-        System.out.println("userSubscription = " + userSubscription);
-        return Observable.just(true);
+    @Override public void addCard(UserSubscription userSubscription) {
+        manage(createOrUpdateSubscription.execute(new DisposableObserver<Void>() {
+            @Override public void onNext(@NonNull Void aVoid) {
+            }
+
+            @Override public void onError(@NonNull Throwable e) {
+                createSubscriptionView.cardCreationError(e.getMessage());
+            }
+
+            @Override public void onComplete() {
+                createSubscriptionView.cardSuccessfullyCreated();
+            }
+        }, userSubscription));
     }
 
     @Override public void initializeValidationObservers(

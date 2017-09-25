@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.fernandocejas.arrow.checks.Preconditions;
@@ -33,6 +35,7 @@ import static io.subs.android.views.component.helper.validation.ValidationHelper
 public class CreateSubscriptionFragment extends BaseFragment
         implements CreateSubscriptionPresenter.CreateSubscriptionView {
     private static final String ARGS_USER_SUBSCRIPTION = "user_subscription";
+    private static final String ARGS_EDIT_MODE = "edit_mode";
     @BindView(R.id.fragment_create_subscription_icon) ImageView ivSubscriptionImage;
     @BindView(R.id.fragment_create_subscription_amount) MaskEditText etSubscriptionAmount;
     @BindView(R.id.fragment_create_subscription_name) EditText etSubscriptionName;
@@ -42,17 +45,28 @@ public class CreateSubscriptionFragment extends BaseFragment
     @BindView(R.id.fragment_create_subscription_duration) CustomSpinnerView svSubscriptionDuration;
     @BindView(R.id.fragment_create_subscription_reminder) CustomSpinnerView svSubscriptionReminder;
     @BindView(R.id.fragment_create_subscription_currency) CustomSpinnerView svSubscriptionCurrency;
-    @BindView(R.id.fragment_create_subscription_delete) Button btnDeleteSubscription;
 
+    @BindView(R.id.fragment_create_subscription_delete) Button btnDeleteSubscription;
     @BindView(R.id.fragment_create_subscription_card_view) CardView cvRootView;
     @BindView(R.id.fragment_create_subscription_add) Button btnAddSubscription;
+    private static final String TAG = "CreateSubscription";
 
     @Inject CreateSubscriptionPresenter createSubscriptionPresenter;
     @Inject IImageLoader iImageLoader;
+    @BindView(R.id.fragment_create_subscription_title) TextView tvFragmentTitle;
+
+    public static Fragment forSubscription(UserSubscription userSubscription, boolean isEditMode) {
+        CreateSubscriptionFragment createSubscriptionFragment = new CreateSubscriptionFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(ARGS_USER_SUBSCRIPTION, Parcels.wrap(userSubscription));
+        bundle.putBoolean(ARGS_EDIT_MODE, isEditMode);
+        createSubscriptionFragment.setArguments(bundle);
+        return createSubscriptionFragment;
+    }
 
     @OnClick(R.id.fragment_create_subscription_add) void addCard() {
-        createSubscriptionPresenter.addCard(
-                new UserSubscription(etSubscriptionName.getText().toString(),
+        createSubscriptionPresenter.addCard(new UserSubscription(currentLoadType().getId(),
+                etSubscriptionName.getText().toString(),
                         etSubscriptionAmount.getText(), currentLoadType().getSubscriptionIcon(),
                         etSubscriptionDescription.getText().toString(),
                         svSubscriptionCycle.getValue(), dvFirstBill.getDate(),
@@ -60,26 +74,8 @@ public class CreateSubscriptionFragment extends BaseFragment
                         svSubscriptionCurrency.getValue(), currentLoadType().getLayoutColor()));
     }
 
-    public static Fragment forSubscription(UserSubscription userSubscription) {
-        CreateSubscriptionFragment createSubscriptionFragment = new CreateSubscriptionFragment();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(ARGS_USER_SUBSCRIPTION, Parcels.wrap(userSubscription));
-        createSubscriptionFragment.setArguments(bundle);
-        return createSubscriptionFragment;
-    }
-
     @Override protected int getLayout() {
         return R.layout.fragment_create_subscription;
-    }
-
-    @Override protected void initializeViews(Bundle savedInstanceState) {
-        this.createSubscriptionPresenter.setView(this);
-        this.registerPresenter(createSubscriptionPresenter);
-        if (savedInstanceState == null) {
-            this.initializeData();
-            this.setupObservables();
-            this.loadTemplate(currentLoadType());
-        }
     }
 
     private void setupObservables() {
@@ -112,6 +108,25 @@ public class CreateSubscriptionFragment extends BaseFragment
         final Bundle arguments = getArguments();
         Preconditions.checkNotNull(arguments, "Fragment arguments cannot be null");
         return Parcels.unwrap(arguments.getParcelable(ARGS_USER_SUBSCRIPTION));
+    }
+
+    @Override protected void initializeViews(Bundle savedInstanceState) {
+        this.createSubscriptionPresenter.setView(this);
+        this.registerPresenter(createSubscriptionPresenter);
+        if (savedInstanceState == null) {
+            this.initializeData();
+            this.setupObservables();
+            this.loadTemplate(currentLoadType());
+        }
+        if (isEditMode()) {
+            this.changeModeToEdit();
+        }
+    }
+
+    private void changeModeToEdit() {
+        btnDeleteSubscription.setVisibility(View.VISIBLE);
+        tvFragmentTitle.setText("Update Subscription");
+        btnAddSubscription.setText("Update");
     }
 
     @Override public void setName(String subscriptionName) {
@@ -157,11 +172,23 @@ public class CreateSubscriptionFragment extends BaseFragment
         btnAddSubscription.setVisibility(allValidation ? View.VISIBLE : View.GONE);
     }
 
+    private boolean isEditMode() {
+        return getArguments().getBoolean(ARGS_EDIT_MODE, false);
+    }
+
     @Override public void setAmountCurrencyMask(String symbol) {
         etSubscriptionAmount.setMaskText(symbol);
     }
 
     @Override public void setAmount(float subscriptionAmount) {
         etSubscriptionAmount.setText(getString(R.string.number_format_text, subscriptionAmount));
+    }
+
+    @Override public void cardCreationError(String message) {
+        Log.e(TAG, "cardCreationError: " + message);
+    }
+
+    @Override public void cardSuccessfullyCreated() {
+        getActivity().finish();
     }
 }

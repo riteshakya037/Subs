@@ -2,6 +2,7 @@ package io.subs.data.repository;
 
 import io.reactivex.Observable;
 import io.subs.data.repository.datasource.user_subscriptions.UserSubscriptionDataStore;
+import io.subs.domain.models.UserSubscription;
 import io.subs.domain.repository.ISubscriptionRepository;
 import io.subs.domain.repository.IUserSubscriptionRepository;
 import io.subs.domain.usecases.user_subscriptions.GetUserSubscriptionList;
@@ -33,5 +34,10 @@ import javax.inject.Singleton;
     @Override
     public Observable<SubscribeToUserSubscriptionUpdates.UserSubscriptionDto> subscribe() {
         return subscriptionDataStore.subscribe();
+    }
+
+    @Override
+    public Observable<Void> createOrUpdateSubscription(UserSubscription userSubscription) {
+        return subscriptionDataStore.createOrUpdateSubscription(userSubscription);
     }
 }
