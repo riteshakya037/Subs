@@ -12,7 +12,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import io.subs.data.DatabaseNames;
+import io.subs.domain.DatabaseNames;
 
 /**
  * @author Ritesh Shakya

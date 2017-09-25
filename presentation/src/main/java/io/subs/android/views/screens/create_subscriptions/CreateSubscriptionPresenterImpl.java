@@ -12,6 +12,7 @@ import io.subs.android.views.component.BaseSpinner;
 import io.subs.domain.models.UserSubscription;
 import io.subs.domain.models.enums.Currency;
 import io.subs.domain.usecases.user_subscriptions.CreateOrUpdateSubscription;
+import io.subs.domain.usecases.user_subscriptions.DeleteSubscription;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
@@ -28,10 +29,13 @@ public class CreateSubscriptionPresenterImpl extends BaseRxPresenter
 
     private CreateSubscriptionView createSubscriptionView;
     private CreateOrUpdateSubscription createOrUpdateSubscription;
+    private DeleteSubscription deleteSubscription;
 
     @Inject
-    public CreateSubscriptionPresenterImpl(CreateOrUpdateSubscription createOrUpdateSubscription) {
+    public CreateSubscriptionPresenterImpl(CreateOrUpdateSubscription createOrUpdateSubscription,
+            DeleteSubscription deleteSubscription) {
         this.createOrUpdateSubscription = createOrUpdateSubscription;
+        this.deleteSubscription = deleteSubscription;
     }
 
     @Override public void setView(CreateSubscriptionView createSubscriptionView) {
@@ -83,6 +87,22 @@ public class CreateSubscriptionPresenterImpl extends BaseRxPresenter
                 createSubscriptionView.cardSuccessfullyCreated();
             }
         }, userSubscription));
+    }
+
+    @Override public void deleteCard(String id) {
+        deleteSubscription.execute(new DisposableObserver<Void>() {
+            @Override public void onNext(@NonNull Void aVoid) {
+
+            }
+
+            @Override public void onError(@NonNull Throwable e) {
+
+            }
+
+            @Override public void onComplete() {
+                createSubscriptionView.cardSuccessfullyCreated();
+            }
+        }, id);
     }
 
     @Override public void initializeValidationObservers(

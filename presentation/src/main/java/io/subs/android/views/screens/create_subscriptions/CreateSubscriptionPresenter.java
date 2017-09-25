@@ -26,6 +26,8 @@ public interface CreateSubscriptionPresenter extends IPresenter {
 
     void addCard(UserSubscription userSubscription);
 
+    void deleteCard(String id);
+
     void initializeValidationObservers(List<ObservableSource<Boolean>> textValidationObservable);
 
     void initializeCurrencyObserver(Observable<String> changeObservable);

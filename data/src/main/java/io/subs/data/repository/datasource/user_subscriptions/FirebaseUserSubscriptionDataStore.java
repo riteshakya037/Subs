@@ -13,7 +13,7 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Cancellable;
 import io.reactivex.subjects.PublishSubject;
-import io.subs.data.DatabaseNames;
+import io.subs.domain.DatabaseNames;
 import io.subs.data.listeners.FirebaseChildListener;
 import io.subs.data.repository.datasource.sessions.ISessionDataStore;
 import io.subs.domain.models.UserSubscription;
@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import static io.subs.domain.DatabaseNames.DELETED_FLAG;
 
 /**
  * @author Ritesh Shakya
@@ -82,12 +84,23 @@ import javax.inject.Singleton;
         });
     }
 
+    @Override public Observable<Void> deleteSubscription(final String id) {
+        return Observable.create(new ObservableOnSubscribe<Void>() {
+            @Override public void subscribe(@NonNull final ObservableEmitter<Void> emitter)
+                    throws Exception {
+                userSubscriptionRef.child(id).child(DELETED_FLAG).setValue(true);
+                emitter.onComplete();
+            }
+        });
+    }
+
     private Observable<Void> observe(final DatabaseReference ref) {
         return Observable.create(new ObservableOnSubscribe<DataSnapshot>() {
             @Override public void subscribe(@NonNull ObservableEmitter<DataSnapshot> emitter)
                     throws Exception {
-                final ChildEventListener listener =
-                        ref.addChildEventListener(new FirebaseChildListener<UserSubscription>() {
+                final ChildEventListener listener = ref.orderByChild(DELETED_FLAG)
+                        .equalTo(false)
+                        .addChildEventListener(new FirebaseChildListener<UserSubscription>() {
                             @Override
                             public void onChildAdded(UserSubscription dataSnapshot, String s) {
                                 mUpdatePublisher.onNext(

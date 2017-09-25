@@ -14,4 +14,6 @@ public interface UserSubscriptionDataStore {
     Observable<SubscribeToUserSubscriptionUpdates.UserSubscriptionDto> subscribe();
 
     Observable<Void> createOrUpdateSubscription(UserSubscription userSubscription);
+
+    Observable<Void> deleteSubscription(String id);
 }

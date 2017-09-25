@@ -64,6 +64,10 @@ public class CreateSubscriptionFragment extends BaseFragment
         return createSubscriptionFragment;
     }
 
+    @OnClick(R.id.fragment_create_subscription_delete) void deleteCard() {
+        createSubscriptionPresenter.deleteCard(currentLoadType().getId());
+    }
+
     @OnClick(R.id.fragment_create_subscription_add) void addCard() {
         createSubscriptionPresenter.addCard(new UserSubscription(currentLoadType().getId(),
                 etSubscriptionName.getText().toString(),

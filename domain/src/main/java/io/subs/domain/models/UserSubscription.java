@@ -14,6 +14,7 @@ import java.util.Locale;
 import java.util.Map;
 import org.parceler.Parcel;
 
+import static io.subs.domain.DatabaseNames.DELETED_FLAG;
 import static io.subs.domain.models.constants.Constants.DATE_FORMAT;
 
 /**
@@ -31,6 +32,7 @@ import static io.subs.domain.models.constants.Constants.DATE_FORMAT;
     @SerializedName("reminder") protected Reminder subscriptionReminder = Reminder.NEVER;
     @SerializedName("subscriptionCurrency") protected Currency subscriptionCurrency = Currency.USD;
     @SerializedName("color") protected String layoutColor;
+    @SerializedName(DELETED_FLAG) protected Boolean isDeleted = false;
 
     public UserSubscription() {
         // required by parcel
@@ -184,6 +186,7 @@ import static io.subs.domain.models.constants.Constants.DATE_FORMAT;
         result.put("reminder", subscriptionReminder);
         result.put("subscriptionCurrency", subscriptionCurrency);
         result.put("color", layoutColor);
+        result.put(DELETED_FLAG, isDeleted);
         return result;
     }
 }

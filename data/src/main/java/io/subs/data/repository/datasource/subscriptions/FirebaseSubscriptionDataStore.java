@@ -11,7 +11,7 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Cancellable;
 import io.reactivex.subjects.PublishSubject;
-import io.subs.data.DatabaseNames;
+import io.subs.domain.DatabaseNames;
 import io.subs.data.listeners.FirebaseChildListener;
 import io.subs.domain.models.Subscription;
 import io.subs.domain.models.enums.SubscriptionType;

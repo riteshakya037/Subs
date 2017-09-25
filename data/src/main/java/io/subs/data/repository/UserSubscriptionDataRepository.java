@@ -40,4 +40,8 @@ import javax.inject.Singleton;
     public Observable<Void> createOrUpdateSubscription(UserSubscription userSubscription) {
         return subscriptionDataStore.createOrUpdateSubscription(userSubscription);
     }
+
+    @Override public Observable<Void> deleteSubscription(String id) {
+        return subscriptionDataStore.deleteSubscription(id);
+    }
 }
