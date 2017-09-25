@@ -1,5 +1,7 @@
 package io.subs.android.views.screens.create_subscriptions;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.subs.android.mvp.IPresenter;
 import io.subs.android.views.component.BaseSpinner;
 import io.subs.domain.models.UserSubscription;
@@ -22,6 +24,12 @@ public interface CreateSubscriptionPresenter extends IPresenter {
 
     List<BaseSpinner> getCurrencyList();
 
+    Observable<Boolean> addCard(UserSubscription userSubscription);
+
+    void initializeValidationObservers(List<ObservableSource<Boolean>> textValidationObservable);
+
+    void initializeCurrencyObserver(Observable<String> changeObservable);
+
     interface CreateSubscriptionView {
         void setName(String subscriptionName);
 
@@ -40,5 +48,11 @@ public interface CreateSubscriptionPresenter extends IPresenter {
         void setSubscriptionCurrency(String subscriptionCurrency);
 
         void setColor(String layoutColor);
+
+        void setAddButtonVisibility(Boolean allValidation);
+
+        void setAmountCurrencyMask(String symbol);
+
+        void setAmount(float subscriptionAmount);
     }
 }

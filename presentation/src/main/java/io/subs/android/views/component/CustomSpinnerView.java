@@ -12,7 +12,10 @@ import android.widget.Spinner;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnItemSelected;
 import butterknife.Optional;
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
 import io.subs.android.R;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +28,7 @@ import java.util.List;
     @Nullable @BindView(R.id.custom_spinner_view_spinner_main) Spinner mSpinner;
     private Context mContext;
     private List<BaseSpinner> mData = new ArrayList<>();
+    private PublishSubject<String> _observer = PublishSubject.create();
 
     public CustomSpinnerView(Context context) {
         super(context);
@@ -36,6 +40,11 @@ import java.util.List;
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.CustomView);
         init(context, typedArray.getTextArray(R.styleable.CustomView_android_entries));
         typedArray.recycle();
+    }
+
+    @OnItemSelected(R.id.custom_spinner_view_spinner_main)
+    public void spinnerItemSelected(int position) {
+        _observer.onNext(mData.get(position).id);
     }
 
     @Optional @OnClick(R.id.custom_spinner_view_root_view) void onClickDrop() {
@@ -78,8 +87,12 @@ import java.util.List;
         }
     }
 
-    @SuppressWarnings("ConstantConditions") public BaseSpinner getValue() {
-        return mSpinner.getSelectedItem() == null ? new BaseSpinner("", "")
-                : (BaseSpinner) (mSpinner.getSelectedItem());
+    @SuppressWarnings("ConstantConditions") public String getValue() {
+        return mSpinner.getSelectedItem() == null ? new BaseSpinner("", "").id
+                : ((BaseSpinner) (mSpinner.getSelectedItem())).id;
+    }
+
+    public Observable<String> getChangeObservable() {
+        return _observer;
     }
 }

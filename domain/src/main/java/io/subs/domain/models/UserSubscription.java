@@ -16,6 +16,7 @@ import org.parceler.Parcel;
 @Parcel @SuppressWarnings("unused") public class UserSubscription implements BaseModel {
     @Expose protected String id;
     @SerializedName("name") protected String subscriptionName = "";
+    @SerializedName("amount") protected float subscriptionAmount = 0;
     @SerializedName("icon") protected String subscriptionIcon;
     @SerializedName("description") protected String subscriptionDescription = "";
     @SerializedName("cycle") protected Cycle subscriptionCycle = Cycle.MONTHLY;
@@ -26,6 +27,22 @@ import org.parceler.Parcel;
     @SerializedName("color") protected String layoutColor;
 
     public UserSubscription() {
+        // required by parcel
+    }
+
+    public UserSubscription(String name, String amount, String icon, String description,
+            String cycle, Date firstBill, String duration, String reminder,
+            String subscriptionCurrency, String color) {
+        this.subscriptionName = name;
+        this.subscriptionAmount = Float.parseFloat(amount.replace(",", ""));
+        this.subscriptionIcon = icon;
+        this.subscriptionDescription = description;
+        this.subscriptionCycle = Cycle.valueOf(cycle);
+        this.firstBill = firstBill;
+        this.subscriptionDuration = Duration.valueOf(duration);
+        this.subscriptionReminder = Reminder.valueOf(reminder);
+        this.subscriptionCurrency = Currency.valueOf(subscriptionCurrency);
+        this.layoutColor = color;
     }
 
     public UserSubscription(Subscription subscription) {
@@ -40,6 +57,14 @@ import org.parceler.Parcel;
 
     public void setSubscriptionName(String subscriptionName) {
         this.subscriptionName = subscriptionName;
+    }
+
+    public float getSubscriptionAmount() {
+        return subscriptionAmount;
+    }
+
+    public void setSubscriptionAmount(float subscriptionAmount) {
+        this.subscriptionAmount = subscriptionAmount;
     }
 
     public String getSubscriptionIcon() {
@@ -126,8 +151,9 @@ import org.parceler.Parcel;
     @SuppressWarnings("StringBufferReplaceableByString") @Override public String toString() {
         final StringBuilder sb = new StringBuilder("UserSubscription{");
         sb.append("name='").append(subscriptionName).append('\'');
-        sb.append(", icon='").append(subscriptionIcon).append('\'');
-        sb.append(", description='").append(subscriptionDescription).append('\'');
+        sb.append(", subscriptionAmount='").append(subscriptionAmount).append('\'');
+        sb.append(", subscriptionIcon='").append(subscriptionIcon).append('\'');
+        sb.append(", subscriptionDescription='").append(subscriptionDescription).append('\'');
         sb.append(", subscriptionCycle=").append(subscriptionCycle);
         sb.append(", firstBill=").append(firstBill);
         sb.append(", subscriptionDuration=").append(subscriptionDuration);

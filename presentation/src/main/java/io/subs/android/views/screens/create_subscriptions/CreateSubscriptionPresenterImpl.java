@@ -1,9 +1,15 @@
 package io.subs.android.views.screens.create_subscriptions;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.subs.android.mvp.BaseRxPresenter;
 import io.subs.android.repository.SpinnerDataRepository;
 import io.subs.android.views.component.BaseSpinner;
 import io.subs.domain.models.UserSubscription;
+import io.subs.domain.models.enums.Currency;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
@@ -29,6 +35,7 @@ public class CreateSubscriptionPresenterImpl extends BaseRxPresenter
 
     @Override public void initializeFields(UserSubscription userSubscription) {
         createSubscriptionView.setName(userSubscription.getSubscriptionName());
+        createSubscriptionView.setAmount(userSubscription.getSubscriptionAmount());
         createSubscriptionView.setIcon(userSubscription.getSubscriptionIcon());
         createSubscriptionView.setDescription(userSubscription.getSubscriptionDescription());
         createSubscriptionView.setCycle(userSubscription.getSubscriptionCycle().name());
@@ -56,5 +63,36 @@ public class CreateSubscriptionPresenterImpl extends BaseRxPresenter
 
     @Override public List<BaseSpinner> getCurrencyList() {
         return SpinnerDataRepository.getCurrencyList();
+    }
+
+    @Override public Observable<Boolean> addCard(UserSubscription userSubscription) {
+        System.out.println("userSubscription = " + userSubscription);
+        return Observable.just(true);
+    }
+
+    @Override public void initializeValidationObservers(
+            List<ObservableSource<Boolean>> textValidationObservable) {
+        manage(Observable.combineLatest(textValidationObservable,
+                new Function<Object[], Boolean>() {
+                    @Override public Boolean apply(@NonNull Object[] objects) throws Exception {
+                        // // TODO: 0025, September 25, 2017 Find a better solution
+                        for (Object o : objects) {
+                            if (!(boolean) o) return false;
+                        }
+                        return true;
+                    }
+                }).subscribe(new Consumer<Boolean>() {
+            @Override public void accept(Boolean allValidation) throws Exception {
+                createSubscriptionView.setAddButtonVisibility(allValidation);
+            }
+        }));
+    }
+
+    @Override public void initializeCurrencyObserver(Observable<String> changeObservable) {
+        manage(changeObservable.subscribe(new Consumer<String>() {
+            @Override public void accept(String s) throws Exception {
+                createSubscriptionView.setAmountCurrencyMask(Currency.valueOf(s).getSymbol());
+            }
+        }));
     }
 }

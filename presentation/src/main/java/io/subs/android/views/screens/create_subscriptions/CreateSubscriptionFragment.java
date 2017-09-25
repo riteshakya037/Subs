@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import butterknife.BindView;
+import butterknife.OnClick;
 import com.fernandocejas.arrow.checks.Preconditions;
+import io.reactivex.ObservableSource;
 import io.subs.android.R;
 import io.subs.android.di.components.UserSubscriptionComponent;
 import io.subs.android.imageloader.IImageLoader;
@@ -18,8 +21,11 @@ import io.subs.android.views.component.CustomDateView;
 import io.subs.android.views.component.CustomSpinnerView;
 import io.subs.android.views.component.MaskEditText;
 import io.subs.domain.models.UserSubscription;
+import java.util.Arrays;
 import javax.inject.Inject;
 import org.parceler.Parcels;
+
+import static io.subs.android.views.component.helper.validation.ValidationHelper.getTextValidationObservable;
 
 /**
  * @author Ritesh Shakya
@@ -44,6 +50,16 @@ public class CreateSubscriptionFragment extends BaseFragment
     @Inject CreateSubscriptionPresenter createSubscriptionPresenter;
     @Inject IImageLoader iImageLoader;
 
+    @OnClick(R.id.fragment_create_subscription_add) void addCard() {
+        createSubscriptionPresenter.addCard(
+                new UserSubscription(etSubscriptionName.getText().toString(),
+                        etSubscriptionAmount.getText(), currentLoadType().getSubscriptionIcon(),
+                        etSubscriptionDescription.getText().toString(),
+                        svSubscriptionCycle.getValue(), dvFirstBill.getDate(),
+                        svSubscriptionDuration.getValue(), svSubscriptionReminder.getValue(),
+                        svSubscriptionCurrency.getValue(), currentLoadType().getLayoutColor()));
+    }
+
     public static Fragment forSubscription(UserSubscription userSubscription) {
         CreateSubscriptionFragment createSubscriptionFragment = new CreateSubscriptionFragment();
         Bundle bundle = new Bundle();
@@ -61,8 +77,20 @@ public class CreateSubscriptionFragment extends BaseFragment
         this.registerPresenter(createSubscriptionPresenter);
         if (savedInstanceState == null) {
             this.initializeData();
+            this.setupObservables();
             this.loadTemplate(currentLoadType());
         }
+    }
+
+    private void setupObservables() {
+        createSubscriptionPresenter.initializeValidationObservers(
+                Arrays.<ObservableSource<Boolean>>asList(
+                        getTextValidationObservable(etSubscriptionName),
+                        getTextValidationObservable(etSubscriptionDescription),
+                        getTextValidationObservable(etSubscriptionAmount)));
+
+        createSubscriptionPresenter.initializeCurrencyObserver(
+                svSubscriptionCurrency.getChangeObservable());
     }
 
     private void initializeData() {
@@ -123,5 +151,17 @@ public class CreateSubscriptionFragment extends BaseFragment
             cvRootView.setCardBackgroundColor(Color.parseColor(layoutColor));
             btnAddSubscription.setTextColor(Color.parseColor(layoutColor));
         }
+    }
+
+    @Override public void setAddButtonVisibility(Boolean allValidation) {
+        btnAddSubscription.setVisibility(allValidation ? View.VISIBLE : View.GONE);
+    }
+
+    @Override public void setAmountCurrencyMask(String symbol) {
+        etSubscriptionAmount.setMaskText(symbol);
+    }
+
+    @Override public void setAmount(float subscriptionAmount) {
+        etSubscriptionAmount.setText(getString(R.string.number_format_text, subscriptionAmount));
     }
 }

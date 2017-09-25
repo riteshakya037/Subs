@@ -3,6 +3,7 @@ package io.subs.android.views.component;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -84,12 +85,16 @@ public class MaskEditText extends LinearLayout implements TextWatcher {
     }
 
     private void formatNumberTypes(CharSequence text) {
-        if (inputType == 8194) {
+        if (inputType == InputType.TYPE_CLASS_NUMBER) {
+            etValue.removeTextChangedListener(this);
             if (!text.toString().equals(current)) {
-                etValue.removeTextChangedListener(this);
 
                 String cleanString = text.toString().replaceAll("[,.]", "");
-
+                if (TextUtils.isEmpty(cleanString)) {
+                    etValue.setText("");
+                    etValue.setHint(hintText);
+                    return;
+                }
                 double parsed = Double.parseDouble(cleanString);
                 if (parsed == 0) {
                     etValue.setText("");
@@ -102,12 +107,16 @@ public class MaskEditText extends LinearLayout implements TextWatcher {
                     etValue.setText(formatted);
                     etValue.setSelection(formatted.length());
                 }
-                etValue.addTextChangedListener(this);
             }
+            etValue.addTextChangedListener(this);
         }
     }
 
     @Override public void afterTextChanged(Editable editable) {
 
+    }
+
+    public EditText getEditText() {
+        return etValue;
     }
 }
