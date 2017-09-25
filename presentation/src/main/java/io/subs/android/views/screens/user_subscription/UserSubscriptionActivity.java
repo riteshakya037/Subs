@@ -35,6 +35,10 @@ public class UserSubscriptionActivity extends DaggerBaseActivity<UserSubscriptio
     }
 
     @Override public void onSubscriptionClicked(UserSubscription userSubscription) {
-        navigator.navigateToCreateSubscription(this, userSubscription);
+        navigator.navigateToUpdateSubscription(this, userSubscription);
+    }
+
+    @Override public void openAddSubscription() {
+        navigator.navigateToSubscriptionList(this);
     }
 }

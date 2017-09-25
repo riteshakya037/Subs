@@ -12,6 +12,7 @@ import io.subs.domain.models.Subscription;
 public class AddSubscriptionActivity extends DaggerBaseActivity<SubscriptionComponent>
         implements SubscriptionListFragment.SubscriptionListListener {
     private static final String TAG = "UserSubscriptionActivity";
+    private static final int CREATE_SUBSCRIPTION = 100;
 
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, AddSubscriptionActivity.class);
@@ -35,10 +36,16 @@ public class AddSubscriptionActivity extends DaggerBaseActivity<SubscriptionComp
     }
 
     @Override public void onSubscriptionClicked(Subscription subscription) {
-        navigator.navigateToCreateSubscription(this, subscription);
+        navigator.navigateToUpdateSubscription(this, subscription, CREATE_SUBSCRIPTION);
     }
 
     @Override public void onCustomSubscriberCreate() {
-        navigator.navigateToCreateSubscription(this, new Subscription());
+        navigator.navigateToUpdateSubscription(this, new Subscription(), CREATE_SUBSCRIPTION);
+    }
+
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CREATE_SUBSCRIPTION && resultCode == RESULT_OK) {
+            finish();
+        }
     }
 }

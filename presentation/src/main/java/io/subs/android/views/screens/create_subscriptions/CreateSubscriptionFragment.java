@@ -1,5 +1,6 @@
 package io.subs.android.views.screens.create_subscriptions;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -193,6 +194,7 @@ public class CreateSubscriptionFragment extends BaseFragment
     }
 
     @Override public void cardSuccessfullyCreated() {
+        getActivity().setResult(Activity.RESULT_OK);
         getActivity().finish();
     }
 }

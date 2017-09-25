@@ -1,5 +1,6 @@
 package io.subs.android.navigation;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import io.subs.android.views.screens.add_subscription.AddSubscriptionActivity;
@@ -38,15 +39,16 @@ import javax.inject.Singleton;
         }
     }
 
-    public void navigateToCreateSubscription(Context context, Subscription subscription) {
+    public void navigateToUpdateSubscription(Activity context, Subscription subscription,
+            int requestCode) {
         if (context != null) {
             Intent intentToLaunch =
                     CreateSubscriptionActivity.getCallingIntent(context, subscription);
-            context.startActivity(intentToLaunch);
+            context.startActivityForResult(intentToLaunch, requestCode);
         }
     }
 
-    public void navigateToCreateSubscription(Context context, UserSubscription subscription) {
+    public void navigateToUpdateSubscription(Activity context, UserSubscription subscription) {
         if (context != null) {
             Intent intentToLaunch =
                     CreateSubscriptionActivity.getCallingIntent(context, subscription);

@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import butterknife.BindView;
+import butterknife.OnClick;
 import io.subs.android.R;
 import io.subs.android.di.components.UserSubscriptionComponent;
 import io.subs.android.views.base.BaseFragment;
@@ -19,7 +20,7 @@ import javax.inject.Inject;
 
 public class UserSubscriptionListFragment extends BaseFragment
         implements UserSubscriptionListPresenter.UserSubscriptionListView {
-    @BindView(R.id.fragment_add_subscription_list) RecyclerView rvSubscriptions;
+    @BindView(R.id.fragment_user_subscription_list) RecyclerView rvSubscriptions;
     @Inject UserSubscriptionListPresenter userSubscriptionListPresenter;
     private SubscriptionListListener subscriptionListListener;
 
@@ -31,8 +32,12 @@ public class UserSubscriptionListFragment extends BaseFragment
         }
     }
 
+    @OnClick(R.id.fragment_user_subscription_add) void openAddSubscription() {
+        subscriptionListListener.openAddSubscription();
+    }
+
     @Override protected int getLayout() {
-        return R.layout.fragment_subscription_list;
+        return R.layout.fragment_user_subscription_list;
     }
 
     @Override protected void initializeViews(Bundle savedInstanceState) {
@@ -97,5 +102,7 @@ public class UserSubscriptionListFragment extends BaseFragment
 
     public interface SubscriptionListListener {
         void onSubscriptionClicked(final UserSubscription userSubscription);
+
+        void openAddSubscription();
     }
 }
