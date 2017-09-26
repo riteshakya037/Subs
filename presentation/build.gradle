@@ -1,8 +1,20 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            try {
+                keyAlias 'subs'
+                keyPassword KEY_PASSWORD
+                storeFile file('../keystore.jks')
+                storePassword KEYSTORE_PASSWORD
+            } catch (ignored) {
+                throw new InvalidUserDataException(
+                        "You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties.")
+            }
+        }
+    }
     def globalConfiguration = rootProject.extensions.getByName("ext")
-
     compileSdkVersion globalConfiguration["androidCompileSdkVersion"]
     buildToolsVersion globalConfiguration["androidBuildToolsVersion"]
     defaultConfig {
@@ -19,9 +31,12 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            //            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
+    productFlavors {}
 }
 configurations.all {
     resolutionStrategy {
@@ -44,8 +59,6 @@ dependencies {
     compile presentationDependencies.cardView
     compile presentationDependencies.parceler
     compile presentationDependencies.constraintLayout
-    compile 'com.github.yuhaocan:CurrencyEditText:1.0'
-
 
     compile presentationDependencies.dagger
     annotationProcessor presentationDependencies.daggerCompiler
@@ -57,8 +70,6 @@ dependencies {
 
     compile presentationDependencies.calligraphy
 
-    compile presentationDependencies.rxJava
-    compile presentationDependencies.rxAndroid
 
     //    Testing
     androidTestCompile presentationTestDependencies.mockito

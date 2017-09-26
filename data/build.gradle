@@ -13,7 +13,6 @@ android {
         targetSdkVersion globalConfiguration["androidTargetSdkVersion"]
         versionCode globalConfiguration["androidVersionCode"]
     }
-
 }
 
 dependencies {
