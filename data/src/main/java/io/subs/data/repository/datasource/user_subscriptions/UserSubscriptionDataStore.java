@@ -16,4 +16,6 @@ public interface UserSubscriptionDataStore {
     Observable<Void> createOrUpdateSubscription(UserSubscription userSubscription);
 
     Observable<Void> deleteSubscription(String id);
+
+    Observable<Integer> subscribeToCount();
 }

@@ -1,6 +1,7 @@
 package io.subs.domain.repository;
 
 import io.reactivex.Observable;
+import io.subs.domain.models.UserProfile;
 import io.subs.domain.usecases.session.GetLoginStatus;
 
 /**
@@ -11,4 +12,6 @@ public interface ISessionRepository {
     Observable<GetLoginStatus.LoginStatusType> getLoginStatus();
 
     Observable<Void> signOut();
+
+    Observable<UserProfile> getProfile();
 }

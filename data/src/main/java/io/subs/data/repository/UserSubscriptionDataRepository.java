@@ -44,4 +44,8 @@ import javax.inject.Singleton;
     @Override public Observable<Void> deleteSubscription(String id) {
         return subscriptionDataStore.deleteSubscription(id);
     }
+
+    @Override public Observable<Integer> subscribeToCount() {
+        return subscriptionDataStore.subscribeToCount();
+    }
 }

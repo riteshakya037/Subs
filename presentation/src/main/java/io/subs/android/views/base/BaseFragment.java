@@ -39,7 +39,11 @@ public abstract class BaseFragment extends Fragment {
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.injectDagger();
+        try {
+            this.injectDagger();
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     protected abstract void injectDagger();

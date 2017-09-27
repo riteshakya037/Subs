@@ -60,6 +60,7 @@ dependencies {
     compile presentationDependencies.parceler
     compile presentationDependencies.constraintLayout
     compile 'devlight.io:navigationtabbar:1.2.5'
+    compile 'com.akexorcist:RoundCornerProgressBar:2.0.3'
 
     compile presentationDependencies.dagger
     annotationProcessor presentationDependencies.daggerCompiler

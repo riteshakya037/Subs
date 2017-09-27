@@ -10,7 +10,7 @@ import io.subs.android.views.component.helper.validation.ValidationResult;
 
 public class EmptyValidation implements Validation {
     @Override public ValidationResult validate(String s) {
-        if (TextUtils.isEmpty(s)) {
+        if (s == null || TextUtils.isEmpty(s.replaceAll("[0.]", ""))) {
             return ValidationResult.failure("Empty String", s);
         }
         return ValidationResult.success(s);

@@ -18,22 +18,24 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
 import io.subs.android.R;
 import io.subs.android.di.components.DaggerSessionComponent;
 import io.subs.android.di.components.SessionComponent;
 import io.subs.android.di.modules.SessionModule;
 import io.subs.android.views.base.DaggerBaseActivity;
+import io.subs.domain.usecases.session.GetLoginStatus;
 import javax.inject.Inject;
 
 public class LoginActivity extends DaggerBaseActivity<SessionComponent> {
     private static final String TAG = LoginActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 0;
     @Inject LoginPresenter loginPresenter;
-
+    @Inject GetLoginStatus getLoginStatus;
+    Disposable getLoginStatusDisposable;
     private GoogleApiClient mGoogleApiClient;
-
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -63,14 +65,27 @@ public class LoginActivity extends DaggerBaseActivity<SessionComponent> {
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    navigator.navigateToMainScreen(LoginActivity.this);
-                    finish();
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
+                getLoginStatusDisposable = getLoginStatus.execute(
+                        new DisposableObserver<GetLoginStatus.LoginStatusType>() {
+                            @Override public void onNext(@io.reactivex.annotations.NonNull
+                                    GetLoginStatus.LoginStatusType loginStatusType) {
+                                if (loginStatusType == GetLoginStatus.LoginStatusType.ACTIVE) {
+                                    navigator.navigateToMainScreen(LoginActivity.this);
+                                    finish();
+                                } else {
+                                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                                }
+                            }
+
+                            @Override
+                            public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+
+                            }
+
+                            @Override public void onComplete() {
+
+                            }
+                        }, null);
             }
         };
     }
@@ -139,6 +154,9 @@ public class LoginActivity extends DaggerBaseActivity<SessionComponent> {
         super.onStop();
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
+        }
+        if (getLoginStatusDisposable != null) {
+            getLoginStatusDisposable.dispose();
         }
     }
 }

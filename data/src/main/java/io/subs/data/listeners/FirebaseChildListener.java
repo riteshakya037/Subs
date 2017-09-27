@@ -30,15 +30,15 @@ import org.json.JSONObject;
     }
 
     @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-        onChildChanged(publishEvent("onChildAdded: ", dataSnapshot), s);
+        onChildChanged(publishEvent("onChildChanged: ", dataSnapshot), s);
     }
 
     @Override public void onChildRemoved(DataSnapshot dataSnapshot) {
-        onChildRemoved(publishEvent("onChildAdded: ", dataSnapshot));
+        onChildRemoved(publishEvent("onChildRemoved: ", dataSnapshot));
     }
 
     @Override public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-        onChildMoved(publishEvent("onChildAdded: ", dataSnapshot), s);
+        onChildMoved(publishEvent("onChildMoved: ", dataSnapshot), s);
     }
 
     private C publishEvent(String msg, DataSnapshot dataSnapshot) {

@@ -12,6 +12,7 @@ public class DatabaseNames {
     public static final String PATH_DEFAULT_IMAGE = "generic/default.png";
     public static final String DELETED_FLAG = "isDeleted";
     public static final String POPULAR_FLAG = "isPopular";
+    public static final String USER_PROFILE = "user_profile";
 
     public static String createPath(String... individualTables) {
         StringBuilder output = new StringBuilder();

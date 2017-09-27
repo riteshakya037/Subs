@@ -12,16 +12,19 @@ import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Cancellable;
-import io.reactivex.subjects.PublishSubject;
-import io.subs.domain.DatabaseNames;
+import io.reactivex.functions.Function;
+import io.reactivex.subjects.ReplaySubject;
 import io.subs.data.listeners.FirebaseChildListener;
 import io.subs.data.repository.datasource.sessions.ISessionDataStore;
+import io.subs.domain.DatabaseNames;
 import io.subs.domain.models.UserSubscription;
 import io.subs.domain.usecases.user_subscriptions.GetUserSubscriptionList;
 import io.subs.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionUpdates.Action;
 import io.subs.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionUpdates.UserSubscriptionDto;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -32,7 +35,7 @@ import static io.subs.domain.DatabaseNames.DELETED_FLAG;
  */
 @Singleton public class FirebaseUserSubscriptionDataStore implements UserSubscriptionDataStore {
     private static final String TAG = "UserSubscription";
-    private final PublishSubject<UserSubscriptionDto> mUpdatePublisher = PublishSubject.create();
+    private final ReplaySubject<UserSubscriptionDto> mUpdatePublisher = ReplaySubject.create();
     private DatabaseReference userSubscriptionRef;
 
     @Inject public FirebaseUserSubscriptionDataStore(ISessionDataStore sessionDataStore) {
@@ -90,6 +93,22 @@ import static io.subs.domain.DatabaseNames.DELETED_FLAG;
                     throws Exception {
                 userSubscriptionRef.child(id).child(DELETED_FLAG).setValue(true);
                 emitter.onComplete();
+            }
+        });
+    }
+
+    @Override public Observable<Integer> subscribeToCount() {
+        return mUpdatePublisher.map(new Function<UserSubscriptionDto, Integer>() {
+            Set<String> countList = new HashSet<>();
+
+            @Override public Integer apply(@NonNull UserSubscriptionDto userSubscriptionDto)
+                    throws Exception {
+                if (userSubscriptionDto.getAction() == Action.ADDED) {
+                    countList.add(userSubscriptionDto.getSubscription().getId());
+                } else if (userSubscriptionDto.getAction() == Action.REMOVED) {
+                    countList.remove(userSubscriptionDto.getSubscription().getId());
+                }
+                return countList.size();
             }
         });
     }

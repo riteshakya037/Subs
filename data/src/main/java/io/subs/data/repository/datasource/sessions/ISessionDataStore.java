@@ -1,6 +1,8 @@
 package io.subs.data.repository.datasource.sessions;
 
 import io.reactivex.Observable;
+import io.subs.data.helper.RxDto;
+import io.subs.domain.models.UserProfile;
 import io.subs.domain.usecases.session.GetLoginStatus;
 
 /**
@@ -14,6 +16,10 @@ public interface ISessionDataStore {
     Observable<Void> signOut();
 
     String getUserID();
+
+    Observable<UserProfile> createProfile();
+
+    Observable<RxDto<UserProfile>> getProfile();
 
     String getRegistrationToken();
 }

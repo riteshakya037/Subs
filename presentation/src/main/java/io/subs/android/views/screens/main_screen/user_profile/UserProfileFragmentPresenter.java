@@ -15,6 +15,11 @@ public interface UserProfileFragmentPresenter extends IPresenter {
 
     interface UserProfileView extends IView {
 
+        void setName(String userFullName);
+
+        void setEmail(String userEmail);
+
+        void setMaxSubs(int currentSubs, int subAvailable);
     }
 
     interface UserProfileFlowListener extends FlowListener {
