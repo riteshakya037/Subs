@@ -6,6 +6,7 @@ import android.os.Bundle;
 import io.subs.android.R;
 import io.subs.android.di.components.DaggerUserSubscriptionComponent;
 import io.subs.android.di.components.UserSubscriptionComponent;
+import io.subs.android.di.modules.UserSubscriptionModule;
 import io.subs.android.views.base.DaggerBaseActivity;
 import io.subs.domain.models.Subscription;
 import io.subs.domain.models.UserSubscription;
@@ -77,6 +78,7 @@ import org.parceler.Parcels;
         return DaggerUserSubscriptionComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
+                .userSubscriptionModule(new UserSubscriptionModule())
                 .build();
     }
 }

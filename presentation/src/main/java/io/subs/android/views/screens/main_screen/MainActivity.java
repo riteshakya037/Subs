@@ -41,7 +41,7 @@ public class MainActivity extends DaggerBaseActivity<UserSubscriptionComponent>
     }
 
     @Override public void createSubscription(UserSubscription subscription) {
-        navigator.navigateToSubscriptionList(this);
+        navigator.navigateToUpdateSubscription(this, subscription);
     }
 
     @Override public void openAddSubscription() {

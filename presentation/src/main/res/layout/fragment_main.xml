@@ -20,12 +20,14 @@
                 android:id="@+id/fragment_main_tab_menu"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:background="?android:selectableItemBackgroundBorderless"
                 android:layout_alignParentBottom="true"
                 app:ntb_active_color="@color/colorDefault"
                 app:ntb_bg_color="@color/colorPrimary"
                 app:ntb_scaled="false"
                 app:ntb_inactive_color="@color/colorAccent"
                 app:ntb_swiped="false"
+                tools:ignore="NewApi"
                 >
         </devlight.io.library.ntb.NavigationTabBar>
     </RelativeLayout>

@@ -21,6 +21,9 @@ import io.subs.android.views.screens.main_screen.user_profile.UserProfileFragmen
  */
 @Module public class UserSubscriptionModule extends InjectableModule<MainActivity> {
 
+    public UserSubscriptionModule() {
+    }
+
     public UserSubscriptionModule(MainActivity mainActivity) {
         super(mainActivity);
     }
