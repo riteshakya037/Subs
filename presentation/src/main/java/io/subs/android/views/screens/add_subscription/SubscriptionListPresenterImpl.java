@@ -6,7 +6,6 @@ import io.reactivex.observers.DisposableObserver;
 import io.subs.android.exception.ErrorMessageFactory;
 import io.subs.android.mvp.BaseRxPresenter;
 import io.subs.android.views.adapters.AddSubscriptionAdaptor;
-import io.subs.android.views.base.Presenter;
 import io.subs.domain.exception.ErrorBundle;
 import io.subs.domain.models.Subscription;
 import io.subs.domain.models.enums.SubscriptionType;
@@ -14,10 +13,6 @@ import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates;
 import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates.SubscriptionDto;
 import javax.inject.Inject;
 
-/**
- * {@link Presenter} that controls communication between views and models of the presentation
- * layer.
- */
 public class SubscriptionListPresenterImpl extends BaseRxPresenter
         implements SubscriptionListPresenter {
 

@@ -27,9 +27,9 @@ public class FirebaseSessionDataStore implements ISessionDataStore {
 
     @Override public Observable<GetLoginStatus.LoginStatusType> getLoginStatus() {
         if (getActiveUser() == null) {
-            return Observable.just(GetLoginStatus.LoginStatusType.ACTIVE);
-        } else {
             return Observable.just(GetLoginStatus.LoginStatusType.INACTIVE);
+        } else {
+            return Observable.just(GetLoginStatus.LoginStatusType.ACTIVE);
         }
     }
 

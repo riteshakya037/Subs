@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import io.subs.android.views.screens.add_subscription.AddSubscriptionActivity;
 import io.subs.android.views.screens.create_subscriptions.CreateSubscriptionActivity;
+import io.subs.android.views.screens.login.LoginActivity;
 import io.subs.android.views.screens.user_subscription.UserSubscriptionActivity;
 import io.subs.domain.models.Subscription;
 import io.subs.domain.models.UserSubscription;
@@ -20,11 +21,6 @@ import javax.inject.Singleton;
         //empty
     }
 
-    /**
-     * Goes to the add subscription list screen.
-     *
-     * @param context A Context needed to open the destiny activity.
-     */
     public void navigateToSubscriptionList(Context context) {
         if (context != null) {
             Intent intentToLaunch = AddSubscriptionActivity.getCallingIntent(context);
@@ -32,7 +28,7 @@ import javax.inject.Singleton;
         }
     }
 
-    public void navigateToUserSubscriptionList(Context context) {
+    public void navigateToMainScreen(Context context) {
         if (context != null) {
             Intent intentToLaunch = UserSubscriptionActivity.getCallingIntent(context);
             context.startActivity(intentToLaunch);
@@ -52,6 +48,13 @@ import javax.inject.Singleton;
         if (context != null) {
             Intent intentToLaunch =
                     CreateSubscriptionActivity.getCallingIntent(context, subscription);
+            context.startActivity(intentToLaunch);
+        }
+    }
+
+    public void navigateToLoginScreen(Activity context) {
+        if (context != null) {
+            Intent intentToLaunch = LoginActivity.getCallingIntent(context);
             context.startActivity(intentToLaunch);
         }
     }

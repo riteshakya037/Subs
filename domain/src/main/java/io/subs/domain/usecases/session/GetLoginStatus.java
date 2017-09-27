@@ -25,6 +25,6 @@ public class GetLoginStatus extends UseCase<GetLoginStatus.LoginStatusType, Void
     }
 
     public enum LoginStatusType {
-        ACTIVE, INACTIVE;
+        ACTIVE, INACTIVE
     }
 }

@@ -8,6 +8,7 @@ import io.subs.android.di.modules.repository_modules.SubscriptionRepoModule;
 import io.subs.android.di.modules.repository_modules.UserSubscriptionRepoModule;
 import io.subs.android.imageloader.IImageLoader;
 import io.subs.android.views.base.BaseActivity;
+import io.subs.android.views.screens.splash.SplashScreenActivity;
 import io.subs.domain.executor.IPostExecutionThread;
 import io.subs.domain.executor.IThreadExecutor;
 import io.subs.domain.repository.ISessionRepository;
@@ -24,6 +25,8 @@ import javax.inject.Singleton;
         SessionRepoModule.class
 }) public interface ApplicationComponent {
     void inject(BaseActivity baseActivity);
+
+    void inject(SplashScreenActivity baseActivity);
 
     //Exposed to sub-graphs.
     Context context();

@@ -1,5 +1,6 @@
 package io.subs.android.views.screens.login;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,12 +21,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import io.subs.android.R;
-import io.subs.android.di.components.DaggerLoginComponent;
-import io.subs.android.di.components.LoginComponent;
+import io.subs.android.di.components.DaggerSessionComponent;
+import io.subs.android.di.components.SessionComponent;
+import io.subs.android.di.modules.SessionModule;
 import io.subs.android.views.base.DaggerBaseActivity;
 import javax.inject.Inject;
 
-public class LoginActivity extends DaggerBaseActivity<LoginComponent> {
+public class LoginActivity extends DaggerBaseActivity<SessionComponent> {
     private static final String TAG = LoginActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 0;
     @Inject LoginPresenter loginPresenter;
@@ -34,6 +36,10 @@ public class LoginActivity extends DaggerBaseActivity<LoginComponent> {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+
+    public static Intent getCallingIntent(Activity context) {
+        return new Intent(context, LoginActivity.class);
+    }
 
     //
     @OnClick(R.id.activity_login_google) void login() {
@@ -59,7 +65,7 @@ public class LoginActivity extends DaggerBaseActivity<LoginComponent> {
             @Override public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    navigator.navigateToUserSubscriptionList(LoginActivity.this);
+                    navigator.navigateToMainScreen(LoginActivity.this);
                     finish();
                 } else {
                     // User is signed out
@@ -77,10 +83,11 @@ public class LoginActivity extends DaggerBaseActivity<LoginComponent> {
 
     }
 
-    @Override protected LoginComponent getInjector() {
-        return DaggerLoginComponent.builder()
+    @Override protected SessionComponent getInjector() {
+        return DaggerSessionComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
+                .sessionModule(new SessionModule())
                 .build();
     }
 
