@@ -1,7 +1,7 @@
-package io.subs.android.views.screens.user_subscription;
+package io.subs.android.views.screens.main_screen.user_subscriptions;
 
-import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -11,7 +11,6 @@ import io.subs.android.R;
 import io.subs.android.di.components.UserSubscriptionComponent;
 import io.subs.android.views.base.BaseFragment;
 import io.subs.android.views.component.TopPaddingDecoration;
-import io.subs.domain.models.UserSubscription;
 import javax.inject.Inject;
 
 /**
@@ -22,18 +21,13 @@ public class UserSubscriptionListFragment extends BaseFragment
         implements UserSubscriptionListPresenter.UserSubscriptionListView {
     @BindView(R.id.fragment_user_subscription_list) RecyclerView rvSubscriptions;
     @Inject UserSubscriptionListPresenter userSubscriptionListPresenter;
-    private SubscriptionListListener subscriptionListListener;
 
-    @Override public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof UserSubscriptionActivity) {
-            this.subscriptionListListener =
-                    (UserSubscriptionListFragment.SubscriptionListListener) context;
-        }
+    public static Fragment createInstance() {
+        return new UserSubscriptionListFragment();
     }
 
     @OnClick(R.id.fragment_user_subscription_add) void openAddSubscription() {
-        subscriptionListListener.openAddSubscription();
+        userSubscriptionListPresenter.openAddSubscription();
     }
 
     @Override protected int getLayout() {
@@ -90,19 +84,9 @@ public class UserSubscriptionListFragment extends BaseFragment
         this.userSubscriptionListPresenter.initialize();
     }
 
-    @Override public void createSubscription(UserSubscription userSubscription) {
-        subscriptionListListener.onSubscriptionClicked(userSubscription);
-    }
-
     @Override public void setAdapter(RecyclerView.Adapter addSubscriptionAdaptor) {
         if (addSubscriptionAdaptor != null) {
             rvSubscriptions.setAdapter(addSubscriptionAdaptor);
         }
-    }
-
-    public interface SubscriptionListListener {
-        void onSubscriptionClicked(final UserSubscription userSubscription);
-
-        void openAddSubscription();
     }
 }

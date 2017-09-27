@@ -5,7 +5,10 @@ import io.subs.android.di.PerActivity;
 import io.subs.android.di.modules.ActivityModule;
 import io.subs.android.di.modules.UserSubscriptionModule;
 import io.subs.android.views.screens.create_subscriptions.CreateSubscriptionFragment;
-import io.subs.android.views.screens.user_subscription.UserSubscriptionListFragment;
+import io.subs.android.views.screens.main_screen.MainActivityFragment;
+import io.subs.android.views.screens.main_screen.user_subscriptions.UserSubscriptionListFragment;
+import io.subs.android.views.screens.main_screen.user_details.UserSubscriptionDetailFragment;
+import io.subs.android.views.screens.main_screen.user_profile.UserProfileFragment;
 
 /**
  * A scope {@link PerActivity} component.
@@ -17,4 +20,10 @@ import io.subs.android.views.screens.user_subscription.UserSubscriptionListFragm
     void inject(UserSubscriptionListFragment userSubscriptionListFragment);
 
     void inject(CreateSubscriptionFragment createSubscriptionFragment);
+
+    void inject(MainActivityFragment mainActivityFragment);
+
+    void inject(UserProfileFragment userProfileFragment);
+
+    void inject(UserSubscriptionDetailFragment userSubscriptionDetailFragment);
 }

@@ -1,4 +1,4 @@
-package io.subs.android.views.screens.user_subscription;
+package io.subs.android.views.screens.main_screen.user_subscriptions;
 
 import android.support.annotation.NonNull;
 import io.reactivex.observers.DisposableObserver;
@@ -6,6 +6,7 @@ import io.subs.android.di.PerActivity;
 import io.subs.android.exception.ErrorMessageFactory;
 import io.subs.android.mvp.BaseRxPresenter;
 import io.subs.android.views.adapters.UserSubscriptionAdaptor;
+import io.subs.android.views.screens.main_screen.MainActivityFragmentPresenter;
 import io.subs.domain.exception.DefaultErrorBundle;
 import io.subs.domain.exception.ErrorBundle;
 import io.subs.domain.models.UserSubscription;
@@ -21,22 +22,25 @@ import javax.inject.Inject;
     private final GetUserSubscriptionList getSubscriptionList;
     private UserSubscriptionAdaptor addSubscriptionAdaptor;
     private SubscribeToUserSubscriptionUpdates subscribeToSubscriptionUpdates;
+    private MainActivityFragmentPresenter.MainActivityFlowListener mainActivityFlowListener;
     private UserSubscriptionListView viewListView;
     private UserSubscriptionAdaptor.OnItemClickListener onItemClickListener =
             new UserSubscriptionAdaptor.OnItemClickListener() {
                 @Override public void onItemClicked(UserSubscription subscription) {
                     if (subscription != null) {
-                        viewListView.createSubscription(subscription);
+                        mainActivityFlowListener.createSubscription(subscription);
                     }
                 }
             };
 
     @Inject public UserSubscriptionListPresenterImpl(UserSubscriptionAdaptor addSubscriptionAdaptor,
             GetUserSubscriptionList getUserListUserCase,
-            SubscribeToUserSubscriptionUpdates subscribeToSubscriptionUpdates) {
+            SubscribeToUserSubscriptionUpdates subscribeToSubscriptionUpdates,
+            MainActivityFragmentPresenter.MainActivityFlowListener mainActivityFlowListener) {
         this.addSubscriptionAdaptor = addSubscriptionAdaptor;
         this.getSubscriptionList = getUserListUserCase;
         this.subscribeToSubscriptionUpdates = subscribeToSubscriptionUpdates;
+        this.mainActivityFlowListener = mainActivityFlowListener;
     }
 
     public void setView(@NonNull UserSubscriptionListView userSubscriptionListView) {
@@ -72,6 +76,10 @@ import javax.inject.Inject;
         this.viewListView.setAdapter(addSubscriptionAdaptor);
     }
 
+    @Override public void openAddSubscription() {
+        mainActivityFlowListener.openAddSubscription();
+    }
+
     /**
      * Loads all users.
      */
@@ -79,10 +87,6 @@ import javax.inject.Inject;
         this.hideViewRetry();
         this.showViewLoading();
         this.getSubscriptionList();
-    }
-
-    public void onItemClicked(UserSubscription subscription) {
-        this.viewListView.createSubscription(subscription);
     }
 
     private void showViewLoading() {

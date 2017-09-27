@@ -6,7 +6,7 @@ import android.content.Intent;
 import io.subs.android.views.screens.add_subscription.AddSubscriptionActivity;
 import io.subs.android.views.screens.create_subscriptions.CreateSubscriptionActivity;
 import io.subs.android.views.screens.login.LoginActivity;
-import io.subs.android.views.screens.user_subscription.UserSubscriptionActivity;
+import io.subs.android.views.screens.main_screen.MainActivity;
 import io.subs.domain.models.Subscription;
 import io.subs.domain.models.UserSubscription;
 import javax.inject.Inject;
@@ -30,7 +30,7 @@ import javax.inject.Singleton;
 
     public void navigateToMainScreen(Context context) {
         if (context != null) {
-            Intent intentToLaunch = UserSubscriptionActivity.getCallingIntent(context);
+            Intent intentToLaunch = MainActivity.getCallingIntent(context);
             context.startActivity(intentToLaunch);
         }
     }

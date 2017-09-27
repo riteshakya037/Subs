@@ -1,28 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        tools:context=".views.screens.add_subscription.AddSubscriptionActivity"
         >
+    <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                >
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="My Subscriptions"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    />
+            <ImageButton
+                    android:id="@+id/fragment_user_subscription_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:gravity="end"
+                    android:src="@drawable/ic_plus_accent"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorDefault"
+                    tools:targetApi="lollipop"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                    />
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
     <android.support.v7.widget.RecyclerView
             android:id="@+id/fragment_user_subscription_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:context=".views.screens.add_subscription.AddSubscriptionActivity"
             tools:listitem="@layout/item_user_subscription"
             />
 
-    <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fragment_user_subscription_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_margin="32dp"
-            android:src="@drawable/ic_plus_white"
-            app:backgroundTint="@color/colorDefault"
-            app:fabSize="normal"
-            />
-</RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

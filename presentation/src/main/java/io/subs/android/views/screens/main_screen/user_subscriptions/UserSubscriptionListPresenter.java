@@ -1,9 +1,8 @@
-package io.subs.android.views.screens.user_subscription;
+package io.subs.android.views.screens.main_screen.user_subscriptions;
 
 import android.support.v7.widget.RecyclerView;
 import io.subs.android.mvp.IPresenter;
 import io.subs.android.views.base.LoadDataView;
-import io.subs.domain.models.UserSubscription;
 
 /**
  * @author Ritesh Shakya
@@ -17,8 +16,9 @@ public interface UserSubscriptionListPresenter extends IPresenter {
 
     void initializeAdaptor();
 
+    void openAddSubscription();
+
     interface UserSubscriptionListView extends LoadDataView {
-        void createSubscription(UserSubscription subscription);
 
         void setAdapter(RecyclerView.Adapter addSubscriptionAdaptor);
     }

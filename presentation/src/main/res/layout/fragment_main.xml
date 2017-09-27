@@ -1,0 +1,32 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".views.screens.add_subscription.AddSubscriptionActivity"
+        >
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+        <io.subs.android.views.component.NonScrollableViewPager
+                android:id="@+id/fragment_main_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/fragment_main_tab_menu"
+                />
+        <devlight.io.library.ntb.NavigationTabBar
+                android:id="@+id/fragment_main_tab_menu"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                app:ntb_active_color="@color/colorDefault"
+                app:ntb_bg_color="@color/colorPrimary"
+                app:ntb_scaled="false"
+                app:ntb_inactive_color="@color/colorAccent"
+                app:ntb_swiped="false"
+                >
+        </devlight.io.library.ntb.NavigationTabBar>
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

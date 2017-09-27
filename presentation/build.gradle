@@ -59,6 +59,7 @@ dependencies {
     compile presentationDependencies.cardView
     compile presentationDependencies.parceler
     compile presentationDependencies.constraintLayout
+    compile 'devlight.io:navigationtabbar:1.2.5'
 
     compile presentationDependencies.dagger
     annotationProcessor presentationDependencies.daggerCompiler
