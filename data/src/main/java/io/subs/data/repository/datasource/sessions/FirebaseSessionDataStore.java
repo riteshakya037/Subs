@@ -35,8 +35,10 @@ public class FirebaseSessionDataStore implements ISessionDataStore {
     private static final String TAG = FirebaseSessionDataStore.class.getSimpleName();
     private static final String KEY_ACTIVE_USER = "active_user";
     private final DatabaseReference userRootRef;
+    private DatabaseCompletionListener databaseCompletionListener;
 
-    @Inject public FirebaseSessionDataStore() {
+    @Inject public FirebaseSessionDataStore(DatabaseCompletionListener databaseCompletionListener) {
+        this.databaseCompletionListener = databaseCompletionListener;
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         String tablePath = DatabaseNames.createPath(DatabaseNames.TALBE_USER_DATA, getUserID());
         Log.e(TAG, "FirebaseUserSubscriptionDataStore: " + tablePath);
@@ -99,7 +101,7 @@ public class FirebaseSessionDataStore implements ISessionDataStore {
                 Map<String, Object> postValues = userProfile.toMap();
                 Map<String, Object> childUpdates = new HashMap<>();
                 childUpdates.put(key, postValues);
-                userRootRef.updateChildren(childUpdates, new DatabaseCompletionListener<>(emitter));
+                databaseCompletionListener.updateChildren(userRootRef, emitter, childUpdates);
             }
         });
     }

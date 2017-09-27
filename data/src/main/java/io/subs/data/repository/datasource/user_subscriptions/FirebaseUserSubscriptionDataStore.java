@@ -14,6 +14,7 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Cancellable;
 import io.reactivex.functions.Function;
 import io.reactivex.subjects.ReplaySubject;
+import io.subs.data.listeners.DatabaseCompletionListener;
 import io.subs.data.listeners.FirebaseChildListener;
 import io.subs.data.repository.datasource.sessions.ISessionDataStore;
 import io.subs.domain.DatabaseNames;
@@ -36,9 +37,14 @@ import static io.subs.domain.DatabaseNames.DELETED_FLAG;
 @Singleton public class FirebaseUserSubscriptionDataStore implements UserSubscriptionDataStore {
     private static final String TAG = "UserSubscription";
     private final ReplaySubject<UserSubscriptionDto> mUpdatePublisher = ReplaySubject.create();
+    private final ISessionDataStore sessionDataStore;
+    private final DatabaseCompletionListener databaseCompletionListener;
     private DatabaseReference userSubscriptionRef;
 
-    @Inject public FirebaseUserSubscriptionDataStore(ISessionDataStore sessionDataStore) {
+    @Inject public FirebaseUserSubscriptionDataStore(ISessionDataStore sessionDataStore,
+            DatabaseCompletionListener databaseCompletionListener) {
+        this.sessionDataStore = sessionDataStore;
+        this.databaseCompletionListener = databaseCompletionListener;
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         String tablePath = DatabaseNames.createPath(DatabaseNames.TALBE_USER_DATA,
                 sessionDataStore.getUserID(), DatabaseNames.TABLE_SUBSCRIPTIONS);
@@ -69,20 +75,8 @@ import static io.subs.domain.DatabaseNames.DELETED_FLAG;
                 Map<String, Object> postValues = userSubscription.toMap();
                 Map<String, Object> childUpdates = new HashMap<>();
                 childUpdates.put(key, postValues);
-                userSubscriptionRef.updateChildren(childUpdates,
-                        new DatabaseReference.CompletionListener() {
-                            @Override public void onComplete(DatabaseError databaseError,
-                                    DatabaseReference databaseReference) {
-                                if (emitter.isDisposed()) {
-                                    return;
-                                }
-                                if (databaseError == null) {
-                                    emitter.onComplete();
-                                } else {
-                                    emitter.onError(new Throwable(databaseError.getMessage()));
-                                }
-                            }
-                        });
+                databaseCompletionListener.updateChildren(userSubscriptionRef, emitter,
+                        childUpdates);
             }
         });
     }
