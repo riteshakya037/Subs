@@ -32,14 +32,14 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="end"
                     android:inputType="text"
-                    android:paddingRight="16dp"
+                    android:paddingRight="8dp"
                     style="@style/SearchViewStyle"
                     />
         </android.support.v7.widget.Toolbar>
         <android.support.design.widget.TabLayout
                 android:id="@+id/fragment_add_subs_tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="36dp"
                 app:tabGravity="fill"
                 app:tabMode="fixed"
                 app:tabSelectedTextColor="@color/colorAccent"
@@ -55,7 +55,7 @@
         <Button
                 android:id="@+id/fragment_add_subs_custom"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
                 android:layout_alignParentBottom="true"
                 android:background="?android:selectableItemBackgroundBorderless"
                 android:text="@string/txt_create_custom_subscription"
