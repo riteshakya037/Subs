@@ -21,5 +21,7 @@ public interface UserSubscriptionListPresenter extends IPresenter {
     interface UserSubscriptionListView extends LoadDataView {
 
         void setAdapter(RecyclerView.Adapter addSubscriptionAdaptor);
+
+        void isAddEnabled(boolean isValid);
     }
 }

@@ -9,9 +9,12 @@ import io.subs.android.views.adapters.UserSubscriptionAdaptor;
 import io.subs.android.views.screens.main_screen.MainActivityFragmentPresenter;
 import io.subs.domain.exception.DefaultErrorBundle;
 import io.subs.domain.exception.ErrorBundle;
+import io.subs.domain.models.UserProfile;
 import io.subs.domain.models.UserSubscription;
 import io.subs.domain.usecases.DefaultObserver;
+import io.subs.domain.usecases.session.GetUserProfile;
 import io.subs.domain.usecases.user_subscriptions.GetUserSubscriptionList;
+import io.subs.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionCountUpdates;
 import io.subs.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionUpdates;
 import io.subs.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionUpdates.UserSubscriptionDto;
 import javax.inject.Inject;
@@ -20,6 +23,8 @@ import javax.inject.Inject;
         implements UserSubscriptionListPresenter {
 
     private final GetUserSubscriptionList getSubscriptionList;
+    private final GetUserProfile getUserProfile;
+    private final SubscribeToUserSubscriptionCountUpdates subscribeToUserSubscriptionCountUpdates;
     private UserSubscriptionAdaptor addSubscriptionAdaptor;
     private SubscribeToUserSubscriptionUpdates subscribeToSubscriptionUpdates;
     private MainActivityFragmentPresenter.MainActivityFlowListener mainActivityFlowListener;
@@ -32,15 +37,21 @@ import javax.inject.Inject;
                     }
                 }
             };
+    private int maxSubs = 0;
+    private int currentSubs = 0;
 
     @Inject public UserSubscriptionListPresenterImpl(UserSubscriptionAdaptor addSubscriptionAdaptor,
             GetUserSubscriptionList getUserListUserCase,
             SubscribeToUserSubscriptionUpdates subscribeToSubscriptionUpdates,
-            MainActivityFragmentPresenter.MainActivityFlowListener mainActivityFlowListener) {
+            MainActivityFragmentPresenter.MainActivityFlowListener mainActivityFlowListener,
+            GetUserProfile getUserProfile,
+            SubscribeToUserSubscriptionCountUpdates subscribeToUserSubscriptionCountUpdates) {
         this.addSubscriptionAdaptor = addSubscriptionAdaptor;
         this.getSubscriptionList = getUserListUserCase;
         this.subscribeToSubscriptionUpdates = subscribeToSubscriptionUpdates;
         this.mainActivityFlowListener = mainActivityFlowListener;
+        this.getUserProfile = getUserProfile;
+        this.subscribeToUserSubscriptionCountUpdates = subscribeToUserSubscriptionCountUpdates;
     }
 
     public void setView(@NonNull UserSubscriptionListView userSubscriptionListView) {
@@ -69,6 +80,47 @@ import javax.inject.Inject;
      */
     public void initialize() {
         this.loadUserList();
+        getUserProfile();
+        getUserSubscriptionCount();
+    }
+
+    private void getUserProfile() {
+        manage(getUserProfile.execute(new DisposableObserver<UserProfile>() {
+            @Override
+            public void onNext(@io.reactivex.annotations.NonNull UserProfile userProfile) {
+                maxSubs = userProfile.getSubAvailable();
+                updateCounts();
+            }
+
+            @Override public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+
+            }
+
+            @Override public void onComplete() {
+
+            }
+        }, null));
+    }
+
+    private void updateCounts() {
+        viewListView.isAddEnabled(currentSubs < maxSubs);
+    }
+
+    private void getUserSubscriptionCount() {
+        manage(subscribeToUserSubscriptionCountUpdates.execute(new DisposableObserver<Integer>() {
+            @Override public void onNext(@io.reactivex.annotations.NonNull Integer integer) {
+                currentSubs = integer;
+                updateCounts();
+            }
+
+            @Override public void onError(@io.reactivex.annotations.NonNull Throwable e) {
+
+            }
+
+            @Override public void onComplete() {
+
+            }
+        }, null));
     }
 
     @Override public void initializeAdaptor() {

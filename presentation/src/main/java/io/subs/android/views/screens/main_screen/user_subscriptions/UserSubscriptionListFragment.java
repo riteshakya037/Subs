@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageButton;
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.subs.android.R;
@@ -20,6 +21,7 @@ import javax.inject.Inject;
 public class UserSubscriptionListFragment extends BaseFragment
         implements UserSubscriptionListPresenter.UserSubscriptionListView {
     @BindView(R.id.fragment_user_subscription_list) RecyclerView rvSubscriptions;
+    @BindView(R.id.fragment_user_subscription_add) ImageButton btnAddSubscription;
     @Inject UserSubscriptionListPresenter userSubscriptionListPresenter;
 
     public static Fragment createInstance() {
@@ -88,5 +90,9 @@ public class UserSubscriptionListFragment extends BaseFragment
         if (addSubscriptionAdaptor != null) {
             rvSubscriptions.setAdapter(addSubscriptionAdaptor);
         }
+    }
+
+    @Override public void isAddEnabled(boolean isValid) {
+        btnAddSubscription.setVisibility(isValid ? View.VISIBLE : View.GONE);
     }
 }
