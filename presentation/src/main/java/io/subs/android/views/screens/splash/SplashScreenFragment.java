@@ -11,7 +11,8 @@ import javax.inject.Inject;
  * @author Ritesh Shakya
  */
 
-public class SplashScreenFragment extends BaseFragment {
+public class SplashScreenFragment extends BaseFragment
+        implements SplashScreenPresenter.SplashScreenView {
     @Inject SplashScreenPresenter splashScreenPresenter;
 
     @Override protected int getLayout() {
@@ -19,6 +20,7 @@ public class SplashScreenFragment extends BaseFragment {
     }
 
     @Override protected void initializeViews(Bundle savedInstanceState) {
+        this.splashScreenPresenter.setView(this);
         splashScreenPresenter.initialize();
     }
 
@@ -29,5 +31,9 @@ public class SplashScreenFragment extends BaseFragment {
     @Override public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.registerPresenter(splashScreenPresenter);
+    }
+
+    @Override public void showError(String message) {
+
     }
 }

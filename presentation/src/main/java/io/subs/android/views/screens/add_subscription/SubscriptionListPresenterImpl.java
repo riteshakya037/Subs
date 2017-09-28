@@ -93,7 +93,6 @@ public class SubscriptionListPresenterImpl extends BaseRxPresenter
     private void showUsersCollectionInView(SubscriptionDto subscriptionDto) {
         switch (subscriptionDto.getAction()) {
             case ADDED:
-                Log.e(TAG, "showUsersCollectionInView: " + subscriptionType);
                 this.addSubscriptionAdaptor.addSubscription(subscriptionDto.getSubscription());
                 break;
             case UPDATED:

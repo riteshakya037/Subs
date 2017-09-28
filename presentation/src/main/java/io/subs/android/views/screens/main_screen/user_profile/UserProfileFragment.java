@@ -36,9 +36,7 @@ public class UserProfileFragment extends BaseFragment
 
     @Override protected void initializeViews(Bundle savedInstanceState) {
         this.userProfileFragmentPresenter.setView(this);
-        if (savedInstanceState == null) {
-            userProfileFragmentPresenter.initialize();
-        }
+        this.userProfileFragmentPresenter.initialize();
     }
 
     @Override protected void injectDagger() {

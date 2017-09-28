@@ -34,11 +34,14 @@ import javax.inject.Inject;
 public class FirebaseSessionDataStore implements ISessionDataStore {
     private static final String TAG = FirebaseSessionDataStore.class.getSimpleName();
     private static final String KEY_ACTIVE_USER = "active_user";
-    private final DatabaseReference userRootRef;
+    private DatabaseReference userRootRef;
     private DatabaseCompletionListener databaseCompletionListener;
 
     @Inject public FirebaseSessionDataStore(DatabaseCompletionListener databaseCompletionListener) {
         this.databaseCompletionListener = databaseCompletionListener;
+    }
+
+    private void initializeRef() {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         String tablePath = DatabaseNames.createPath(DatabaseNames.TALBE_USER_DATA, getUserID());
         Log.e(TAG, "FirebaseUserSubscriptionDataStore: " + tablePath);
@@ -49,6 +52,7 @@ public class FirebaseSessionDataStore implements ISessionDataStore {
         if (getActiveUser() == null) {
             return Observable.just(LoginStatusType.INACTIVE);
         } else {
+            initializeRef();
             return Observable.create(new ObservableOnSubscribe<LoginStatusType>() {
                 @Override
                 public void subscribe(@NonNull final ObservableEmitter<LoginStatusType> emitter)

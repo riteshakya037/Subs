@@ -5,37 +5,38 @@
         android:layout_height="match_parent"
         tools:context=".views.screens.add_subscription.AddSubscriptionActivity"
         >
-    <android.support.design.widget.AppBarLayout
+
+    <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
             >
 
-        <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                >
-
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="@string/txt_add_subscription"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
-                    />
-            <android.support.v7.widget.SearchView
-                    android:id="@+id/search_view_collateral"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="end"
-                    android:inputType="text"
-                    android:paddingRight="8dp"
-                    style="@style/SearchViewStyle"
-                    />
-        </android.support.v7.widget.Toolbar>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/txt_add_subscription"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                />
+        <android.support.v7.widget.SearchView
+                android:id="@+id/search_view_collateral"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:inputType="text"
+                android:paddingRight="8dp"
+                style="@style/SearchViewStyle"
+                />
+    </android.support.v7.widget.Toolbar>
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="?attr/actionBarSize"
+            >
         <android.support.design.widget.TabLayout
                 android:id="@+id/fragment_add_subs_tabs"
                 android:layout_width="match_parent"
@@ -46,12 +47,6 @@
                 app:tabTextAppearance="@style/TextAppearance.AppCompat.Medium"
                 >
         </android.support.design.widget.TabLayout>
-    </android.support.design.widget.AppBarLayout>
-    <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            >
         <Button
                 android:id="@+id/fragment_add_subs_custom"
                 android:layout_width="match_parent"
@@ -67,6 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_above="@id/fragment_add_subs_custom"
+                android:layout_below="@id/fragment_add_subs_tabs"
                 />
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

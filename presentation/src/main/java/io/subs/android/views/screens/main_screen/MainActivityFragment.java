@@ -54,6 +54,7 @@ public class MainActivityFragment extends BaseFragment
     @Override public void setAdapter(PagerAdapter pagerAdapter) {
         if (pagerAdapter != null) {
             mViewPager.setAdapter(pagerAdapter);
+            mViewPager.setOffscreenPageLimit(3);
         }
     }
 
@@ -62,13 +63,13 @@ public class MainActivityFragment extends BaseFragment
             {
                 add(new NavigationTabBar.Model.Builder(
                         ContextCompat.getDrawable(getContext(), R.drawable.ic_stats),
-                        ContextCompat.getColor(getContext(), R.color.colorPrimary)).build());
+                        ContextCompat.getColor(getContext(), android.R.color.transparent)).build());
                 add(new NavigationTabBar.Model.Builder(
                         ContextCompat.getDrawable(getContext(), R.drawable.ic_screen),
-                        ContextCompat.getColor(getContext(), R.color.colorPrimary)).build());
+                        ContextCompat.getColor(getContext(), android.R.color.transparent)).build());
                 add(new NavigationTabBar.Model.Builder(
                         ContextCompat.getDrawable(getContext(), R.drawable.ic_profile),
-                        ContextCompat.getColor(getContext(), R.color.colorPrimary)).build());
+                        ContextCompat.getColor(getContext(), android.R.color.transparent)).build());
             }
         };
     }

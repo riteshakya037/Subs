@@ -14,17 +14,19 @@ import javax.inject.Inject;
 public class SplashScreenPresenterImpl extends BaseRxPresenter implements SplashScreenPresenter {
 
     private final SplashScreenFlowListener splashScreenFlowListener;
-    private final SplashScreenView splashScreenView;
+    private SplashScreenView splashScreenView;
     private GetLoginStatus getLoginStatus;
 
     @Inject public SplashScreenPresenterImpl(
             SplashScreenPresenter.SplashScreenFlowListener splashScreenFlowListener,
-            SplashScreenPresenter.SplashScreenView splashScreenView,
             GetLoginStatus getLoginStatus) {
 
         this.splashScreenFlowListener = splashScreenFlowListener;
-        this.splashScreenView = splashScreenView;
         this.getLoginStatus = getLoginStatus;
+    }
+
+    @Override public void setView(SplashScreenView splashScreenView) {
+        this.splashScreenView = splashScreenView;
     }
 
     @Override public void initialize() {

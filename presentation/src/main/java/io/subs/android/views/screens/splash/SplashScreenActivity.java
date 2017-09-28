@@ -8,8 +8,7 @@ import io.subs.android.di.modules.SessionModule;
 import io.subs.android.views.base.DaggerBaseActivity;
 
 public class SplashScreenActivity extends DaggerBaseActivity<SessionComponent>
-        implements SplashScreenPresenter.SplashScreenFlowListener,
-        SplashScreenPresenter.SplashScreenView {
+        implements SplashScreenPresenter.SplashScreenFlowListener {
 
     @Override protected int getContextView() {
         return R.layout.activity_fragment_container;
@@ -37,8 +36,5 @@ public class SplashScreenActivity extends DaggerBaseActivity<SessionComponent>
     @Override public void openMainScreen() {
         navigator.navigateToMainScreen(this);
         finish();
-    }
-
-    @Override public void showError(String message) {
     }
 }

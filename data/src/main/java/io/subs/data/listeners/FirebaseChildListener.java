@@ -48,7 +48,7 @@ import org.json.JSONObject;
         final Gson gson = new GsonBuilder().setDateFormat(Constants.DATE_FORMAT).create();
         C result = gson.fromJson(jsonString, persistentClass);
         result.setId(dataSnapshot.getKey());
-        Log.e(TAG, msg + result);
+        Log.i(TAG, msg + result);
         return result;
     }
 

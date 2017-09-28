@@ -4,6 +4,7 @@ import dagger.Component;
 import io.subs.android.di.PerActivity;
 import io.subs.android.di.modules.ActivityModule;
 import io.subs.android.di.modules.SessionModule;
+import io.subs.android.views.screens.login.LoginFragment;
 import io.subs.android.views.screens.splash.SplashScreenFragment;
 
 /**
@@ -14,4 +15,6 @@ import io.subs.android.views.screens.splash.SplashScreenFragment;
         ActivityModule.class, SessionModule.class
 }) public interface SessionComponent extends ActivityComponent {
     void inject(SplashScreenFragment splashScreenFragment);
+
+    void inject(LoginFragment loginFragment);
 }

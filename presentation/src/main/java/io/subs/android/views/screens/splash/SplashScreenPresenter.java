@@ -11,6 +11,8 @@ import io.subs.android.mvp.IView;
 public interface SplashScreenPresenter extends IPresenter {
     void initialize();
 
+    void setView(SplashScreenView splashScreenView);
+
     interface SplashScreenView extends IView {
 
         void showError(String message);
