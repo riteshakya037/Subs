@@ -1,5 +1,6 @@
 package io.subs.android.views.screens.main_screen.user_details.additional_details;
 
+import android.content.Context;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableObserver;
 import io.subs.android.mvp.BaseRxPresenter;
@@ -14,10 +15,12 @@ import javax.inject.Inject;
 public class DetailBreakDownPresenterImpl extends BaseRxPresenter
         implements DetailBreakDownPresenter {
     private DetailBreakDownView detailBreakDownView;
+    private Context context;
     private SubscriptionBreakdownUpdates subscriptionBreakdownUpdates;
 
-    @Inject
-    public DetailBreakDownPresenterImpl(SubscriptionBreakdownUpdates subscriptionBreakdownUpdates) {
+    @Inject public DetailBreakDownPresenterImpl(Context context,
+            SubscriptionBreakdownUpdates subscriptionBreakdownUpdates) {
+        this.context = context;
         this.subscriptionBreakdownUpdates = subscriptionBreakdownUpdates;
     }
 
@@ -26,6 +29,9 @@ public class DetailBreakDownPresenterImpl extends BaseRxPresenter
     }
 
     @Override public void initialize() {
+        detailBreakDownView.updateWeeklyChart(new float[7]);
+        detailBreakDownView.updateMonthlyChart(new float[5]);
+        detailBreakDownView.updateYearlyChart(new float[12]);
     }
 
     @Override public void initializeObservers() {

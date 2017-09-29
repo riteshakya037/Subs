@@ -30,6 +30,7 @@ import io.subs.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionUpd
 import io.subs.domain.usecases.user_subscriptions.SubscriptionBreakdownUpdates;
 import io.subs.domain.usecases.user_subscriptions.SubscriptionExpenseUpdates;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -169,27 +170,57 @@ import static io.subs.domain.DatabaseNames.DELETED_FLAG;
             final SubscriptionBreakdownUpdates.Params params) {
         return mUpdatePublisher.map(
                 new Function<UserSubscriptionDto, SubscriptionBreakdownUpdates.BreakdownDto>() {
+                    private List<UserSubscription> subscriptions = new ArrayList<>();
+
                     @Override public SubscriptionBreakdownUpdates.BreakdownDto apply(
                             @NonNull UserSubscriptionDto userSubscriptionDto) throws Exception {
-                        if (params.getSubscriptionCycle() == Cycle.WEEKLY) {
-                            return new SubscriptionBreakdownUpdates.BreakdownDto(
-                                    new WeeklyBreakdownModel());
-                        } else if (params.getSubscriptionCycle() == Cycle.MONTHLY) {
-                            return new SubscriptionBreakdownUpdates.BreakdownDto(
-                                    new MonthlyBreakdownModel());
-                        } else if (params.getSubscriptionCycle() == Cycle.YEARLY) {
-                            return new SubscriptionBreakdownUpdates.BreakdownDto(
-                                    new YearlyBreakdownModel());
-                        } else {
-                            return new SubscriptionBreakdownUpdates.BreakdownDto(
-                                    new BreakdownModel() {
-                                        @Override protected int getValueCount() {
-                                            return 0;
-                                        }
-                                    });
+                        if (userSubscriptionDto.getAction() == Action.ADDED) {
+                            subscriptions.add(userSubscriptionDto.getSubscription());
+                        } else if (userSubscriptionDto.getAction() == Action.UPDATED) {
+                            subscriptions.set(
+                                    subscriptions.indexOf(userSubscriptionDto.getSubscription()),
+                                    userSubscriptionDto.getSubscription());
+                        } else if (userSubscriptionDto.getAction() == Action.REMOVED) {
+                            subscriptions.remove(userSubscriptionDto.getSubscription());
                         }
+                        return breakDownDate(subscriptions, params);
                     }
                 });
+    }
+
+    private SubscriptionBreakdownUpdates.BreakdownDto breakDownDate(
+            List<UserSubscription> subscriptions, SubscriptionBreakdownUpdates.Params params) {
+        if (params.getSubscriptionCycle() == Cycle.WEEKLY) {
+            WeeklyBreakdownModel weeklyBreakdownModel = new WeeklyBreakdownModel();
+            for (UserSubscription userSubscription : subscriptions) {
+                weeklyBreakdownModel.addData(userSubscription.getJodaFirstBill().getDayOfWeek(),
+                        userSubscription.getSubscriptionAmount());
+            }
+            return new SubscriptionBreakdownUpdates.BreakdownDto(weeklyBreakdownModel);
+        } else if (params.getSubscriptionCycle() == Cycle.MONTHLY) {
+            MonthlyBreakdownModel monthlyBreakdownModel = new MonthlyBreakdownModel();
+            for (UserSubscription userSubscription : subscriptions) {
+                Calendar ca1 = Calendar.getInstance();
+                ca1.setTime(userSubscription.getFirstBill());
+                ca1.setMinimalDaysInFirstWeek(1);
+                int wk = ca1.get(Calendar.WEEK_OF_MONTH);
+                monthlyBreakdownModel.addData(wk, userSubscription.getSubscriptionAmount());
+            }
+            return new SubscriptionBreakdownUpdates.BreakdownDto(monthlyBreakdownModel);
+        } else if (params.getSubscriptionCycle() == Cycle.YEARLY) {
+            YearlyBreakdownModel yearlyBreakdownModel = new YearlyBreakdownModel();
+            for (UserSubscription userSubscription : subscriptions) {
+                yearlyBreakdownModel.addData(userSubscription.getJodaFirstBill().getMonthOfYear(),
+                        userSubscription.getSubscriptionAmount());
+            }
+            return new SubscriptionBreakdownUpdates.BreakdownDto(yearlyBreakdownModel);
+        } else {
+            return new SubscriptionBreakdownUpdates.BreakdownDto(new BreakdownModel() {
+                @Override protected int getValueCount() {
+                    return 0;
+                }
+            });
+        }
     }
 
     @Override

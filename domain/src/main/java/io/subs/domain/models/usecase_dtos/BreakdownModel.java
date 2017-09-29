@@ -1,7 +1,6 @@
 package io.subs.domain.models.usecase_dtos;
 
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -11,8 +10,8 @@ import java.util.Map;
 public abstract class BreakdownModel {
     private Map<Integer, Float> dataMap;
 
-    public BreakdownModel() {
-        this.dataMap = new HashMap<>();
+    protected BreakdownModel() {
+        this.dataMap = new LinkedHashMap<>();
         for (int i = 0; i < getValueCount(); i++) {
             dataMap.put(i, 0f);
         }
@@ -21,12 +20,16 @@ public abstract class BreakdownModel {
     protected abstract int getValueCount();
 
     public float[] getData() {
-        Collection<Float> floatList = dataMap.values();
-        float[] floatArray = new float[floatList.size()];
+        float[] floatArray = new float[dataMap.size()];
         int i = 0;
-        for (Float f : floatList) {
+        for (Float f : dataMap.values()) {
             floatArray[i++] = (f != null ? f : Float.NaN);
         }
         return floatArray;
+    }
+
+    public void addData(int index, float subscriptionAmount) {
+        float totalValue = dataMap.get(index - 1) + subscriptionAmount;
+        dataMap.put(index - 1, totalValue);
     }
 }

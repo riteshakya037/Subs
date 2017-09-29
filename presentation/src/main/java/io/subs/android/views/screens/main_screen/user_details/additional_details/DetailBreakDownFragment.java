@@ -1,5 +1,6 @@
 package io.subs.android.views.screens.main_screen.user_details.additional_details;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -26,6 +27,8 @@ public class DetailBreakDownFragment extends BaseFragment
     @BindView(R.id.fragment_subs_detail_monthly) LineChartView cvMonthly;
     @BindView(R.id.fragment_subs_detail_yearly) LineChartView cvYearly;
 
+    @Inject Context context;
+
     public static Fragment createInstance() {
         return new DetailBreakDownFragment();
     }
@@ -51,33 +54,33 @@ public class DetailBreakDownFragment extends BaseFragment
     }
 
     @Override public void updateWeeklyChart(float[] values) {
-        populateChart(getContext().getResources().getStringArray(R.array.days_of_the_week), values,
+        populateChart(context.getResources().getStringArray(R.array.days_of_the_week), values,
                 cvWeekly);
     }
 
     @Override public void updateMonthlyChart(float[] values) {
-        populateChart(getContext().getResources().getStringArray(R.array.week_of_the_month), values,
+        populateChart(context.getResources().getStringArray(R.array.week_of_the_month), values,
                 cvMonthly);
     }
 
     @Override public void updateYearlyChart(float[] values) {
-        populateChart(getContext().getResources().getStringArray(R.array.month_of_the_year), values,
+        populateChart(context.getResources().getStringArray(R.array.month_of_the_year), values,
                 cvYearly);
     }
 
     private void populateChart(String[] labels, float[] values, LineChartView graphView) {
         LineSet dataSet = new LineSet(labels, values);
-        dataSet.setColor(ContextCompat.getColor(getContext(), R.color.colorGrey))
-                .setFill(ContextCompat.getColor(getContext(), android.R.color.transparent))
-                .setDotsColor(ContextCompat.getColor(getContext(), R.color.colorAccent))
+        dataSet.setColor(ContextCompat.getColor(context, R.color.colorGrey))
+                .setFill(ContextCompat.getColor(context, android.R.color.transparent))
+                .setDotsColor(ContextCompat.getColor(context, R.color.colorAccent))
                 .setThickness(4)
-                .setDashed(new float[] { 10f, 10f })
                 .beginAt(0);
+        graphView.reset();
         graphView.addData(dataSet);
         // Chart
         graphView.setBorderSpacing(Tools.fromDpToPx(15))
                 .setYLabels(AxisRenderer.LabelPosition.NONE)
-                .setLabelsColor(ContextCompat.getColor(getContext(), R.color.colorGrey))
+                .setLabelsColor(ContextCompat.getColor(context, R.color.colorGrey))
                 .setXAxis(false)
                 .setYAxis(false);
         graphView.animate();

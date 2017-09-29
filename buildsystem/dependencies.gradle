@@ -29,6 +29,10 @@ ext {
     firebaseVersion = '11.4.0'
     parcelerVersion = '1.1.9'
     constraintLayoutVersion = '1.0.2'
+    jodaVersion = '2.9.9'
+    navigationTabBarVersion = '1.2.5'
+    roundCornerProgressBarVersion = '2.0.3'
+    williamChartVersion = '2.4.0'
 
     //Testing
     robolectricVersion = '3.4.2'
@@ -44,20 +48,19 @@ ext {
     //noinspection GradleDependency
 
     presentationDependencies =
-            [appCompat          : "com.android.support:appcompat-v7:${supportLibraryVersion}",
-             designLibrary      : "com.android.support:design:${supportLibraryVersion}",
-             cardView           : "com.android.support:cardview-v7:${supportLibraryVersion}",
-             recyclerView       : "com.android.support:recyclerview-v7:${supportLibraryVersion}",
-             parceler           : "org.parceler:parceler:${parcelerVersion}",
-             constraintLayout   : "com.android.support.constraint:constraint-layout:${constraintLayoutVersion}",
-             daggerCompiler     : "com.google.dagger:dagger-compiler:${daggerVersion}",
-             dagger             : "com.google.dagger:dagger:${daggerVersion}",
-             butterKnifeCompiler: "com.jakewharton:butterknife-compiler:${butterKnifeVersion}",
-             butterKnife        : "com.jakewharton:butterknife:${butterKnifeVersion}",
-             glide              : "com.github.bumptech.glide:glide:${glideVersion}",
-             rxJava             : "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
-             rxAndroid          : "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
-             calligraphy        : "uk.co.chrisjenx:calligraphy:${calligraphyVersion}"]
+            [appCompat             : "com.android.support:appcompat-v7:${supportLibraryVersion}",
+             designLibrary         : "com.android.support:design:${supportLibraryVersion}",
+             cardView              : "com.android.support:cardview-v7:${supportLibraryVersion}",
+             recyclerView          : "com.android.support:recyclerview-v7:${supportLibraryVersion}",
+             constraintLayout      : "com.android.support.constraint:constraint-layout:${constraintLayoutVersion}",
+             parceler              : "org.parceler:parceler:${parcelerVersion}",
+             butterKnifeCompiler   : "com.jakewharton:butterknife-compiler:${butterKnifeVersion}",
+             butterKnife           : "com.jakewharton:butterknife:${butterKnifeVersion}",
+             glide                 : "com.github.bumptech.glide:glide:${glideVersion}",
+             calligraphy           : "uk.co.chrisjenx:calligraphy:${calligraphyVersion}",
+             navigationTabBar      : "devlight.io:navigationtabbar:${navigationTabBarVersion}",
+             roundCornerProgressBar: "com.akexorcist:RoundCornerProgressBar:${roundCornerProgressBarVersion}",
+             williamChart          : "com.diogobernardino:williamchart:${williamChartVersion}"]
 
 
     presentationTestDependencies = [mockito          : "org.mockito:mockito-core:${mockitoVersion}",
@@ -72,7 +75,8 @@ ext {
              rxJava         : "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
              gson           : "com.google.code.gson:gson:${gsonVersion}",
              parcelerApi    : "org.parceler:parceler-api:${parcelerVersion}",
-             arrow          : "com.fernandocejas:arrow:${arrowVersion}"]
+             arrow          : "com.fernandocejas:arrow:${arrowVersion}",
+             joda           : "joda-time:joda-time:${jodaVersion}"]
 
     domainTestDependencies = [junit  : "junit:junit:${jUnitVersion}",
                               mockito: "org.mockito:mockito-core:${mockitoVersion}",
@@ -81,8 +85,6 @@ ext {
     dataDependencies = [daggerCompiler    : "com.google.dagger:dagger-compiler:${daggerVersion}",
                         dagger            : "com.google.dagger:dagger:${daggerVersion}",
                         okHttp            : "com.squareup.okhttp3:okhttp:${okHttpVersion}",
-                        rxJava            : "io.reactivex.rxjava2:rxjava:${rxJavaVersion}",
-                        rxAndroid         : "io.reactivex.rxjava2:rxandroid:${rxAndroidVersion}",
                         javaxAnnotation   : "javax.annotation:javax.annotation-api:${javaxAnnotationVersion}",
                         javaxInject       : "javax.inject:javax.inject:${javaxInjectVersion}",
                         firebaseCore      : "com.google.firebase:firebase-core:${firebaseVersion}",

@@ -18,7 +18,6 @@ public class ExpenseView extends LinearLayout {
 
     @BindView(R.id.custom_expense_view_title) TextView tvExpenseTitle;
     @BindView(R.id.custom_expense_view_value) TextView tvExpenseValue;
-    OnClickListener listener;
 
     public ExpenseView(Context context) {
         super(context);
@@ -44,6 +43,7 @@ public class ExpenseView extends LinearLayout {
         View rootView = getView(context);
         ButterKnife.bind(this, rootView);
         tvExpenseTitle.setText(title);
+        setExpenseValue(0);
     }
 
     public void setExpenseValue(float value) {

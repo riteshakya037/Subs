@@ -15,6 +15,7 @@ dependencies {
     compile domainDependencies.arrow
     compile domainDependencies.gson
     compile domainDependencies.parcelerApi
+    compile domainDependencies.joda
 
     testCompile domainTestDependencies.junit
     testCompile domainTestDependencies.mockito

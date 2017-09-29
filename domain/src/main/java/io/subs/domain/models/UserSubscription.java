@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import org.joda.time.DateTime;
 import org.parceler.Parcel;
 
 import static io.subs.domain.DatabaseNames.DELETED_FLAG;
@@ -114,6 +115,10 @@ import static io.subs.domain.models.constants.Constants.DATE_FORMAT;
 
     public void setFirstBill(Date firstBill) {
         this.firstBill = firstBill;
+    }
+
+    public DateTime getJodaFirstBill() {
+        return new DateTime(firstBill);
     }
 
     public Duration getSubscriptionDuration() {
