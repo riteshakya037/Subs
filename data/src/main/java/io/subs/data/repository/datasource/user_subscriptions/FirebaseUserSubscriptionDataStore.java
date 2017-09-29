@@ -19,11 +19,20 @@ import io.subs.data.listeners.FirebaseChildListener;
 import io.subs.data.repository.datasource.sessions.ISessionDataStore;
 import io.subs.domain.DatabaseNames;
 import io.subs.domain.models.UserSubscription;
+import io.subs.domain.models.enums.Cycle;
+import io.subs.domain.models.usecase_dtos.BreakdownModel;
+import io.subs.domain.models.usecase_dtos.MonthlyBreakdownModel;
+import io.subs.domain.models.usecase_dtos.WeeklyBreakdownModel;
+import io.subs.domain.models.usecase_dtos.YearlyBreakdownModel;
 import io.subs.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionUpdates.Action;
 import io.subs.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionUpdates.Params;
 import io.subs.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionUpdates.UserSubscriptionDto;
+import io.subs.domain.usecases.user_subscriptions.SubscriptionBreakdownUpdates;
+import io.subs.domain.usecases.user_subscriptions.SubscriptionExpenseUpdates;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.inject.Inject;
@@ -60,17 +69,17 @@ import static io.subs.domain.DatabaseNames.DELETED_FLAG;
         if (params.isAll()) {
             return mUpdatePublisher;
         } else {
-            return filteredSubsList(params);
+            return filteredSubsList(params.getSubscriptionCycle());
         }
     }
 
-    private Observable<UserSubscriptionDto> filteredSubsList(final Params params) {
+    private Observable<UserSubscriptionDto> filteredSubsList(final Cycle cycle) {
         return Observable.create(new ObservableOnSubscribe<UserSubscriptionDto>() {
             @Override
             public void subscribe(@NonNull final ObservableEmitter<UserSubscriptionDto> emitter)
                     throws Exception {
                 final ChildEventListener listener = userSubscriptionRef.orderByChild("cycle")
-                        .equalTo(params.getSubscriptionCycle().name())
+                        .equalTo(cycle.name())
                         .addChildEventListener(new FirebaseChildListener<UserSubscription>() {
                             @Override
                             public void onChildAdded(UserSubscription dataSnapshot, String s) {
@@ -154,6 +163,63 @@ import static io.subs.domain.DatabaseNames.DELETED_FLAG;
                 return countList.size();
             }
         });
+    }
+
+    @Override public Observable<SubscriptionBreakdownUpdates.BreakdownDto> subscribeToBreakdown(
+            final SubscriptionBreakdownUpdates.Params params) {
+        return mUpdatePublisher.map(
+                new Function<UserSubscriptionDto, SubscriptionBreakdownUpdates.BreakdownDto>() {
+                    @Override public SubscriptionBreakdownUpdates.BreakdownDto apply(
+                            @NonNull UserSubscriptionDto userSubscriptionDto) throws Exception {
+                        if (params.getSubscriptionCycle() == Cycle.WEEKLY) {
+                            return new SubscriptionBreakdownUpdates.BreakdownDto(
+                                    new WeeklyBreakdownModel());
+                        } else if (params.getSubscriptionCycle() == Cycle.MONTHLY) {
+                            return new SubscriptionBreakdownUpdates.BreakdownDto(
+                                    new MonthlyBreakdownModel());
+                        } else if (params.getSubscriptionCycle() == Cycle.YEARLY) {
+                            return new SubscriptionBreakdownUpdates.BreakdownDto(
+                                    new YearlyBreakdownModel());
+                        } else {
+                            return new SubscriptionBreakdownUpdates.BreakdownDto(
+                                    new BreakdownModel() {
+                                        @Override protected int getValueCount() {
+                                            return 0;
+                                        }
+                                    });
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public Observable<Float> subscribeToExpenses(final SubscriptionExpenseUpdates.Params params) {
+        return filteredSubsList(params.getSubscriptionCycle()).map(
+                new Function<UserSubscriptionDto, Float>() {
+                    private List<UserSubscription> subscriptions = new ArrayList<>();
+
+                    @Override public Float apply(@NonNull UserSubscriptionDto userSubscriptionDto)
+                            throws Exception {
+                        if (userSubscriptionDto.getAction() == Action.ADDED
+                                || userSubscriptionDto.getAction() == Action.UPDATED) {
+                            if (subscriptions.indexOf(userSubscriptionDto.getSubscription())
+                                    == -1) {
+                                subscriptions.add(userSubscriptionDto.getSubscription());
+                            } else {
+                                subscriptions.set(subscriptions.indexOf(
+                                        userSubscriptionDto.getSubscription()),
+                                        userSubscriptionDto.getSubscription());
+                            }
+                        } else if (userSubscriptionDto.getAction() == Action.REMOVED) {
+                            subscriptions.remove(userSubscriptionDto.getSubscription());
+                        }
+                        float value = 0;
+                        for (UserSubscription userSubscription : subscriptions) {
+                            value += userSubscription.getSubscriptionAmount();
+                        }
+                        return value;
+                    }
+                });
     }
 
     private Observable<Void> observe(final DatabaseReference ref) {

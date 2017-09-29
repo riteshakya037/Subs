@@ -9,12 +9,16 @@ import io.subs.android.views.screens.create_subscriptions.CreateSubscriptionPres
 import io.subs.android.views.screens.main_screen.MainActivity;
 import io.subs.android.views.screens.main_screen.MainActivityFragmentPresenter;
 import io.subs.android.views.screens.main_screen.MainActivityFragmentPresenterImpl;
-import io.subs.android.views.screens.main_screen.user_subscriptions.UserSubscriptionListPresenter;
-import io.subs.android.views.screens.main_screen.user_subscriptions.UserSubscriptionListPresenterImpl;
 import io.subs.android.views.screens.main_screen.user_details.UserSubscriptionDetailPresenter;
 import io.subs.android.views.screens.main_screen.user_details.UserSubscriptionDetailPresenterImpl;
+import io.subs.android.views.screens.main_screen.user_details.additional_details.DetailBreakDownPresenter;
+import io.subs.android.views.screens.main_screen.user_details.additional_details.DetailBreakDownPresenterImpl;
+import io.subs.android.views.screens.main_screen.user_details.expense_detail.DetailExpensePresenter;
+import io.subs.android.views.screens.main_screen.user_details.expense_detail.DetailExpensePresenterImpl;
 import io.subs.android.views.screens.main_screen.user_profile.UserProfileFragmentPresenter;
 import io.subs.android.views.screens.main_screen.user_profile.UserProfileFragmentPresenterImpl;
+import io.subs.android.views.screens.main_screen.user_subscriptions.UserSubscriptionListPresenter;
+import io.subs.android.views.screens.main_screen.user_subscriptions.UserSubscriptionListPresenterImpl;
 
 /**
  * Dagger module that provides user related collaborators.
@@ -30,6 +34,11 @@ import io.subs.android.views.screens.main_screen.user_profile.UserProfileFragmen
 
     @Provides @PerActivity
     MainActivityFragmentPresenter.MainActivityFlowListener provideMainActivityFlowListener() {
+        return getBoundClass();
+    }
+
+    @Provides @PerActivity
+    UserProfileFragmentPresenter.UserProfileFlowListener provideUserProfileFlowListener() {
         return getBoundClass();
     }
 
@@ -56,5 +65,15 @@ import io.subs.android.views.screens.main_screen.user_profile.UserProfileFragmen
     @Provides UserSubscriptionDetailPresenter provideSubscriptionDetailPresenter(
             UserSubscriptionDetailPresenterImpl userSubscriptionDetailPresenter) {
         return userSubscriptionDetailPresenter;
+    }
+
+    @Provides DetailBreakDownPresenter providesDetailBreakDownPresenter(
+            DetailBreakDownPresenterImpl detailBreakDownPresenter) {
+        return detailBreakDownPresenter;
+    }
+
+    @Provides DetailExpensePresenter providesDetailExpensePresenter(
+            DetailExpensePresenterImpl detailExpensePresenter) {
+        return detailExpensePresenter;
     }
 }

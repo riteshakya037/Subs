@@ -1,6 +1,7 @@
 package io.subs.android.views.screens.main_screen.user_details;
 
 import io.subs.android.mvp.BaseRxPresenter;
+import io.subs.android.views.adapters.DetailPagerAdapter;
 import javax.inject.Inject;
 
 /**
@@ -9,15 +10,18 @@ import javax.inject.Inject;
 
 public class UserSubscriptionDetailPresenterImpl extends BaseRxPresenter
         implements UserSubscriptionDetailPresenter {
-    private UserSubscriptionDetailView mainActivityView;
+    private UserSubscriptionDetailView subscriptionDetailView;
+    private DetailPagerAdapter detailPagerAdapter;
 
-    @Inject public UserSubscriptionDetailPresenterImpl() {
+    @Inject public UserSubscriptionDetailPresenterImpl(DetailPagerAdapter detailPagerAdapter) {
+        this.detailPagerAdapter = detailPagerAdapter;
     }
 
     @Override public void setView(UserSubscriptionDetailView mainActivityView) {
-        this.mainActivityView = mainActivityView;
+        this.subscriptionDetailView = mainActivityView;
     }
 
-    @Override public void initialize() {
+    @Override public void initializeAdaptor() {
+        this.subscriptionDetailView.setAdapter(detailPagerAdapter);
     }
 }

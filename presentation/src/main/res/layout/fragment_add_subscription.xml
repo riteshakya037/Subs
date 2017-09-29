@@ -35,7 +35,7 @@
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize"
+            android:layout_marginTop="48dp"
             >
         <android.support.design.widget.TabLayout
                 android:id="@+id/fragment_add_subs_tabs"

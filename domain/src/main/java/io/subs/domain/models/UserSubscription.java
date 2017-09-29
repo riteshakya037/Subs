@@ -163,7 +163,8 @@ import static io.subs.domain.models.constants.Constants.DATE_FORMAT;
 
     @SuppressWarnings("StringBufferReplaceableByString") @Override public String toString() {
         final StringBuilder sb = new StringBuilder("UserSubscription{");
-        sb.append("name='").append(subscriptionName).append('\'');
+        sb.append("id='").append(id).append('\'');
+        sb.append(", name='").append(subscriptionName).append('\'');
         sb.append(", subscriptionAmount='").append(subscriptionAmount).append('\'');
         sb.append(", subscriptionIcon='").append(subscriptionIcon).append('\'');
         sb.append(", subscriptionDescription='").append(subscriptionDescription).append('\'');

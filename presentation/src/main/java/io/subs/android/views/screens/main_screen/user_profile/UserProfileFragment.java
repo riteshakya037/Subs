@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.TextView;
 import butterknife.BindView;
+import butterknife.OnClick;
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import io.subs.android.R;
 import io.subs.android.di.components.UserSubscriptionComponent;
@@ -23,11 +24,14 @@ public class UserProfileFragment extends BaseFragment
     @BindView(R.id.fragment_user_progress_ratio) TextView tvUserProgress;
     @BindView(R.id.fragment_user_subscription_progress) RoundCornerProgressBar
             pbSubscriptionProgress;
-
     @Inject UserProfileFragmentPresenter userProfileFragmentPresenter;
 
     public static Fragment createInstance() {
         return new UserProfileFragment();
+    }
+
+    @OnClick(R.id.fragment_user_setting) public void openSettings() {
+        userProfileFragmentPresenter.openSettings();
     }
 
     @Override protected int getLayout() {

@@ -13,6 +13,8 @@ public interface UserProfileFragmentPresenter extends IPresenter {
 
     void initialize();
 
+    void openSettings();
+
     interface UserProfileView extends IView {
 
         void setName(String userFullName);
@@ -23,5 +25,6 @@ public interface UserProfileFragmentPresenter extends IPresenter {
     }
 
     interface UserProfileFlowListener extends FlowListener {
+        void openSettings();
     }
 }

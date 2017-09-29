@@ -8,6 +8,9 @@ import io.subs.android.views.base.BaseActivity;
 import io.subs.android.views.screens.login.LoginActivity;
 import io.subs.android.views.screens.login.LoginPresenter;
 import io.subs.android.views.screens.login.LoginPresenterImpl;
+import io.subs.android.views.screens.settings.SettingActivity;
+import io.subs.android.views.screens.settings.SettingPresenter;
+import io.subs.android.views.screens.settings.SettingPresenterImpl;
 import io.subs.android.views.screens.splash.SplashScreenActivity;
 import io.subs.android.views.screens.splash.SplashScreenPresenter;
 import io.subs.android.views.screens.splash.SplashScreenPresenterImpl;
@@ -28,6 +31,10 @@ import io.subs.android.views.screens.splash.SplashScreenPresenterImpl;
         super(loginActivity);
     }
 
+    public SessionModule(SettingActivity settingActivity) {
+        super(settingActivity);
+    }
+
     // // TODO: 0028, September 28, 2017 better implementation
     @Provides @PerActivity SplashScreenPresenter.SplashScreenFlowListener providesFlowListener() {
         return (SplashScreenPresenter.SplashScreenFlowListener) getBoundClass();
@@ -45,5 +52,10 @@ import io.subs.android.views.screens.splash.SplashScreenPresenterImpl;
     @Provides @PerActivity LoginPresenter providesLoginPresenter(
             LoginPresenterImpl loginPresenter) {
         return loginPresenter;
+    }
+
+    @Provides @PerActivity SettingPresenter providesSettingPresenter(
+            SettingPresenterImpl settingPresenter) {
+        return settingPresenter;
     }
 }

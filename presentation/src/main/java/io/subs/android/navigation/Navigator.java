@@ -7,6 +7,7 @@ import io.subs.android.views.screens.add_subscription.AddSubscriptionActivity;
 import io.subs.android.views.screens.create_subscriptions.CreateSubscriptionActivity;
 import io.subs.android.views.screens.login.LoginActivity;
 import io.subs.android.views.screens.main_screen.MainActivity;
+import io.subs.android.views.screens.settings.SettingActivity;
 import io.subs.domain.models.Subscription;
 import io.subs.domain.models.UserSubscription;
 import javax.inject.Inject;
@@ -55,6 +56,13 @@ import javax.inject.Singleton;
     public void navigateToLoginScreen(Activity context) {
         if (context != null) {
             Intent intentToLaunch = LoginActivity.getCallingIntent(context);
+            context.startActivity(intentToLaunch);
+        }
+    }
+
+    public void navigateToSettingActivity(Activity context) {
+        if (context != null) {
+            Intent intentToLaunch = SettingActivity.getCallingIntent(context);
             context.startActivity(intentToLaunch);
         }
     }

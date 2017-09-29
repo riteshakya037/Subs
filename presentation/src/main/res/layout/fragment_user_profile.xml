@@ -24,7 +24,7 @@
                 android:textSize="18sp"
                 />
         <ImageButton
-                android:id="@+id/fragment_user_subscription_add"
+                android:id="@+id/fragment_user_setting"
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"

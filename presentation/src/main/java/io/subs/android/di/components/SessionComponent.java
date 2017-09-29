@@ -5,6 +5,7 @@ import io.subs.android.di.PerActivity;
 import io.subs.android.di.modules.ActivityModule;
 import io.subs.android.di.modules.SessionModule;
 import io.subs.android.views.screens.login.LoginFragment;
+import io.subs.android.views.screens.settings.SettingFragment;
 import io.subs.android.views.screens.splash.SplashScreenFragment;
 
 /**
@@ -17,4 +18,6 @@ import io.subs.android.views.screens.splash.SplashScreenFragment;
     void inject(SplashScreenFragment splashScreenFragment);
 
     void inject(LoginFragment loginFragment);
+
+    void inject(SettingFragment settingFragment);
 }

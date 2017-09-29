@@ -14,13 +14,16 @@ import javax.inject.Inject;
 public class UserProfileFragmentPresenterImpl extends BaseRxPresenter
         implements UserProfileFragmentPresenter {
     private UserProfileView userProfileView;
+    private UserProfileFlowListener userProfileFlowListener;
     private GetUserProfile getUserProfile;
     private SubscribeToUserSubscriptionCountUpdates subscribeToUserSubscriptionCountUpdates;
     private int maxSubs = 0;
     private int currentSubs = 0;
 
-    @Inject public UserProfileFragmentPresenterImpl(GetUserProfile getUserProfile,
+    @Inject public UserProfileFragmentPresenterImpl(UserProfileFlowListener userProfileFlowListener,
+            GetUserProfile getUserProfile,
             SubscribeToUserSubscriptionCountUpdates subscribeToUserSubscriptionCountUpdates) {
+        this.userProfileFlowListener = userProfileFlowListener;
         this.getUserProfile = getUserProfile;
         this.subscribeToUserSubscriptionCountUpdates = subscribeToUserSubscriptionCountUpdates;
     }
@@ -32,6 +35,10 @@ public class UserProfileFragmentPresenterImpl extends BaseRxPresenter
     @Override public void initialize() {
         getUserProfile();
         getUserSubscriptionCount();
+    }
+
+    @Override public void openSettings() {
+        userProfileFlowListener.openSettings();
     }
 
     private void getUserProfile() {

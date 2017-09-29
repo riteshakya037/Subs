@@ -7,6 +7,8 @@ import io.subs.domain.repository.ISubscriptionRepository;
 import io.subs.domain.repository.IUserSubscriptionRepository;
 import io.subs.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionUpdates.Params;
 import io.subs.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionUpdates.UserSubscriptionDto;
+import io.subs.domain.usecases.user_subscriptions.SubscriptionBreakdownUpdates;
+import io.subs.domain.usecases.user_subscriptions.SubscriptionExpenseUpdates;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -46,5 +48,15 @@ import javax.inject.Singleton;
 
     @Override public Observable<Integer> subscribeToCount() {
         return subscriptionDataStore.subscribeToCount();
+    }
+
+    @Override public Observable<SubscriptionBreakdownUpdates.BreakdownDto> subscribeToBreakdown(
+            SubscriptionBreakdownUpdates.Params params) {
+        return subscriptionDataStore.subscribeToBreakdown(params);
+    }
+
+    @Override
+    public Observable<Float> subscribeToExpenses(SubscriptionExpenseUpdates.Params params) {
+        return subscriptionDataStore.subscribeToExpenses(params);
     }
 }

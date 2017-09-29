@@ -5,6 +5,7 @@
         <attr format="string" name="maskText"/>
         <attr format="string" name="hint"/>
         <attr name="android:inputType"/>
+        <attr name="android:text"/>
         <attr format="enum" name="styleType">
             <enum name="default_type" value="0"/>
             <enum name="title_type" value="1"/>
