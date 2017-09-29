@@ -70,19 +70,23 @@ public class DetailBreakDownFragment extends BaseFragment
 
     private void populateChart(String[] labels, float[] values, LineChartView graphView) {
         LineSet dataSet = new LineSet(labels, values);
+        int maxValue = detailBreakDownPresenter.getMaxHeight(values);
+        System.out.println("maxValue = " + maxValue);
         dataSet.setColor(ContextCompat.getColor(context, R.color.colorGrey))
                 .setFill(ContextCompat.getColor(context, android.R.color.transparent))
-                .setDotsColor(ContextCompat.getColor(context, R.color.colorAccent))
+                .setDotsColor(ContextCompat.getColor(context, R.color.colorGrey))
                 .setThickness(4)
+                .setDashed(new float[] { 10f, 10f })
                 .beginAt(0);
-        graphView.reset();
-        graphView.addData(dataSet);
         // Chart
         graphView.setBorderSpacing(Tools.fromDpToPx(15))
                 .setYLabels(AxisRenderer.LabelPosition.NONE)
                 .setLabelsColor(ContextCompat.getColor(context, R.color.colorGrey))
                 .setXAxis(false)
+                .setAxisBorderValues(0, maxValue, 2)
                 .setYAxis(false);
+        graphView.reset();
+        graphView.addData(dataSet);
         graphView.animate();
         graphView.show();
     }

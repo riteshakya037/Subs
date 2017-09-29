@@ -61,9 +61,8 @@ dependencies {
 
     compile presentationDependencies.parceler
 
-    compile presentationDependencies.navigationTabBar
-    compile presentationDependencies.roundCornerProgressBar
-    compile presentationDependencies.williamChart
+    compile presentationDependencies.dagger
+    annotationProcessor presentationDependencies.daggerCompiler
 
     compile presentationDependencies.butterKnife
     annotationProcessor presentationDependencies.butterKnifeCompiler
@@ -71,7 +70,10 @@ dependencies {
     compile presentationDependencies.glide
 
     compile presentationDependencies.calligraphy
-
+    
+    compile presentationDependencies.navigationTabBar
+    compile presentationDependencies.roundCornerProgressBar
+    compile presentationDependencies.williamChart
 
     //    Testing
     androidTestCompile presentationTestDependencies.mockito

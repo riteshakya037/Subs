@@ -16,6 +16,8 @@ public interface DetailBreakDownPresenter extends IPresenter {
 
     void initializeObservers();
 
+    int getMaxHeight(float[] values);
+
     interface DetailBreakDownView extends IView {
 
         void updateWeeklyChart(float[] values);

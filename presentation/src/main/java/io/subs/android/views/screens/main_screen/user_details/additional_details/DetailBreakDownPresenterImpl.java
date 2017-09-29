@@ -52,6 +52,16 @@ public class DetailBreakDownPresenterImpl extends BaseRxPresenter
         });
     }
 
+    @Override public int getMaxHeight(float[] values) {
+        int max = (int) values[0];
+        for (int i = 1; i < values.length; i++) {
+            if (values[i] > max) {
+                max = (int) values[i];
+            }
+        }
+        return (max + (max % 2 == 0 ? 2 : 1));
+    }
+
     private void initializeIndividualObservers(Cycle cycle,
             final BreakDownListener breakDownListener) {
         manage(subscriptionBreakdownUpdates.execute(

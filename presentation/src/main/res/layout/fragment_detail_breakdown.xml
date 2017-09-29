@@ -15,25 +15,58 @@
                 android:id="@+id/fragment_subs_detail_weekly"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_margin="32dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginTop="32dp"
                 android:layout_weight="1"
                 tools:background="@color/cardview_dark_background"
+                />
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:text="Weekly Breakdown"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 />
         <com.db.chart.view.LineChartView
                 android:id="@+id/fragment_subs_detail_monthly"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_margin="32dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginTop="32dp"
                 android:layout_weight="1"
                 tools:background="@color/cardview_dark_background"
+                />
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:text="Monthly Breakdown"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 />
         <com.db.chart.view.LineChartView
                 android:id="@+id/fragment_subs_detail_yearly"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_margin="32dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginTop="32dp"
                 android:layout_weight="1"
                 tools:background="@color/cardview_dark_background"
+                />
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:text="Annual Breakdown"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 />
     </LinearLayout>
 

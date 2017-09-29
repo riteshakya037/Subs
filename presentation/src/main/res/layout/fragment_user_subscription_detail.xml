@@ -33,6 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
                 app:tabGravity="fill"
+                app:tabIndicatorColor="@color/colorGrey"
                 app:tabMode="fixed"
                 app:tabSelectedTextColor="@color/colorAccent"
                 app:tabTextAppearance="@style/TextAppearance.AppCompat.Medium"
