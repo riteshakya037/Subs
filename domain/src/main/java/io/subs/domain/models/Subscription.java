@@ -17,6 +17,14 @@ import org.parceler.Parcel;
     @SerializedName(DatabaseNames.POPULAR_FLAG) protected boolean isPopular;
     @Expose protected String id;
 
+    public Subscription() {
+    }
+
+    public Subscription(String subscriptionIcon, String layoutColor) {
+        this.subscriptionIcon = subscriptionIcon;
+        this.layoutColor = "#" + layoutColor;
+    }
+
     public String getSubscriptionName() {
         return subscriptionName;
     }

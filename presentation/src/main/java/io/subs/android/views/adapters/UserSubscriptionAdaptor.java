@@ -2,8 +2,10 @@ package io.subs.android.views.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -112,7 +114,11 @@ public class UserSubscriptionAdaptor
             tvAmount.setText(mContext.getString(R.string.number_format_text_with_currency,
                     subscription.getSubscriptionCurrency().getSymbol(),
                     subscription.getSubscriptionAmount()));
-            cvRootView.setCardBackgroundColor(Color.parseColor(subscription.getLayoutColor()));
+            cvRootView.setCardBackgroundColor(
+                    TextUtils.isEmpty(subscription.getLayoutColor()) ? ContextCompat.getColor(
+                            mContext, R.color.colorDefault)
+                            : Color.parseColor(subscription.getLayoutColor()))
+            ;
         }
     }
 }

@@ -71,7 +71,6 @@ public class DetailBreakDownFragment extends BaseFragment
     private void populateChart(String[] labels, float[] values, LineChartView graphView) {
         LineSet dataSet = new LineSet(labels, values);
         int maxValue = detailBreakDownPresenter.getMaxHeight(values);
-        System.out.println("maxValue = " + maxValue);
         dataSet.setColor(ContextCompat.getColor(context, R.color.colorGrey))
                 .setFill(ContextCompat.getColor(context, android.R.color.transparent))
                 .setDotsColor(ContextCompat.getColor(context, R.color.colorGrey))

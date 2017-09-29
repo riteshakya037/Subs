@@ -3,10 +3,12 @@ package io.subs.android.views.screens.add_subscription;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import io.subs.android.R;
 import io.subs.android.di.components.DaggerSubscriptionComponent;
 import io.subs.android.di.components.SubscriptionComponent;
 import io.subs.android.views.base.DaggerBaseActivity;
+import io.subs.domain.DatabaseNames;
 import io.subs.domain.models.Subscription;
 
 public class AddSubscriptionActivity extends DaggerBaseActivity<SubscriptionComponent>
@@ -40,7 +42,10 @@ public class AddSubscriptionActivity extends DaggerBaseActivity<SubscriptionComp
     }
 
     @Override public void onCustomSubscriberCreate() {
-        navigator.navigateToUpdateSubscription(this, new Subscription(), CREATE_SUBSCRIPTION);
+        navigator.navigateToUpdateSubscription(this,
+                new Subscription(DatabaseNames.PATH_DEFAULT_IMAGE, Integer.toHexString(
+                        ContextCompat.getColor(getApplicationComponent().context(),
+                                R.color.colorDefault))), CREATE_SUBSCRIPTION);
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
