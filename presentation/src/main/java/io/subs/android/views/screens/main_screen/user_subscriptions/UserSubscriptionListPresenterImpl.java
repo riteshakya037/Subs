@@ -1,22 +1,31 @@
 package io.subs.android.views.screens.main_screen.user_subscriptions;
 
 import android.support.annotation.NonNull;
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableObserver;
 import io.subs.android.di.PerActivity;
 import io.subs.android.exception.ErrorMessageFactory;
 import io.subs.android.mvp.BaseRxPresenter;
+import io.subs.android.repository.SpinnerDataRepository;
 import io.subs.android.views.adapters.UserSubscriptionAdaptor;
+import io.subs.android.views.component.BaseSpinner;
 import io.subs.android.views.screens.main_screen.MainActivityFragmentPresenter;
 import io.subs.domain.exception.DefaultErrorBundle;
 import io.subs.domain.exception.ErrorBundle;
 import io.subs.domain.models.UserProfile;
 import io.subs.domain.models.UserSubscription;
+import io.subs.domain.models.enums.Cycle;
 import io.subs.domain.usecases.DefaultObserver;
 import io.subs.domain.usecases.session.GetUserProfile;
 import io.subs.domain.usecases.user_subscriptions.GetUserSubscriptionList;
 import io.subs.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionCountUpdates;
 import io.subs.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionUpdates;
+import io.subs.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionUpdates.Params;
 import io.subs.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionUpdates.UserSubscriptionDto;
+import java.util.ArrayList;
+import java.util.List;
 import javax.inject.Inject;
 
 @PerActivity public class UserSubscriptionListPresenterImpl extends BaseRxPresenter
@@ -25,6 +34,7 @@ import javax.inject.Inject;
     private final GetUserSubscriptionList getSubscriptionList;
     private final GetUserProfile getUserProfile;
     private final SubscribeToUserSubscriptionCountUpdates subscribeToUserSubscriptionCountUpdates;
+    Disposable disposableUpdates;
     private UserSubscriptionAdaptor addSubscriptionAdaptor;
     private SubscribeToUserSubscriptionUpdates subscribeToSubscriptionUpdates;
     private MainActivityFragmentPresenter.MainActivityFlowListener mainActivityFlowListener;
@@ -58,8 +68,14 @@ import javax.inject.Inject;
         this.viewListView = userSubscriptionListView;
     }
 
-    @Override public void onStart() {
-        manage(subscribeToSubscriptionUpdates.execute(
+    private void changeCycle(Cycle cycle) {
+        if (addSubscriptionAdaptor != null) {
+            addSubscriptionAdaptor.clearData();
+        }
+        if (disposableUpdates != null) {
+            disposableUpdates.dispose();
+        }
+        disposableUpdates = subscribeToSubscriptionUpdates.execute(
                 new DisposableObserver<UserSubscriptionDto>() {
                     @Override public void onNext(@NonNull UserSubscriptionDto subscriptionDto) {
                         showUsersCollectionInView(subscriptionDto);
@@ -72,7 +88,7 @@ import javax.inject.Inject;
                     @Override public void onComplete() {
 
                     }
-                }, null));
+                }, cycle == null ? Params.forCaseAll() : Params.forCase(cycle));
     }
 
     /**
@@ -82,6 +98,12 @@ import javax.inject.Inject;
         this.loadUserList();
         getUserProfile();
         getUserSubscriptionCount();
+    }
+
+    @Override public List<BaseSpinner> getCycleList() {
+        List<BaseSpinner> cycleList = new ArrayList<>(SpinnerDataRepository.getCycleList());
+        cycleList.add(0, new BaseSpinner("All", "All"));
+        return cycleList;
     }
 
     private void getUserProfile() {
@@ -130,6 +152,14 @@ import javax.inject.Inject;
 
     @Override public void openAddSubscription() {
         mainActivityFlowListener.openAddSubscription();
+    }
+
+    @Override public void initializeCycleObserver(Observable<String> changeObservable) {
+        manage(changeObservable.subscribe(new Consumer<String>() {
+            @Override public void accept(String s) throws Exception {
+                changeCycle(s.equals("All") ? null : Cycle.valueOf(s));
+            }
+        }));
     }
 
     /**
@@ -182,8 +212,12 @@ import javax.inject.Inject;
     }
 
     private void getSubscriptionList() {
-        this.getSubscriptionList.execute(new SubscriptionListObserver(),
-                GetUserSubscriptionList.Params.forCaseAll());
+        this.getSubscriptionList.execute(new SubscriptionListObserver(), null);
+    }
+
+    @Override public void onStop() {
+        super.onStop();
+        if (disposableUpdates != null) disposableUpdates.dispose();
     }
 
     private final class SubscriptionListObserver extends DefaultObserver<Void> {

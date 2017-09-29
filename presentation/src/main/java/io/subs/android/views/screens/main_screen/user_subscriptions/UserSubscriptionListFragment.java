@@ -11,6 +11,7 @@ import butterknife.OnClick;
 import io.subs.android.R;
 import io.subs.android.di.components.UserSubscriptionComponent;
 import io.subs.android.views.base.BaseFragment;
+import io.subs.android.views.component.CustomSpinnerView;
 import io.subs.android.views.component.TopPaddingDecoration;
 import javax.inject.Inject;
 
@@ -22,6 +23,7 @@ public class UserSubscriptionListFragment extends BaseFragment
         implements UserSubscriptionListPresenter.UserSubscriptionListView {
     @BindView(R.id.fragment_user_subscription_list) RecyclerView rvSubscriptions;
     @BindView(R.id.fragment_user_subscription_add) ImageButton btnAddSubscription;
+    @BindView(R.id.fragment_user_subscription_cycle) CustomSpinnerView svCycleSelection;
     @Inject UserSubscriptionListPresenter userSubscriptionListPresenter;
 
     public static Fragment createInstance() {
@@ -49,8 +51,14 @@ public class UserSubscriptionListFragment extends BaseFragment
         super.onViewCreated(view, savedInstanceState);
         this.registerPresenter(userSubscriptionListPresenter);
         if (savedInstanceState == null) {
+            this.initializeData();
             this.loadSubscriptions();
+            this.setupObservables();
         }
+    }
+
+    private void initializeData() {
+        svCycleSelection.setData(this.userSubscriptionListPresenter.getCycleList());
     }
 
     @Override public void showLoading() {
@@ -77,6 +85,11 @@ public class UserSubscriptionListFragment extends BaseFragment
         this.userSubscriptionListPresenter.initializeAdaptor();
         this.rvSubscriptions.setLayoutManager(new LinearLayoutManager(context()));
         this.rvSubscriptions.addItemDecoration(new TopPaddingDecoration(60));
+    }
+
+    private void setupObservables() {
+        userSubscriptionListPresenter.initializeCycleObserver(
+                svCycleSelection.getChangeObservable());
     }
 
     /**

@@ -5,8 +5,8 @@ import io.subs.data.repository.datasource.user_subscriptions.UserSubscriptionDat
 import io.subs.domain.models.UserSubscription;
 import io.subs.domain.repository.ISubscriptionRepository;
 import io.subs.domain.repository.IUserSubscriptionRepository;
-import io.subs.domain.usecases.user_subscriptions.GetUserSubscriptionList;
-import io.subs.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionUpdates;
+import io.subs.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionUpdates.Params;
+import io.subs.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionUpdates.UserSubscriptionDto;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -26,14 +26,13 @@ import javax.inject.Singleton;
         this.subscriptionDataStore = subscriptionDataStore;
     }
 
-    @Override public Observable<Void> subscriptions(GetUserSubscriptionList.Params params) {
+    @Override public Observable<Void> subscriptions() {
         //we always get all users from the cloud
-        return subscriptionDataStore.subscriptionEntityList(params);
+        return subscriptionDataStore.subscriptionEntityList();
     }
 
-    @Override
-    public Observable<SubscribeToUserSubscriptionUpdates.UserSubscriptionDto> subscribe() {
-        return subscriptionDataStore.subscribe();
+    @Override public Observable<UserSubscriptionDto> subscribe(Params params) {
+        return subscriptionDataStore.subscribe(params);
     }
 
     @Override

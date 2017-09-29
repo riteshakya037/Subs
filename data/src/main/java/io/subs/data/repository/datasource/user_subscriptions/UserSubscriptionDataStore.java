@@ -9,9 +9,10 @@ import io.subs.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionUpd
  * @author Ritesh Shakya
  */
 public interface UserSubscriptionDataStore {
-    Observable<Void> subscriptionEntityList(GetUserSubscriptionList.Params params);
+    Observable<Void> subscriptionEntityList();
 
-    Observable<SubscribeToUserSubscriptionUpdates.UserSubscriptionDto> subscribe();
+    Observable<SubscribeToUserSubscriptionUpdates.UserSubscriptionDto> subscribe(
+            SubscribeToUserSubscriptionUpdates.Params params);
 
     Observable<Void> createOrUpdateSubscription(UserSubscription userSubscription);
 

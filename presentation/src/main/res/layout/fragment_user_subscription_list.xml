@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -35,14 +36,28 @@
                 style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
                 />
     </android.support.v7.widget.Toolbar>
-    <android.support.v7.widget.RecyclerView
-            android:id="@+id/fragment_user_subscription_list"
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize"
-            tools:context=".views.screens.add_subscription.AddSubscriptionActivity"
-            tools:listitem="@layout/item_user_subscription"
-            />
+            android:layout_marginTop="30dp"
+            android:orientation="vertical"
+            >
+        <io.subs.android.views.component.CustomSpinnerView
+                android:id="@+id/fragment_user_subscription_cycle"
+                android:layout_width="150dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center"
+                android:entries="@array/array_name"
+                app:styleType="title_type"
+                />
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/fragment_user_subscription_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".views.screens.add_subscription.AddSubscriptionActivity"
+                tools:listitem="@layout/item_user_subscription"
+                />
+    </LinearLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

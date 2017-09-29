@@ -78,6 +78,11 @@ public class UserSubscriptionAdaptor
         }
     }
 
+    public void clearData() {
+        this.mData.clear();
+        this.notifyDataSetChanged();
+    }
+
     public interface OnItemClickListener {
         void onItemClicked(UserSubscription subscription);
     }

@@ -148,6 +148,10 @@ import static io.subs.domain.models.constants.Constants.DATE_FORMAT;
         this.id = id;
     }
 
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
     @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
