@@ -20,8 +20,10 @@ public class SplashScreenFragment extends BaseFragment
     }
 
     @Override protected void initializeViews(Bundle savedInstanceState) {
-        this.splashScreenPresenter.setView(this);
-        splashScreenPresenter.initialize();
+        if (splashScreenPresenter != null) {
+            splashScreenPresenter.setView(this);
+            splashScreenPresenter.initialize();
+        }
     }
 
     @Override protected void injectDagger() {

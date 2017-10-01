@@ -1,6 +1,7 @@
 package io.subs.android.di.components;
 
 import android.content.Context;
+import com.google.android.gms.common.api.GoogleApiClient;
 import dagger.Component;
 import io.subs.android.di.modules.ApplicationModule;
 import io.subs.android.di.modules.repository_modules.SessionRepoModule;
@@ -40,6 +41,8 @@ import javax.inject.Singleton;
     IUserSubscriptionRepository userSubscriptionRepository();
 
     ISessionRepository sessionRepository();
+
+    GoogleApiClient googleApiClient();
 
     IImageLoader imageLoader();
 }

@@ -30,7 +30,9 @@ public class MainActivityFragment extends BaseFragment
     }
 
     @Override protected void initializeViews(Bundle savedInstanceState) {
-        this.mainActivityFragmentPresenter.setView(this);
+        if (mainActivityFragmentPresenter != null) {
+            mainActivityFragmentPresenter.setView(this);
+        }
         if (savedInstanceState == null) {
             setupViewPager();
         }

@@ -34,4 +34,9 @@ public class SettingActivity extends DaggerBaseActivity<SessionComponent>
                 .sessionModule(new SessionModule(this))
                 .build();
     }
+
+    @Override public void showLoginScreen() {
+        navigator.navigateToLoginScreen(this);
+        finish();
+    }
 }

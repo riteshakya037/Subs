@@ -29,7 +29,7 @@ allprojects {
     ext {
         androidApplicationId = 'io.subs.android'
         androidVersionCode = 1
-        androidVersionName = "1.0"
+        androidVersionName = "0.1.0"
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
         testApplicationId = 'io.subs.android.test'
     }

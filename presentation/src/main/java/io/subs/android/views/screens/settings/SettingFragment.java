@@ -1,8 +1,13 @@
 package io.subs.android.views.screens.settings;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.widget.TextView;
+import butterknife.BindView;
+import butterknife.OnClick;
+import io.subs.android.BuildConfig;
 import io.subs.android.R;
 import io.subs.android.di.components.SessionComponent;
 import io.subs.android.views.base.BaseFragment;
@@ -14,9 +19,27 @@ import javax.inject.Inject;
 
 public class SettingFragment extends BaseFragment implements SettingPresenter.SettingView {
     @Inject SettingPresenter settingPresenter;
+    @BindView(R.id.fragment_setting_version) TextView tvAppVersion;
+    @Inject Context context;
 
     public static Fragment createInstance() {
         return new SettingFragment();
+    }
+
+    @OnClick(R.id.fragment_setting_sign_out) void signOut() {
+        settingPresenter.signOutUser();
+    }
+
+    @OnClick(R.id.fragment_setting_rate) void rateApplication() {
+        settingPresenter.rateApplication();
+    }
+
+    @OnClick(R.id.fragment_setting_share) void shareApplication() {
+        settingPresenter.shareApplication();
+    }
+
+    @OnClick(R.id.fragment_setting_feedback) void sendFeedback() {
+        settingPresenter.sendFeedback();
     }
 
     @Override protected int getLayout() {
@@ -24,8 +47,11 @@ public class SettingFragment extends BaseFragment implements SettingPresenter.Se
     }
 
     @Override protected void initializeViews(Bundle savedInstanceState) {
-        this.settingPresenter.setView(this);
+        if (settingPresenter != null) {
+            settingPresenter.setView(this);
+        }
         if (savedInstanceState == null) {
+            setAppVersion();
         }
     }
 
@@ -36,5 +62,9 @@ public class SettingFragment extends BaseFragment implements SettingPresenter.Se
     @Override public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.registerPresenter(settingPresenter);
+    }
+
+    public void setAppVersion() {
+        tvAppVersion.setText(context.getString(R.string.version_string, BuildConfig.VERSION_NAME));
     }
 }

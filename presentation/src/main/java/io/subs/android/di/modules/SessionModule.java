@@ -58,4 +58,8 @@ import io.subs.android.views.screens.splash.SplashScreenPresenterImpl;
             SettingPresenterImpl settingPresenter) {
         return settingPresenter;
     }
+
+    @Provides @PerActivity SettingPresenter.SettingFlowListener providesSettingFlowListener() {
+        return (SettingPresenter.SettingFlowListener) getBoundClass();
+    }
 }

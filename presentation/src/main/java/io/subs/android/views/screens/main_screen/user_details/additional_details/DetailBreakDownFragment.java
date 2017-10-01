@@ -38,8 +38,8 @@ public class DetailBreakDownFragment extends BaseFragment
     }
 
     @Override protected void initializeViews(Bundle savedInstanceState) {
-        this.detailBreakDownPresenter.setView(this);
-        if (savedInstanceState == null) {
+        if (detailBreakDownPresenter != null) {
+            detailBreakDownPresenter.setView(this);
             detailBreakDownPresenter.initializeObservers();
         }
     }

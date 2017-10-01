@@ -3,6 +3,7 @@ package io.subs.android.views.screens.create_subscriptions;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
@@ -37,6 +38,7 @@ public class CreateSubscriptionFragment extends BaseFragment
         implements CreateSubscriptionPresenter.CreateSubscriptionView {
     private static final String ARGS_USER_SUBSCRIPTION = "user_subscription";
     private static final String ARGS_EDIT_MODE = "edit_mode";
+    private static final String TAG = "CreateSubscription";
     @BindView(R.id.fragment_create_subscription_icon) ImageView ivSubscriptionImage;
     @BindView(R.id.fragment_create_subscription_amount) MaskEditText etSubscriptionAmount;
     @BindView(R.id.fragment_create_subscription_name) EditText etSubscriptionName;
@@ -46,12 +48,9 @@ public class CreateSubscriptionFragment extends BaseFragment
     @BindView(R.id.fragment_create_subscription_duration) CustomSpinnerView svSubscriptionDuration;
     @BindView(R.id.fragment_create_subscription_reminder) CustomSpinnerView svSubscriptionReminder;
     @BindView(R.id.fragment_create_subscription_currency) CustomSpinnerView svSubscriptionCurrency;
-
     @BindView(R.id.fragment_create_subscription_delete) Button btnDeleteSubscription;
     @BindView(R.id.fragment_create_subscription_card_view) CardView cvRootView;
     @BindView(R.id.fragment_create_subscription_add) Button btnAddSubscription;
-    private static final String TAG = "CreateSubscription";
-
     @Inject CreateSubscriptionPresenter createSubscriptionPresenter;
     @Inject IImageLoader iImageLoader;
     @BindView(R.id.fragment_create_subscription_title) TextView tvFragmentTitle;
@@ -71,12 +70,12 @@ public class CreateSubscriptionFragment extends BaseFragment
 
     @OnClick(R.id.fragment_create_subscription_add) void addCard() {
         createSubscriptionPresenter.addCard(new UserSubscription(currentLoadType().getId(),
-                etSubscriptionName.getText().toString(),
-                        etSubscriptionAmount.getText(), currentLoadType().getSubscriptionIcon(),
-                        etSubscriptionDescription.getText().toString(),
-                        svSubscriptionCycle.getValue(), dvFirstBill.getDate(),
-                        svSubscriptionDuration.getValue(), svSubscriptionReminder.getValue(),
-                        svSubscriptionCurrency.getValue(), currentLoadType().getLayoutColor()));
+                etSubscriptionName.getText().toString(), etSubscriptionAmount.getText(),
+                currentLoadType().getSubscriptionIcon(),
+                etSubscriptionDescription.getText().toString(), svSubscriptionCycle.getValue(),
+                dvFirstBill.getDate(), svSubscriptionDuration.getValue(),
+                svSubscriptionReminder.getValue(), svSubscriptionCurrency.getValue(),
+                currentLoadType().getLayoutColor()));
     }
 
     @Override protected int getLayout() {
@@ -116,8 +115,9 @@ public class CreateSubscriptionFragment extends BaseFragment
     }
 
     @Override protected void initializeViews(Bundle savedInstanceState) {
-        this.createSubscriptionPresenter.setView(this);
-        this.registerPresenter(createSubscriptionPresenter);
+        if (createSubscriptionPresenter != null) {
+            this.createSubscriptionPresenter.setView(this);
+        }
         if (savedInstanceState == null) {
             this.initializeData();
             this.setupObservables();
@@ -126,6 +126,10 @@ public class CreateSubscriptionFragment extends BaseFragment
         if (isEditMode()) {
             this.changeModeToEdit();
         }
+    }
+
+    @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        this.registerPresenter(createSubscriptionPresenter);
     }
 
     private void changeModeToEdit() {

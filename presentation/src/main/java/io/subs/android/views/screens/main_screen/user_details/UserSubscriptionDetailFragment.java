@@ -31,7 +31,9 @@ public class UserSubscriptionDetailFragment extends BaseFragment
     }
 
     @Override protected void initializeViews(Bundle savedInstanceState) {
-        this.userSubscriptionDetailPresenter.setView(this);
+        if (userSubscriptionDetailPresenter != null) {
+            userSubscriptionDetailPresenter.setView(this);
+        }
         if (savedInstanceState == null) {
             setupViewPager();
         }

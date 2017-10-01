@@ -52,10 +52,10 @@ public abstract class BaseFragment extends Fragment {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
-    @Override public void onResume() {
-        super.onResume();
+    @Override public void onStop() {
+        super.onStop();
         for (IPresenter presenter : mPresenters) {
-            presenter.onCreate();
+            presenter.onStop();
         }
     }
 

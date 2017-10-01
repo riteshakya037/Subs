@@ -8,7 +8,6 @@ import io.subs.android.di.components.DaggerSessionComponent;
 import io.subs.android.di.components.SessionComponent;
 import io.subs.android.di.modules.SessionModule;
 import io.subs.android.views.base.DaggerBaseActivity;
-import io.subs.android.views.screens.main_screen.MainActivityFragment;
 
 public class LoginActivity extends DaggerBaseActivity<SessionComponent>
         implements LoginPresenter.LoginFlowListener {

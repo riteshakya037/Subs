@@ -93,4 +93,13 @@
         <item name="android:inputType">textCapSentences</item>
     </style>
 
+    <style name="AppStyle.SettingItem" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bottom_black_border</item>
+        <item name="android:foreground">?selectableItemBackground</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
 </resources>

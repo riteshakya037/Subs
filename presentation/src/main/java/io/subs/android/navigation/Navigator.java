@@ -32,6 +32,7 @@ import javax.inject.Singleton;
     public void navigateToMainScreen(Context context) {
         if (context != null) {
             Intent intentToLaunch = MainActivity.getCallingIntent(context);
+            intentToLaunch.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             context.startActivity(intentToLaunch);
         }
     }
@@ -56,6 +57,7 @@ import javax.inject.Singleton;
     public void navigateToLoginScreen(Activity context) {
         if (context != null) {
             Intent intentToLaunch = LoginActivity.getCallingIntent(context);
+            intentToLaunch.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             context.startActivity(intentToLaunch);
         }
     }

@@ -23,8 +23,10 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
     }
 
     @Override protected void initializeViews(Bundle savedInstanceState) {
-        this.loginPresenter.setView(this);
-        loginPresenter.initialize();
+        if (loginPresenter != null) {
+            loginPresenter.setView(this);
+            loginPresenter.initialize();
+        }
     }
 
     @OnClick(R.id.activity_login_google) void login() {

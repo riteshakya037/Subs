@@ -1,6 +1,10 @@
 package io.subs.data.repository.datasource.sessions;
 
 import android.util.Log;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
@@ -36,9 +40,12 @@ public class FirebaseSessionDataStore implements ISessionDataStore {
     private static final String KEY_ACTIVE_USER = "active_user";
     private DatabaseReference userRootRef;
     private DatabaseCompletionListener databaseCompletionListener;
+    private GoogleApiClient mGoogleApiClient;
 
-    @Inject public FirebaseSessionDataStore(DatabaseCompletionListener databaseCompletionListener) {
+    @Inject public FirebaseSessionDataStore(DatabaseCompletionListener databaseCompletionListener,
+            GoogleApiClient googleApiClient) {
         this.databaseCompletionListener = databaseCompletionListener;
+        this.mGoogleApiClient = googleApiClient;
     }
 
     private void initializeRef() {
@@ -77,9 +84,17 @@ public class FirebaseSessionDataStore implements ISessionDataStore {
 
     @Override public Observable<Void> signOut() {
         return Completable.create(new CompletableOnSubscribe() {
-            @Override public void subscribe(CompletableEmitter e) throws Exception {
+            @Override public void subscribe(final CompletableEmitter e) throws Exception {
                 FirebaseAuth.getInstance().signOut();
-                e.onComplete();
+                mGoogleApiClient.connect();
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient)
+                        .setResultCallback(new ResultCallback<Status>() {
+                            @Override public void onResult(
+                                    @android.support.annotation.NonNull @NonNull Status status) {
+                                System.out.println("status = " + status.getStatusMessage());
+                                e.onComplete();
+                            }
+                        });
             }
         }).toObservable();
     }

@@ -2,9 +2,11 @@ package io.subs.android.views.screens.add_subscription;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import butterknife.BindView;
 import com.fernandocejas.arrow.checks.Preconditions;
 import io.subs.android.R;
@@ -47,12 +49,17 @@ public class SubscriptionListFragment extends BaseFragment
     }
 
     @Override protected void initializeViews(Bundle savedInstanceState) {
-        this.subscriptionListPresenter.setView(this);
+        if (subscriptionListListener != null) this.subscriptionListPresenter.setView(this);
         setupRecyclerView();
         this.registerPresenter(subscriptionListPresenter);
         if (savedInstanceState == null) {
             this.loadSubscriptions();
         }
+    }
+
+    @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        registerPresenter(subscriptionListPresenter);
     }
 
     @Override protected void injectDagger() {
