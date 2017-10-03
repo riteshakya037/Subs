@@ -41,5 +41,6 @@ public class LoginActivity extends DaggerBaseActivity<SessionComponent>
 
     @Override public void openMainActivity() {
         navigator.navigateToMainScreen(this);
+        finishAffinity();
     }
 }

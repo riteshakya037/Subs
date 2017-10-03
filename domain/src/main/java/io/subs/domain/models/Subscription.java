@@ -30,11 +30,12 @@ import org.parceler.Parcel;
     }
 
     public String getSubscriptionIcon() {
-        return subscriptionIcon;
+        return subscriptionIcon == null ? DatabaseNames.PATH_DEFAULT_IMAGE : subscriptionIcon;
     }
 
     public String getLayoutColor() {
-        return layoutColor;
+        //safety measure
+        return layoutColor.replace("##", "#");
     }
 
     public String getId() {

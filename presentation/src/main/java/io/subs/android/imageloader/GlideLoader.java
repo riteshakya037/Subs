@@ -1,7 +1,6 @@
 package io.subs.android.imageloader;
 
 import android.app.Application;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -12,7 +11,6 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import io.subs.domain.DatabaseNames;
 
 /**
  * @author Ritesh Shakya
@@ -62,9 +60,6 @@ public class GlideLoader implements IImageLoader {
     }
 
     @Override public void loadFirebaseImage(String firebaseRelativeUrl, ImageView holder) {
-        if (TextUtils.isEmpty(firebaseRelativeUrl)) {
-            firebaseRelativeUrl = DatabaseNames.PATH_DEFAULT_IMAGE;
-        }
         clear(holder);
         Glide.with(context)
                 .using(new FirebaseImageLoader())
