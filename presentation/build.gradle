@@ -1,4 +1,19 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.24.4'
+    }
+}
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 
 android {
     signingConfigs {
@@ -13,6 +28,10 @@ android {
                         "You should define KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties.")
             }
         }
+    }
+    compileOptions {
+        sourceCompatibility rootProject.ext.sourceCompatibility
+        targetCompatibility rootProject.ext.sourceCompatibility
     }
     def globalConfiguration = rootProject.extensions.getByName("ext")
     compileSdkVersion globalConfiguration["androidCompileSdkVersion"]
@@ -59,7 +78,7 @@ dependencies {
     compile presentationDependencies.cardView
     compile presentationDependencies.constraintLayout
 
-    compile presentationDependencies.parceler
+    annotationProcessor presentationDependencies.parceler
 
     compile presentationDependencies.dagger
     annotationProcessor presentationDependencies.daggerCompiler
@@ -70,7 +89,7 @@ dependencies {
     compile presentationDependencies.glide
 
     compile presentationDependencies.calligraphy
-    
+
     compile presentationDependencies.navigationTabBar
     compile presentationDependencies.roundCornerProgressBar
     compile presentationDependencies.williamChart
@@ -84,6 +103,9 @@ dependencies {
 
     //Development
     compile developmentDependencies.leakCanary
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+        transitive = true
+    }
 }
 apply plugin: 'com.google.gms.google-services'
 

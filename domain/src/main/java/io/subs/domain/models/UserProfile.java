@@ -9,10 +9,10 @@ import org.parceler.Parcel;
  * @author Ritesh Shakya
  */
 
-@Parcel public class UserProfile {
+@SuppressWarnings("WeakerAccess") @Parcel public class UserProfile {
     @SerializedName("fullName") protected String userFullName;
     @SerializedName("email") protected String userEmail;
-    @SerializedName("subAvailable") protected int subAvailable = 20;
+    @SerializedName("subAvailable") protected int subAvailable = 5;
 
     public UserProfile(String userFullName, String userEmail) {
         this.userFullName = userFullName;

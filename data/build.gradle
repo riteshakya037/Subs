@@ -13,6 +13,10 @@ android {
         targetSdkVersion globalConfiguration["androidTargetSdkVersion"]
         versionCode globalConfiguration["androidVersionCode"]
     }
+    compileOptions {
+        sourceCompatibility rootProject.ext.sourceCompatibility
+        targetCompatibility rootProject.ext.sourceCompatibility
+    }
 }
 
 dependencies {

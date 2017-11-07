@@ -25,7 +25,7 @@ public abstract class BaseFragment extends Fragment {
         setRetainInstance(true);
     }
 
-    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    @Override public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         final View fragmentView = inflater.inflate(getLayout(), container, false);
         ButterKnife.bind(this, fragmentView);
@@ -52,10 +52,10 @@ public abstract class BaseFragment extends Fragment {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
-    @Override public void onStop() {
-        super.onStop();
+    @Override public void onResume() {
+        super.onResume();
         for (IPresenter presenter : mPresenters) {
-            presenter.onStop();
+            presenter.onCreate();
         }
     }
 
@@ -78,6 +78,9 @@ public abstract class BaseFragment extends Fragment {
      * Gets a component for dependency injection by its type.
      */
     @SuppressWarnings("unchecked") protected <C> C getComponent(Class<C> componentType) {
-        return componentType.cast(((HasComponent<C>) getActivity()).getComponent());
+        if (getActivity() != null) {
+            return componentType.cast(((HasComponent<C>) getActivity()).getComponent());
+        }
+        throw new NullPointerException();
     }
 }

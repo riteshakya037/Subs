@@ -1,7 +1,11 @@
 package io.subs.android;
 
 import android.app.Application;
+import com.crashlytics.android.Crashlytics;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.leakcanary.LeakCanary;
+import io.fabric.sdk.android.Fabric;
 import io.subs.android.di.components.ApplicationComponent;
 import io.subs.android.di.components.DaggerApplicationComponent;
 import io.subs.android.di.modules.ApplicationModule;
@@ -16,10 +20,12 @@ public class SubsApplication extends Application {
 
     @Override public void onCreate() {
         super.onCreate();
+        FirebaseApp.initializeApp(this);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        Fabric.with(this, new Crashlytics());
         this.initializeInjector();
         this.initializeCalligraphy();
         this.initializeLeakDetection();
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
     }
 
     private void initializeCalligraphy() {
@@ -41,7 +47,7 @@ public class SubsApplication extends Application {
 
     private void initializeLeakDetection() {
         if (BuildConfig.DEBUG) {
-            //LeakCanary.install(this);
+            LeakCanary.install(this);
         }
     }
 }

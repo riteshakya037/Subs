@@ -1,9 +1,9 @@
 apply plugin: 'java'
 
 //noinspection GroovyUnusedAssignment
-targetCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = rootProject.ext.sourceCompatibility
 //noinspection GroovyUnusedAssignment
-sourceCompatibility = JavaVersion.VERSION_1_7
+sourceCompatibility = rootProject.ext.sourceCompatibility
 
 
 dependencies {
