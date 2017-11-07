@@ -9,7 +9,7 @@ import org.parceler.Parcel;
 /**
  * @author Ritesh Shakya
  */
-@Parcel public class Subscription implements BaseModel {
+@SuppressWarnings({ "WeakerAccess", "unused" }) @Parcel public class Subscription implements BaseModel {
 
     @SerializedName("name") protected String subscriptionName;
     @SerializedName("icon") protected String subscriptionIcon;
@@ -64,11 +64,16 @@ import org.parceler.Parcel;
     }
 
     @Override public String toString() {
-        final StringBuffer sb = new StringBuffer("Subscription{");
-        sb.append("subscriptionName='").append(subscriptionName).append('\'');
-        sb.append(", subscriptionIcon='").append(subscriptionIcon).append('\'');
-        sb.append(", layoutColor='").append(layoutColor).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "Subscription{"
+                + "subscriptionName='"
+                + subscriptionName
+                + '\''
+                + ", subscriptionIcon='"
+                + subscriptionIcon
+                + '\''
+                + ", layoutColor='"
+                + layoutColor
+                + '\''
+                + '}';
     }
 }

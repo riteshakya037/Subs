@@ -1,6 +1,5 @@
 package io.subs.android.views.base;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -52,13 +51,6 @@ public abstract class BaseFragment extends Fragment {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
-    @Override public void onResume() {
-        super.onResume();
-        for (IPresenter presenter : mPresenters) {
-            presenter.onCreate();
-        }
-    }
-
     public void registerPresenter(@NonNull IPresenter... presenters) {
         Collections.addAll(mPresenters, presenters);
     }
@@ -70,8 +62,11 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
-    public Context context() {
-        return this.getActivity().getApplicationContext();
+    @Override public void onStop() {
+        super.onStop();
+        for (IPresenter presenter : mPresenters) {
+            presenter.onStop();
+        }
     }
 
     /**

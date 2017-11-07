@@ -5,17 +5,10 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 import io.subs.domain.models.base.BaseModel;
 import io.subs.domain.models.constants.Constants;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.HashMap;
-import org.joda.time.DateTime;
-import org.joda.time.format.ISODateTimeFormat;
 import org.json.JSONObject;
 
 /**
@@ -33,11 +26,11 @@ import org.json.JSONObject;
     }
 
     @Override public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-        onChildAdded(publishEvent("onChildAdded: ", dataSnapshot), s);
+        onChildAdded(publishEvent("onChildAdded: ", dataSnapshot));
     }
 
     @Override public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-        onChildChanged(publishEvent("onChildChanged: ", dataSnapshot), s);
+        onChildChanged(publishEvent("onChildChanged: ", dataSnapshot));
     }
 
     @Override public void onChildRemoved(DataSnapshot dataSnapshot) {
@@ -59,12 +52,13 @@ import org.json.JSONObject;
         return result;
     }
 
-    public abstract void onChildAdded(C snapShot, String s);
+    public abstract void onChildAdded(C snapShot);
 
-    public abstract void onChildChanged(C snapShot, String s);
+    public abstract void onChildChanged(C snapShot);
 
     public abstract void onChildRemoved(C snapShot);
 
-    @SuppressWarnings("UnusedParameters") private void onChildMoved(C snapShot, String s) {
+    @SuppressWarnings({ "UnusedParameters", "EmptyMethod" })
+    private void onChildMoved(C snapShot, String s) {
     }
 }

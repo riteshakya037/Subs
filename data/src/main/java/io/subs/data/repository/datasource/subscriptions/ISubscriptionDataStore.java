@@ -4,8 +4,6 @@ import io.reactivex.Observable;
 import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates.Params;
 import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates.SubscriptionDto;
 
-;
-
 /**
  * @author Ritesh Shakya
  */

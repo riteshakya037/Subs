@@ -29,7 +29,7 @@ import java.util.List;
     private Context mContext;
     private int styleType;
     private List<BaseSpinner> mData = new ArrayList<>();
-    private PublishSubject<String> _observer = PublishSubject.create();
+    private final PublishSubject<String> _observer = PublishSubject.create();
 
     public CustomSpinnerView(Context context) {
         super(context);
@@ -38,15 +38,15 @@ import java.util.List;
 
     public CustomSpinnerView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.CustomView);
-        init(context, typedArray.getTextArray(R.styleable.CustomView_android_entries),
-                typedArray.getInt(R.styleable.CustomView_styleType, 0));
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.CustomSpinnerView);
+        init(context, typedArray.getTextArray(R.styleable.CustomSpinnerView_android_entries),
+                typedArray.getInt(R.styleable.CustomSpinnerView_styleType, 0));
         typedArray.recycle();
     }
 
     @OnItemSelected(R.id.custom_spinner_view_spinner_main)
     public void spinnerItemSelected(int position) {
-        _observer.onNext(mData.get(position).id);
+        _observer.onNext(mData.get(position).getId());
     }
 
     @Optional @OnClick(R.id.custom_spinner_view_root_view) void onClickDrop() {
@@ -87,8 +87,8 @@ import java.util.List;
     }
 
     @SuppressWarnings("ConstantConditions") public String getValue() {
-        return mSpinner.getSelectedItem() == null ? new BaseSpinner("", "").id
-                : ((BaseSpinner) (mSpinner.getSelectedItem())).id;
+        return mSpinner.getSelectedItem() == null ? new BaseSpinner("", "").getId()
+                : ((BaseSpinner) (mSpinner.getSelectedItem())).getId();
     }
 
     public Observable<String> getChangeObservable() {

@@ -6,9 +6,9 @@ package io.subs.domain.models.enums;
 
 public enum Duration {
     INDEFINITE("Indefinite");
-    private String friendlyName;
+    private final String friendlyName;
 
-    Duration(String friendlyName) {
+    @SuppressWarnings("SameParameterValue") Duration(String friendlyName) {
         this.friendlyName = friendlyName;
     }
 

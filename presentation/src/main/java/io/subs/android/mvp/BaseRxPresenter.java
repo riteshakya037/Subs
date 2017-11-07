@@ -11,20 +11,17 @@ import java.util.List;
  */
 public abstract class BaseRxPresenter implements IPresenter {
 
-    private List<Disposable> mDisposables = new ArrayList<>();
+    private final List<Disposable> mDisposables = new ArrayList<>();
 
     /**
      * Add a Disposable to be tracked such that when this presenter is destroyed the Disposable
-     * will be unsubscribed from.
+     * will be disposed with it.
      */
     protected void manage(Disposable Disposable) {
         mDisposables.add(Disposable);
     }
 
     @Override public void onStart() {
-    }
-
-    @Override public void onCreate() {
     }
 
     @Override public void onStop() {

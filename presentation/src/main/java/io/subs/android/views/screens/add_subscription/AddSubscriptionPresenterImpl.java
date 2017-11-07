@@ -13,8 +13,8 @@ import javax.inject.Inject;
 
 public class AddSubscriptionPresenterImpl extends BaseRxPresenter
         implements AddSubscriptionPresenter {
-    private AddSubscriptionPagerAdapter mPagerAdapter;
-    private GetSubscriptionList getSubscriptionList;
+    private final AddSubscriptionPagerAdapter mPagerAdapter;
+    private final GetSubscriptionList getSubscriptionList;
     private AddSubscriptionView addSubscriptionView;
 
     @Inject public AddSubscriptionPresenterImpl(AddSubscriptionPagerAdapter mPagerAdapter,

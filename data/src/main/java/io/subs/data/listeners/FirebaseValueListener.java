@@ -25,16 +25,16 @@ import org.json.JSONObject;
     }
 
     @Override public void onDataChange(DataSnapshot dataSnapshot) {
-        onChildChanged(publishEvent("onDataChange: ", dataSnapshot));
+        onChildChanged(publishEvent(dataSnapshot));
     }
 
-    private C publishEvent(String msg, DataSnapshot dataSnapshot) {
+    private C publishEvent(DataSnapshot dataSnapshot) {
         HashMap<String, JSONObject> dataSnapshotValue =
                 (HashMap<String, JSONObject>) dataSnapshot.getValue();
         String jsonString = new Gson().toJson(dataSnapshotValue);
         final Gson gson = new GsonBuilder().setDateFormat(Constants.DATE_FORMAT).create();
         C result = gson.fromJson(jsonString, persistentClass);
-        Log.e(TAG, msg + result);
+        Log.e(TAG, "onDataChange: " + result);
         return result;
     }
 

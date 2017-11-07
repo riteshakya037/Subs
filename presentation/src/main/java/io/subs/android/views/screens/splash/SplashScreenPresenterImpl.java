@@ -15,7 +15,7 @@ public class SplashScreenPresenterImpl extends BaseRxPresenter implements Splash
 
     private final SplashScreenFlowListener splashScreenFlowListener;
     private SplashScreenView splashScreenView;
-    private GetLoginStatus getLoginStatus;
+    private final GetLoginStatus getLoginStatus;
 
     @Inject public SplashScreenPresenterImpl(
             SplashScreenPresenter.SplashScreenFlowListener splashScreenFlowListener,
@@ -35,13 +35,11 @@ public class SplashScreenPresenterImpl extends BaseRxPresenter implements Splash
                 getLoginStatus.execute(new DisposableObserver<GetLoginStatus.LoginStatusType>() {
                     @Override public void onNext(
                             @NonNull final GetLoginStatus.LoginStatusType loginStatusType) {
-                        Runnable runnable = new Runnable() {
-                            public void run() {
-                                if (loginStatusType == GetLoginStatus.LoginStatusType.ACTIVE) {
-                                    splashScreenFlowListener.openMainScreen();
-                                } else {
-                                    splashScreenFlowListener.openLoginScreen();
-                                }
+                        Runnable runnable = () -> {
+                            if (loginStatusType == GetLoginStatus.LoginStatusType.ACTIVE) {
+                                splashScreenFlowListener.openMainScreen();
+                            } else {
+                                splashScreenFlowListener.openLoginScreen();
                             }
                         };
                         finalHandler.postDelayed(runnable, 2000);

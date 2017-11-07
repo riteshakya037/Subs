@@ -11,7 +11,7 @@ import android.view.View;
 public class TopPaddingDecoration extends RecyclerView.ItemDecoration {
     private final int topPadding;
 
-    public TopPaddingDecoration(int topPadding) {
+    @SuppressWarnings("SameParameterValue") public TopPaddingDecoration(int topPadding) {
         this.topPadding = topPadding;
     }
 

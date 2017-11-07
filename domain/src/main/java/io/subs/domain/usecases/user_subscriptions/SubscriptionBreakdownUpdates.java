@@ -16,7 +16,7 @@ import javax.inject.Inject;
 public class SubscriptionBreakdownUpdates extends
         UseCase<SubscriptionBreakdownUpdates.BreakdownDto, SubscriptionBreakdownUpdates.Params> {
 
-    private IUserSubscriptionRepository subscriptionRepository;
+    private final IUserSubscriptionRepository subscriptionRepository;
 
     @Inject SubscriptionBreakdownUpdates(IUserSubscriptionRepository subscriptionRepository,
             IThreadExecutor threadExecutor, IPostExecutionThread postExecutionThread) {
@@ -35,13 +35,13 @@ public class SubscriptionBreakdownUpdates extends
             this.mData = breakdownModel.getData();
         }
 
-        public float[] getmData() {
+        public float[] getData() {
             return mData;
         }
     }
 
     public static class Params {
-        private Cycle subscriptionCycle;
+        private final Cycle subscriptionCycle;
 
         public Params(Cycle subscriptionCycle) {
             this.subscriptionCycle = subscriptionCycle;

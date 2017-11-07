@@ -2,6 +2,7 @@ package io.subs.android.views.screens.add_subscription;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,10 +25,9 @@ import javax.inject.Inject;
 public class SubscriptionListFragment extends BaseFragment
         implements SubscriptionListPresenter.SubscriptionListView {
     private static final String ARGS_LOAD_TYPE = "load_type";
-    @BindView(R.id.fragment_add_subscription_list) RecyclerView rvSubscriptions;
-    @Inject SubscriptionListPresenter subscriptionListPresenter;
+    @SuppressWarnings("WeakerAccess") @BindView(R.id.fragment_add_subscription_list) RecyclerView rvSubscriptions;
+    @SuppressWarnings("WeakerAccess") @Inject SubscriptionListPresenter subscriptionListPresenter;
     private SubscriptionListListener subscriptionListListener;
-    private SubscriptionType loadType;
 
     public static Fragment createInstance(SubscriptionType loadType) {
         SubscriptionListFragment subscriptionListFragment = new SubscriptionListFragment();
@@ -57,7 +57,7 @@ public class SubscriptionListFragment extends BaseFragment
         }
     }
 
-    @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         registerPresenter(subscriptionListPresenter);
     }
@@ -88,7 +88,7 @@ public class SubscriptionListFragment extends BaseFragment
 
     private void setupRecyclerView() {
         this.subscriptionListPresenter.initializeAdaptor();
-        this.rvSubscriptions.setLayoutManager(new LinearLayoutManager(context()));
+        this.rvSubscriptions.setLayoutManager(new LinearLayoutManager(getContext()));
         this.rvSubscriptions.addItemDecoration(new TopPaddingDecoration(60));
     }
 
@@ -113,8 +113,11 @@ public class SubscriptionListFragment extends BaseFragment
 
     private SubscriptionType currentLoadType() {
         final Bundle arguments = getArguments();
-        Preconditions.checkNotNull(arguments, "Fragment arguments cannot be null");
-        return SubscriptionType.valueOf(arguments.getString(ARGS_LOAD_TYPE));
+        if (arguments != null) {
+            Preconditions.checkNotNull(arguments, "Fragment arguments cannot be null");
+            return SubscriptionType.valueOf(arguments.getString(ARGS_LOAD_TYPE));
+        }
+        return SubscriptionType.ALL;
     }
 
     /**

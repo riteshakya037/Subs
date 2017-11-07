@@ -1,15 +1,10 @@
 package io.subs.android.views.base;
 
 /**
+ * Interface representing a View that will use to load data.
  * @author Ritesh Shakya
  */
-
-import android.content.Context;
-
-/**
- * Interface representing a View that will use to load data.
- */
-public interface LoadDataView {
+@SuppressWarnings("EmptyMethod") public interface LoadDataView {
     /**
      * Show a view with a progress bar indicating a loading process.
      */
@@ -37,8 +32,4 @@ public interface LoadDataView {
      */
     void showError(String message);
 
-    /**
-     * Get a {@link android.content.Context}.
-     */
-    Context context();
 }

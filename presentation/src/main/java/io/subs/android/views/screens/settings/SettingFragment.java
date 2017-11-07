@@ -2,6 +2,7 @@ package io.subs.android.views.screens.settings;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.TextView;
@@ -17,7 +18,8 @@ import javax.inject.Inject;
  * @author Ritesh Shakya
  */
 
-public class SettingFragment extends BaseFragment implements SettingPresenter.SettingView {
+@SuppressWarnings("WeakerAccess") public class SettingFragment extends BaseFragment
+        implements SettingPresenter.SettingView {
     @Inject SettingPresenter settingPresenter;
     @BindView(R.id.fragment_setting_version) TextView tvAppVersion;
     @Inject Context context;
@@ -47,9 +49,6 @@ public class SettingFragment extends BaseFragment implements SettingPresenter.Se
     }
 
     @Override protected void initializeViews(Bundle savedInstanceState) {
-        if (settingPresenter != null) {
-            settingPresenter.setView(this);
-        }
         if (savedInstanceState == null) {
             setAppVersion();
         }
@@ -59,12 +58,12 @@ public class SettingFragment extends BaseFragment implements SettingPresenter.Se
         getComponent(SessionComponent.class).inject(this);
     }
 
-    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
+    @Override public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.registerPresenter(settingPresenter);
     }
 
-    public void setAppVersion() {
+    private void setAppVersion() {
         tvAppVersion.setText(context.getString(R.string.version_string, BuildConfig.VERSION_NAME));
     }
 }

@@ -1,6 +1,7 @@
 package io.subs.android.views.screens.main_screen.user_profile;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.TextView;
@@ -17,7 +18,7 @@ import javax.inject.Inject;
  * @author Ritesh Shakya
  */
 
-public class UserProfileFragment extends BaseFragment
+@SuppressWarnings("WeakerAccess") public class UserProfileFragment extends BaseFragment
         implements UserProfileFragmentPresenter.UserProfileView {
     @BindView(R.id.fragment_user_full_name) TextView tvFullName;
     @BindView(R.id.fragment_user_email) TextView tvUserEmail;
@@ -49,7 +50,7 @@ public class UserProfileFragment extends BaseFragment
         getComponent(UserSubscriptionComponent.class).inject(this);
     }
 
-    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
+    @Override public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.registerPresenter(userProfileFragmentPresenter);
     }

@@ -8,7 +8,7 @@ import java.util.Map;
  */
 
 public abstract class BreakdownModel {
-    private Map<Integer, Float> dataMap;
+    private final Map<Integer, Float> dataMap;
 
     protected BreakdownModel() {
         this.dataMap = new LinkedHashMap<>();

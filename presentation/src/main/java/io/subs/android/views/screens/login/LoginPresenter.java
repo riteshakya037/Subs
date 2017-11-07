@@ -13,8 +13,6 @@ import io.subs.android.mvp.IView;
 
 public interface LoginPresenter extends IPresenter {
 
-    void initializeSession();
-
     void setView(LoginView loginView);
 
     void initialize();

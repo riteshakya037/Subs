@@ -17,9 +17,6 @@ public interface ISessionDataStore {
 
     String getUserID();
 
-    Observable<UserProfile> createProfile();
-
     Observable<RxDto<UserProfile>> getProfile();
 
-    String getRegistrationToken();
 }

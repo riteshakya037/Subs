@@ -3,6 +3,7 @@ package io.subs.android.views.screens.create_subscriptions;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -16,7 +17,6 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.fernandocejas.arrow.checks.Preconditions;
-import io.reactivex.ObservableSource;
 import io.subs.android.R;
 import io.subs.android.di.components.UserSubscriptionComponent;
 import io.subs.android.imageloader.IImageLoader;
@@ -34,7 +34,7 @@ import static io.subs.android.views.component.helper.validation.ValidationHelper
 /**
  * @author Ritesh Shakya
  */
-public class CreateSubscriptionFragment extends BaseFragment
+@SuppressWarnings("WeakerAccess") public class CreateSubscriptionFragment extends BaseFragment
         implements CreateSubscriptionPresenter.CreateSubscriptionView {
     private static final String ARGS_USER_SUBSCRIPTION = "user_subscription";
     private static final String ARGS_EDIT_MODE = "edit_mode";
@@ -83,8 +83,7 @@ public class CreateSubscriptionFragment extends BaseFragment
     }
 
     private void setupObservables() {
-        createSubscriptionPresenter.initializeValidationObservers(
-                Arrays.<ObservableSource<Boolean>>asList(
+        createSubscriptionPresenter.initializeValidationObservers(Arrays.asList(
                         getTextValidationObservable(etSubscriptionName),
                         getTextValidationObservable(etSubscriptionDescription),
                         getTextValidationObservable(etSubscriptionAmount)));
@@ -110,8 +109,11 @@ public class CreateSubscriptionFragment extends BaseFragment
 
     private UserSubscription currentLoadType() {
         final Bundle arguments = getArguments();
-        Preconditions.checkNotNull(arguments, "Fragment arguments cannot be null");
-        return Parcels.unwrap(arguments.getParcelable(ARGS_USER_SUBSCRIPTION));
+        if (arguments != null) {
+            Preconditions.checkNotNull(arguments, "Fragment arguments cannot be null");
+            return Parcels.unwrap(arguments.getParcelable(ARGS_USER_SUBSCRIPTION));
+        }
+        return new UserSubscription();
     }
 
     @Override protected void initializeViews(Bundle savedInstanceState) {
@@ -128,14 +130,14 @@ public class CreateSubscriptionFragment extends BaseFragment
         }
     }
 
-    @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         this.registerPresenter(createSubscriptionPresenter);
     }
 
     private void changeModeToEdit() {
         btnDeleteSubscription.setVisibility(View.VISIBLE);
-        tvFragmentTitle.setText("Update Subscription");
-        btnAddSubscription.setText("Update");
+        tvFragmentTitle.setText(R.string.update_subscription);
+        btnAddSubscription.setText(R.string.update);
     }
 
     @Override public void setName(String subscriptionName) {
@@ -182,7 +184,7 @@ public class CreateSubscriptionFragment extends BaseFragment
     }
 
     private boolean isEditMode() {
-        return getArguments().getBoolean(ARGS_EDIT_MODE, false);
+        return getArguments() != null && getArguments().getBoolean(ARGS_EDIT_MODE, false);
     }
 
     @Override public void setAmountCurrencyMask(String symbol) {
@@ -198,7 +200,9 @@ public class CreateSubscriptionFragment extends BaseFragment
     }
 
     @Override public void cardSuccessfullyCreated() {
-        getActivity().setResult(Activity.RESULT_OK);
-        getActivity().finish();
+        if (getActivity() != null) {
+            getActivity().setResult(Activity.RESULT_OK);
+            getActivity().finish();
+        }
     }
 }

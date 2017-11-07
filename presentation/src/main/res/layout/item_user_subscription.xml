@@ -13,6 +13,7 @@
         app:cardBackgroundColor="#FE4818"
         app:cardCornerRadius="4dp"
         app:elevation="0dp"
+        android:focusable="true"
         >
     <RelativeLayout
             android:layout_width="match_parent"
@@ -27,6 +28,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_centerVertical="true"
+                android:contentDescription="@string/subscription_logo"
                 />
         <TextView
                 android:id="@+id/item_subscription_amount"

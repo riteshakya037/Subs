@@ -1,6 +1,7 @@
 package io.subs.android.views.screens.main_screen.user_details;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
@@ -16,7 +17,7 @@ import javax.inject.Inject;
  * @author Ritesh Shakya
  */
 
-public class UserSubscriptionDetailFragment extends BaseFragment
+@SuppressWarnings("WeakerAccess") public class UserSubscriptionDetailFragment extends BaseFragment
         implements UserSubscriptionDetailPresenter.UserSubscriptionDetailView {
     @Inject UserSubscriptionDetailPresenter userSubscriptionDetailPresenter;
     @BindView(R.id.fragment_user_subs_tabs) TabLayout mTabLayout;
@@ -48,7 +49,7 @@ public class UserSubscriptionDetailFragment extends BaseFragment
         getComponent(UserSubscriptionComponent.class).inject(this);
     }
 
-    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
+    @Override public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.registerPresenter(userSubscriptionDetailPresenter);
     }

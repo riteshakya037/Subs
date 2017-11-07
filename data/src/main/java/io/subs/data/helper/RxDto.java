@@ -5,7 +5,7 @@ package io.subs.data.helper;
  */
 
 public class RxDto<T> {
-    private T data;
+    private final T data;
 
     public RxDto(T data) {
         super();

@@ -16,7 +16,6 @@ public class MainActivity extends DaggerBaseActivity<UserSubscriptionComponent>
         implements MainActivityFragmentPresenter.MainActivityFlowListener,
         UserProfileFragmentPresenter.UserProfileFlowListener,
         UserSubscriptionDetailPresenter.UserSubscriptionDetailFlowListener {
-    private static final String TAG = "MainActivity";
 
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, MainActivity.class);

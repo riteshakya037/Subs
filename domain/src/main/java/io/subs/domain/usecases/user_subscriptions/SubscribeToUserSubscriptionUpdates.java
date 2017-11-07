@@ -16,7 +16,7 @@ import javax.inject.Inject;
 public class SubscribeToUserSubscriptionUpdates extends
         UseCase<SubscribeToUserSubscriptionUpdates.UserSubscriptionDto, SubscribeToUserSubscriptionUpdates.Params> {
 
-    private IUserSubscriptionRepository subscriptionRepository;
+    private final IUserSubscriptionRepository subscriptionRepository;
 
     @Inject SubscribeToUserSubscriptionUpdates(IUserSubscriptionRepository subscriptionRepository,
             IThreadExecutor threadExecutor, IPostExecutionThread postExecutionThread) {
@@ -34,7 +34,7 @@ public class SubscribeToUserSubscriptionUpdates extends
 
     public static class UserSubscriptionDto {
         private final UserSubscription subscription;
-        private Action mAction;
+        private final Action mAction;
 
         public UserSubscriptionDto(@NonNull UserSubscription subscription, @NonNull Action action) {
             this.subscription = subscription;
@@ -48,15 +48,11 @@ public class SubscribeToUserSubscriptionUpdates extends
         public Action getAction() {
             return mAction;
         }
-
-        public void setAction(Action action) {
-            this.mAction = action;
-        }
     }
 
     public static class Params {
         private Cycle subscriptionCycle;
-        private boolean isAll;
+        private final boolean isAll;
 
         public Params(Cycle subscriptionCycle) {
             this.subscriptionCycle = subscriptionCycle;

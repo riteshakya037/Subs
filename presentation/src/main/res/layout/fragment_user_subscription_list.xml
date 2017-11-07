@@ -19,7 +19,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="My Subscriptions"
+                android:text="@string/my_subscriptions"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
                 />
@@ -34,6 +34,7 @@
                 android:textAllCaps="false"
                 tools:targetApi="lollipop"
                 style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                android:contentDescription="@string/add_subscription"
                 />
     </android.support.v7.widget.Toolbar>
     <LinearLayout

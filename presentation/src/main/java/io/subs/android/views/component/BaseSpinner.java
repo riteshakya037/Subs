@@ -5,8 +5,8 @@ package io.subs.android.views.component;
  */
 
 public class BaseSpinner {
-    public String id;
-    public String name;
+    private final String id;
+    private final String name;
 
     public BaseSpinner(String id, String name) {
         this.id = id;
@@ -15,6 +15,10 @@ public class BaseSpinner {
 
     @Override public String toString() {
         return name;
+    }
+
+    public String getId() {
+        return id;
     }
 
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass") @Override

@@ -15,7 +15,7 @@ public interface SplashScreenPresenter extends IPresenter {
 
     interface SplashScreenView extends IView {
 
-        void showError(String message);
+        @SuppressWarnings({ "EmptyMethod", "unused" }) void showError(String message);
     }
 
     interface SplashScreenFlowListener extends FlowListener {

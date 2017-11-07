@@ -32,7 +32,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
-    protected abstract int getContextView();
+    @SuppressWarnings("SameReturnValue") protected abstract int getContextView();
 
     protected abstract void initializeActivity(Bundle savedInstanceState);
 
@@ -42,7 +42,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param containerViewId The container view to where add the fragment.
      * @param fragment The fragment to be added.
      */
-    protected void addFragment(int containerViewId, Fragment fragment) {
+    @SuppressWarnings("SameParameterValue") protected void addFragment(int containerViewId, Fragment fragment) {
         final FragmentTransaction fragmentTransaction =
                 this.getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(containerViewId, fragment);

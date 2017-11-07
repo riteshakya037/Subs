@@ -14,9 +14,9 @@ import javax.inject.Inject;
 public class UserProfileFragmentPresenterImpl extends BaseRxPresenter
         implements UserProfileFragmentPresenter {
     private UserProfileView userProfileView;
-    private UserProfileFlowListener userProfileFlowListener;
-    private GetUserProfile getUserProfile;
-    private SubscribeToUserSubscriptionCountUpdates subscribeToUserSubscriptionCountUpdates;
+    private final UserProfileFlowListener userProfileFlowListener;
+    private final GetUserProfile getUserProfile;
+    private final SubscribeToUserSubscriptionCountUpdates subscribeToUserSubscriptionCountUpdates;
     private int maxSubs = 0;
     private int currentSubs = 0;
 

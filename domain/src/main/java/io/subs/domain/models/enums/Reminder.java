@@ -6,9 +6,9 @@ package io.subs.domain.models.enums;
 
 public enum Reminder {
     NEVER("Never");
-    private String friendlyName;
+    private final String friendlyName;
 
-    Reminder(String friendlyName) {
+    @SuppressWarnings("SameParameterValue") Reminder(String friendlyName) {
         this.friendlyName = friendlyName;
     }
 

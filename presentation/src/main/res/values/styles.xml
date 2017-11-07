@@ -31,22 +31,8 @@
         <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
     </style>
 
-    <style name="AppTheme.Widget"/>
-
     <style name="AppTheme.Widget.TextView" parent="android:Widget.Holo.Light.TextView">
         <item name="fontPath">fonts/ProductSansRegular.ttf</item>
-    </style>
-
-    <style name="AppTheme.Widget.TextView.Inverse" parent="android:Widget.Holo.TextView">
-        <item name="fontPath">fonts/ProductSansRegular.ttf</item>
-    </style>
-
-    <style name="ProductSansFont">
-        <item name="fontPath">fonts/ProductSans-Regular.ttf</item>
-    </style>
-
-    <style name="ProductSansFont.Bold">
-        <item name="fontPath">fonts/ProductSans-Bold.ttf</item>
     </style>
 
     <style name="BlackswordFont" parent="TextAppearance.AppCompat.Large">

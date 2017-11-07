@@ -1,6 +1,7 @@
 package io.subs.android.views.screens.main_screen.user_subscriptions;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +20,7 @@ import javax.inject.Inject;
  * @author Ritesh Shakya
  */
 
-public class UserSubscriptionListFragment extends BaseFragment
+@SuppressWarnings("WeakerAccess") public class UserSubscriptionListFragment extends BaseFragment
         implements UserSubscriptionListPresenter.UserSubscriptionListView {
     @BindView(R.id.fragment_user_subscription_list) RecyclerView rvSubscriptions;
     @BindView(R.id.fragment_user_subscription_add) ImageButton btnAddSubscription;
@@ -47,7 +48,7 @@ public class UserSubscriptionListFragment extends BaseFragment
         getComponent(UserSubscriptionComponent.class).inject(this);
     }
 
-    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
+    @Override public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.registerPresenter(userSubscriptionListPresenter);
         if (savedInstanceState == null) {
@@ -83,7 +84,7 @@ public class UserSubscriptionListFragment extends BaseFragment
 
     private void setupRecyclerView() {
         this.userSubscriptionListPresenter.initializeAdaptor();
-        this.rvSubscriptions.setLayoutManager(new LinearLayoutManager(context()));
+        this.rvSubscriptions.setLayoutManager(new LinearLayoutManager(getContext()));
         this.rvSubscriptions.addItemDecoration(new TopPaddingDecoration(60));
     }
 

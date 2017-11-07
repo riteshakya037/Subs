@@ -13,7 +13,7 @@ import javax.inject.Inject;
  */
 
 public class CreateOrUpdateSubscription extends UseCase<Void, UserSubscription> {
-    private IUserSubscriptionRepository subscriptionRepository;
+    private final IUserSubscriptionRepository subscriptionRepository;
 
     @Inject public CreateOrUpdateSubscription(IUserSubscriptionRepository subscriptionRepository,
             IThreadExecutor threadExecutor, IPostExecutionThread postExecutionThread) {

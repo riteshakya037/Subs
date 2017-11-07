@@ -29,7 +29,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
                 android:background="?android:selectableItemBackgroundBorderless"
-                android:text="Add"
+                android:text="@string/add"
                 android:textAllCaps="false"
                 android:textColor="@color/colorDefault"
                 android:visibility="gone"
@@ -64,7 +64,8 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/common_google_signin_btn_icon_dark"
+                    app:srcCompat="@color/colorPrimary"
+                    android:contentDescription="@string/subscription_logo"
                     />
             <io.subs.android.views.component.MaskEditText
                     android:id="@+id/fragment_create_subscription_amount"
@@ -98,7 +99,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:background="?android:selectableItemBackgroundBorderless"
-                    android:text="Delete"
+                    android:text="@string/delete"
                     android:textAllCaps="false"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium.Inverse"
                     android:textColor="@android:color/white"
@@ -128,25 +129,25 @@
                     <LinearLayout
                             style="@style/CreateSubForm.Row">
                         <TextView
-                                android:text="Name"
+                                android:text="@string/name"
                                 style="@style/CreateSubForm.Row.Label"
                                 />
                         <EditText
                                 android:id="@+id/fragment_create_subscription_name"
-                                android:hint="Enter Name"
-                                tools:text="Xbox Live"
+                                android:hint="@string/enter_name"
+                                tools:text="XBox Live"
                                 style="@style/CreateSubForm.Row.EditText"
                                 />
                     </LinearLayout>
                     <LinearLayout
                             style="@style/CreateSubForm.Row">
                         <TextView
-                                android:text="Description"
+                                android:text="@string/description"
                                 style="@style/CreateSubForm.Row.Label"
                                 />
                         <EditText
                                 android:id="@+id/fragment_create_subscription_description"
-                                android:hint="Enter Description"
+                                android:hint="@string/enter_description"
                                 tools:text="Online Gaming"
                                 style="@style/CreateSubForm.Row.EditText"
                                 />
@@ -154,7 +155,7 @@
                     <LinearLayout
                             style="@style/CreateSubForm.Row">
                         <TextView
-                                android:text="Cycle"
+                                android:text="@string/cycle"
                                 style="@style/CreateSubForm.Row.Label"
                                 />
                         <io.subs.android.views.component.CustomSpinnerView
@@ -165,7 +166,7 @@
                     <LinearLayout
                             style="@style/CreateSubForm.Row">
                         <TextView
-                                android:text="First Bill"
+                                android:text="@string/first_bill"
                                 style="@style/CreateSubForm.Row.Label"
                                 />
                         <io.subs.android.views.component.CustomDateView
@@ -176,7 +177,7 @@
                     <LinearLayout
                             style="@style/CreateSubForm.Row">
                         <TextView
-                                android:text="Duration"
+                                android:text="@string/duration"
                                 style="@style/CreateSubForm.Row.Label"
                                 />
                         <io.subs.android.views.component.CustomSpinnerView
@@ -187,7 +188,7 @@
                     <LinearLayout
                             style="@style/CreateSubForm.Row">
                         <TextView
-                                android:text="Reminder"
+                                android:text="@string/reminder"
                                 style="@style/CreateSubForm.Row.Label"
                                 />
                         <io.subs.android.views.component.CustomSpinnerView
@@ -198,7 +199,7 @@
                     <LinearLayout
                             style="@style/CreateSubForm.Row">
                         <TextView
-                                android:text="Currency"
+                                android:text="@string/currency"
                                 style="@style/CreateSubForm.Row.Label"
                                 />
                         <io.subs.android.views.component.CustomSpinnerView

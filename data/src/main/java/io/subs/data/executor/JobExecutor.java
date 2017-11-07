@@ -19,7 +19,7 @@ import javax.inject.Singleton;
     @Inject JobExecutor() {
         this.threadPoolExecutor =
                 new ThreadPoolExecutor(NUMBER_OF_CORES * 2, NUMBER_OF_CORES * 2, 10L,
-                        TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(),
+                        TimeUnit.SECONDS, new LinkedBlockingQueue<>(),
                         new JobThreadFactory());
     }
 

@@ -11,10 +11,6 @@ import io.subs.android.mvp.IView;
 
 public interface SettingPresenter extends IPresenter {
 
-    void setView(SettingView settingView);
-
-    void initialize();
-
     void signOutUser();
 
     void shareApplication();

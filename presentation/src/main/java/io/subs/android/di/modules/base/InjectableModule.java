@@ -7,14 +7,14 @@ package io.subs.android.di.modules.base;
 public class InjectableModule<T> {
     private T mActivity;
 
-    public InjectableModule() {
+    protected InjectableModule() {
     }
 
-    public InjectableModule(T mActivity) {
+    protected InjectableModule(T mActivity) {
         this.mActivity = mActivity;
     }
 
-    public T getBoundClass() {
+    protected T getBoundClass() {
         return mActivity;
     }
 }

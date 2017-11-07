@@ -1,6 +1,7 @@
 package io.subs.android.views.screens.splash;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import io.subs.android.R;
 import io.subs.android.di.components.SessionComponent;
@@ -13,7 +14,7 @@ import javax.inject.Inject;
 
 public class SplashScreenFragment extends BaseFragment
         implements SplashScreenPresenter.SplashScreenView {
-    @Inject SplashScreenPresenter splashScreenPresenter;
+    @SuppressWarnings("WeakerAccess") @Inject SplashScreenPresenter splashScreenPresenter;
 
     @Override protected int getLayout() {
         return R.layout.fragment_splash_screen;
@@ -30,7 +31,7 @@ public class SplashScreenFragment extends BaseFragment
         getComponent(SessionComponent.class).inject(this);
     }
 
-    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
+    @Override public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.registerPresenter(splashScreenPresenter);
     }

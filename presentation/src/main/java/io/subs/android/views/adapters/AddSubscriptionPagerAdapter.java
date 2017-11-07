@@ -14,7 +14,7 @@ import javax.inject.Inject;
  */
 
 public class AddSubscriptionPagerAdapter extends FragmentStatePagerAdapter {
-    private Context context;
+    private final Context context;
 
     @Inject public AddSubscriptionPagerAdapter(Context context, FragmentManager fm) {
         super(fm);

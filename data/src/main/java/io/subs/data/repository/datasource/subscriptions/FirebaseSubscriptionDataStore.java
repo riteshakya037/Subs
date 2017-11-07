@@ -6,11 +6,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Cancellable;
-import io.reactivex.functions.Predicate;
 import io.reactivex.subjects.ReplaySubject;
 import io.subs.data.listeners.FirebaseChildListener;
 import io.subs.domain.DatabaseNames;
@@ -26,9 +22,8 @@ import javax.inject.Singleton;
  * @author Ritesh Shakya
  */
 @Singleton public class FirebaseSubscriptionDataStore implements ISubscriptionDataStore {
-    private static final String TAG = "FirebaseSubscriptionDat";
     private final ReplaySubject<SubscriptionDto> mUpdatePublisher = ReplaySubject.create();
-    private DatabaseReference databaseReference;
+    private final DatabaseReference databaseReference;
 
     @Inject public FirebaseSubscriptionDataStore() {
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
@@ -41,50 +36,39 @@ import javax.inject.Singleton;
 
     @Override public Observable<SubscriptionDto> subscribe(Params params) {
         if (params.getSubscriptionType() == SubscriptionType.POPULAR) {
-            return mUpdatePublisher.filter(new Predicate<SubscriptionDto>() {
-                @Override public boolean test(@NonNull SubscriptionDto subscriptionDto)
-                        throws Exception {
-                    return subscriptionDto.getSubscription().isPopular();
-                }
-            });
+            return mUpdatePublisher.filter(
+                    subscriptionDto -> subscriptionDto.getSubscription().isPopular());
         } else {
             return mUpdatePublisher;
         }
     }
 
     private Observable<Void> observe(final DatabaseReference ref) {
-        return Observable.create(new ObservableOnSubscribe<DataSnapshot>() {
-            @Override public void subscribe(@NonNull ObservableEmitter<DataSnapshot> emitter)
-                    throws Exception {
-                final ChildEventListener listener =
-                        ref.addChildEventListener(new FirebaseChildListener<Subscription>() {
+        return Observable.create((ObservableOnSubscribe<DataSnapshot>) emitter -> {
+            final ChildEventListener listener =
+                    ref.addChildEventListener(new FirebaseChildListener<Subscription>() {
 
-                            @Override public void onChildAdded(Subscription snapShot, String s) {
-                                    mUpdatePublisher.onNext(new SubscriptionDto(snapShot,
-                                            Action.ADDED));
-                            }
-
-                            @Override public void onChildChanged(Subscription snapShot, String s) {
+                        @Override public void onChildAdded(Subscription snapShot) {
                                 mUpdatePublisher.onNext(new SubscriptionDto(snapShot,
-                                        Action.UPDATED));
-                            }
+                                        Action.ADDED));
+                        }
 
-                            @Override public void onChildRemoved(Subscription snapShot) {
-                                mUpdatePublisher.onNext(new SubscriptionDto(snapShot,
-                                        Action.REMOVED));
-                            }
+                        @Override public void onChildChanged(Subscription snapShot) {
+                            mUpdatePublisher.onNext(new SubscriptionDto(snapShot,
+                                    Action.UPDATED));
+                        }
 
-                            @Override public void onCancelled(DatabaseError databaseError) {
-                                mUpdatePublisher.onError(databaseError.toException());
-                            }
-                        });
+                        @Override public void onChildRemoved(Subscription snapShot) {
+                            mUpdatePublisher.onNext(new SubscriptionDto(snapShot,
+                                    Action.REMOVED));
+                        }
 
-                emitter.setCancellable(new Cancellable() {
-                    @Override public void cancel() throws Exception {
-                        ref.removeEventListener(listener);
-                    }
-                });
-            }
+                        @Override public void onCancelled(DatabaseError databaseError) {
+                            mUpdatePublisher.onError(databaseError.toException());
+                        }
+                    });
+
+            emitter.setCancellable(() -> ref.removeEventListener(listener));
         }).cast(Void.TYPE);
     }
 }

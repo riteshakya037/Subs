@@ -9,7 +9,6 @@ import io.subs.android.di.modules.repository_modules.SubscriptionRepoModule;
 import io.subs.android.di.modules.repository_modules.UserSubscriptionRepoModule;
 import io.subs.android.imageloader.IImageLoader;
 import io.subs.android.views.base.BaseActivity;
-import io.subs.android.views.screens.splash.SplashScreenActivity;
 import io.subs.domain.executor.IPostExecutionThread;
 import io.subs.domain.executor.IThreadExecutor;
 import io.subs.domain.repository.ISessionRepository;
@@ -20,14 +19,12 @@ import javax.inject.Singleton;
 /**
  * A component whose lifetime is the life of the application.
  */
-@Singleton // Constraints this component to one-per-application or unscoped bindings.
+@Singleton // Constraints this component to one-per-application.
 @Component(modules = {
         ApplicationModule.class, SubscriptionRepoModule.class, UserSubscriptionRepoModule.class,
         SessionRepoModule.class
 }) public interface ApplicationComponent {
     void inject(BaseActivity baseActivity);
-
-    void inject(SplashScreenActivity baseActivity);
 
     //Exposed to sub-graphs.
     Context context();

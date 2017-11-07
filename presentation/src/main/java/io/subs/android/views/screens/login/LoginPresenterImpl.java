@@ -2,17 +2,13 @@ package io.subs.android.views.screens.login;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 import io.reactivex.observers.DisposableObserver;
@@ -27,11 +23,11 @@ import javax.inject.Inject;
 public class LoginPresenterImpl extends BaseRxPresenter implements LoginPresenter {
 
     private static final String TAG = "LoginPresenterImpl";
-    private Context context;
-    private GetLoginStatus getLoginStatus;
-    private LoginFlowListener loginFlowListener;
+    private final Context context;
+    private final GetLoginStatus getLoginStatus;
+    private final LoginFlowListener loginFlowListener;
     private LoginView loginView;
-    private GoogleApiClient mGoogleApiClient;
+    private final GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
@@ -49,11 +45,7 @@ public class LoginPresenterImpl extends BaseRxPresenter implements LoginPresente
 
     @Override public void initialize() {
         mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                initializeSession();
-            }
-        };
+        mAuthListener = firebaseAuth -> initializeSession();
     }
 
     @Override public void validateResult(Intent data) {
@@ -78,25 +70,22 @@ public class LoginPresenterImpl extends BaseRxPresenter implements LoginPresente
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(loginView.getActivity(),
-                        new OnCompleteListener<AuthResult>() {
-                            @Override public void onComplete(@NonNull Task<AuthResult> task) {
-                                Log.d(TAG,
-                                        "signInWithCredential:onComplete:" + task.isSuccessful());
+                .addOnCompleteListener(loginView.getActivity(), task -> {
+                    Log.d(TAG,
+                            "signInWithCredential:onComplete:" + task.isSuccessful());
 
-                                // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
-                                if (!task.isSuccessful()) {
-                                    Log.w(TAG, "signInWithCredential", task.getException());
-                                    Toast.makeText(context, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
+                    // If sign in fails, display a message to the user. If sign in succeeds
+                    // the auth state listener will be notified and logic to handle the
+                    // signed in user can be handled in the listener.
+                    if (!task.isSuccessful()) {
+                        Log.w(TAG, "signInWithCredential", task.getException());
+                        Toast.makeText(context, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
-    @Override public void initializeSession() {
+    private void initializeSession() {
         manage(getLoginStatus.execute(new DisposableObserver<GetLoginStatus.LoginStatusType>() {
             @Override public void onNext(@io.reactivex.annotations.NonNull
                     GetLoginStatus.LoginStatusType loginStatusType) {

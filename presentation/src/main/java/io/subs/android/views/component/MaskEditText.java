@@ -20,7 +20,7 @@ import io.subs.android.R;
  * @author Ritesh Shakya
  */
 
-public class MaskEditText extends LinearLayout implements TextWatcher {
+@SuppressWarnings("WeakerAccess") public class MaskEditText extends LinearLayout implements TextWatcher {
     @BindView(R.id.custom_mask_edit_text_mask) TextView tvMaskText;
     @BindView(R.id.custom_mask_edit_text_value) EditText etValue;
     private Context mContext;
@@ -35,10 +35,10 @@ public class MaskEditText extends LinearLayout implements TextWatcher {
 
     public MaskEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
-        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.CustomView);
-        init(context, typedArray.getString(R.styleable.CustomView_maskText),
-                typedArray.getString(R.styleable.CustomView_hint),
-                typedArray.getInt(R.styleable.CustomView_android_inputType, 0));
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.MaskEditText);
+        init(context, typedArray.getString(R.styleable.MaskEditText_maskText),
+                typedArray.getString(R.styleable.MaskEditText_hint),
+                typedArray.getInt(R.styleable.MaskEditText_android_inputType, 0));
         typedArray.recycle();
     }
 

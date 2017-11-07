@@ -12,7 +12,7 @@ import javax.inject.Inject;
  */
 
 public class DeleteSubscription extends UseCase<Void, String> {
-    private IUserSubscriptionRepository subscriptionRepository;
+    private final IUserSubscriptionRepository subscriptionRepository;
 
     @Inject public DeleteSubscription(IUserSubscriptionRepository subscriptionRepository,
             IThreadExecutor threadExecutor, IPostExecutionThread postExecutionThread) {

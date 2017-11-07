@@ -37,6 +37,7 @@ import javax.inject.Singleton;
         }
     }
 
+    @SuppressWarnings("SameParameterValue")
     public void navigateToUpdateSubscription(Activity context, Subscription subscription,
             int requestCode) {
         if (context != null) {

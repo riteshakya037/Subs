@@ -11,7 +11,6 @@ import io.subs.android.views.base.DaggerBaseActivity;
 
 public class LoginActivity extends DaggerBaseActivity<SessionComponent>
         implements LoginPresenter.LoginFlowListener {
-    private static final String TAG = LoginActivity.class.getSimpleName();
 
     public static Intent getCallingIntent(Activity context) {
         return new Intent(context, LoginActivity.class);

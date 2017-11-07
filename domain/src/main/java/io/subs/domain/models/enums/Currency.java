@@ -7,10 +7,10 @@ package io.subs.domain.models.enums;
 public enum Currency {
     USD("USD", "$");
 
-    private String friendlyName;
-    private String symbol;
+    private final String friendlyName;
+    private final String symbol;
 
-    Currency(String name, String symbol) {
+    @SuppressWarnings("SameParameterValue") Currency(String name, String symbol) {
         this.symbol = symbol;
         this.friendlyName = name + " (" + symbol + ")";
     }

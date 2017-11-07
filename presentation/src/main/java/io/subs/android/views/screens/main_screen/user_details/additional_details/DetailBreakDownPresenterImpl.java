@@ -14,7 +14,7 @@ import javax.inject.Inject;
 public class DetailBreakDownPresenterImpl extends BaseRxPresenter
         implements DetailBreakDownPresenter {
     private DetailBreakDownView detailBreakDownView;
-    private SubscriptionBreakdownUpdates subscriptionBreakdownUpdates;
+    private final SubscriptionBreakdownUpdates subscriptionBreakdownUpdates;
 
     @Inject
     public DetailBreakDownPresenterImpl(SubscriptionBreakdownUpdates subscriptionBreakdownUpdates) {
@@ -25,28 +25,13 @@ public class DetailBreakDownPresenterImpl extends BaseRxPresenter
         this.detailBreakDownView = mainActivityView;
     }
 
-    @Override public void initialize() {
-        detailBreakDownView.updateWeeklyChart(new float[7]);
-        detailBreakDownView.updateMonthlyChart(new float[5]);
-        detailBreakDownView.updateYearlyChart(new float[12]);
-    }
-
     @Override public void initializeObservers() {
-        initializeIndividualObservers(Cycle.WEEKLY, new BreakDownListener() {
-            @Override public void update(float[] values) {
-                detailBreakDownView.updateWeeklyChart(values);
-            }
-        });
-        initializeIndividualObservers(Cycle.MONTHLY, new BreakDownListener() {
-            @Override public void update(float[] values) {
-                detailBreakDownView.updateMonthlyChart(values);
-            }
-        });
-        initializeIndividualObservers(Cycle.YEARLY, new BreakDownListener() {
-            @Override public void update(float[] values) {
-                detailBreakDownView.updateYearlyChart(values);
-            }
-        });
+        initializeIndividualObservers(Cycle.WEEKLY,
+                values -> detailBreakDownView.updateWeeklyChart(values));
+        initializeIndividualObservers(Cycle.MONTHLY,
+                values -> detailBreakDownView.updateMonthlyChart(values));
+        initializeIndividualObservers(Cycle.YEARLY,
+                values -> detailBreakDownView.updateYearlyChart(values));
     }
 
     @Override public int getMaxHeight(float[] values) {
@@ -65,7 +50,7 @@ public class DetailBreakDownPresenterImpl extends BaseRxPresenter
                 new DisposableObserver<SubscriptionBreakdownUpdates.BreakdownDto>() {
                     @Override public void onNext(
                             @NonNull SubscriptionBreakdownUpdates.BreakdownDto breakdownDto) {
-                        breakDownListener.update(breakdownDto.getmData());
+                        breakDownListener.update(breakdownDto.getData());
                     }
 
                     @Override public void onError(@NonNull Throwable e) {

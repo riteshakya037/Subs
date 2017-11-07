@@ -6,9 +6,9 @@ import java.io.File;
  * @author Ritesh Shakya
  */
 
-public class DatabaseNames {
+@SuppressWarnings("unused") public class DatabaseNames {
     public static final String TABLE_SUBSCRIPTIONS = "subs";
-    public static final String TALBE_USER_DATA = "users";
+    public static final String TABLE_USER_DATA = "users";
     public static final String PATH_DEFAULT_IMAGE = "generic/default.png";
     public static final String DELETED_FLAG = "isDeleted";
     public static final String POPULAR_FLAG = "isPopular";

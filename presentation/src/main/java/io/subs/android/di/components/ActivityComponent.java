@@ -15,5 +15,5 @@ import io.subs.android.di.modules.ActivityModule;
 @PerActivity @Component(dependencies = ApplicationComponent.class, modules = ActivityModule.class)
 interface ActivityComponent {
     //Exposed to sub-graphs.
-    Activity activity();
+    @SuppressWarnings("unused") Activity activity();
 }

@@ -10,7 +10,7 @@ import javax.inject.Inject;
 
 public class MainActivityFragmentPresenterImpl extends BaseRxPresenter implements
         MainActivityFragmentPresenter {
-    private MainScreenPagerAdapter mPagerAdapter;
+    private final MainScreenPagerAdapter mPagerAdapter;
     private MainActivityView mainActivityView;
 
     @Inject public MainActivityFragmentPresenterImpl(MainScreenPagerAdapter mPagerAdapter) {
@@ -19,9 +19,6 @@ public class MainActivityFragmentPresenterImpl extends BaseRxPresenter implement
 
     @Override public void setView(MainActivityView mainActivityView) {
         this.mainActivityView = mainActivityView;
-    }
-
-    @Override public void initialize() {
     }
 
     @Override public void initializeAdaptor() {

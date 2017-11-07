@@ -7,9 +7,9 @@ import android.support.annotation.Nullable;
  */
 public class ValidationResult<T> {
 
-    private boolean valid;
-    private String reason;
-    private T data;
+    private final boolean valid;
+    private final String reason;
+    private final T data;
 
     private ValidationResult(boolean valid, @Nullable String reason, T t) {
         this.valid = valid;
@@ -21,6 +21,7 @@ public class ValidationResult<T> {
         return new ValidationResult<>(true, null, t);
     }
 
+    @SuppressWarnings("SameParameterValue")
     public static <T> ValidationResult<T> failure(@Nullable String reason, T t) {
         return new ValidationResult<>(false, reason, t);
     }
@@ -33,7 +34,7 @@ public class ValidationResult<T> {
         return reason;
     }
 
-    public T getData() {
+    @SuppressWarnings("unused") public T getData() {
         return data;
     }
 }

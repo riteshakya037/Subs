@@ -22,7 +22,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="Settings"
+                android:text="@string/settings"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
                 />
@@ -55,14 +55,13 @@
             >
 
         <Button
-                android:id="@+id/fragment_setting_upgrade"
                 android:enabled="false"
-                android:text="Upgrade to unlock more"
+                android:text="@string/go_pro_to_unlock_more"
                 style="@style/AppStyle.SettingItem"
                 />
         <Button
                 android:id="@+id/fragment_setting_sign_out"
-                android:text="Sign Out"
+                android:text="@string/sign_out"
                 android:textColor="@color/colorRed"
                 style="@style/AppStyle.SettingItem"
                 />
@@ -82,18 +81,18 @@
             >
         <Button
                 android:id="@+id/fragment_setting_rate"
-                android:text="Rate the App"
+                android:text="@string/rate_the_app"
                 android:textColor="@color/colorGreen"
                 style="@style/AppStyle.SettingItem"
                 />
         <Button
                 android:id="@+id/fragment_setting_share"
-                android:text="Share"
+                android:text="@string/share"
                 style="@style/AppStyle.SettingItem"
                 />
         <Button
                 android:id="@+id/fragment_setting_feedback"
-                android:text="Send feedback"
+                android:text="@string/send_feedback"
                 style="@style/AppStyle.SettingItem"
                 />
     </LinearLayout>

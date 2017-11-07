@@ -2,6 +2,7 @@ package io.subs.android.views.screens.main_screen.user_details.additional_detail
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -19,7 +20,7 @@ import javax.inject.Inject;
  * @author Ritesh Shakya
  */
 
-public class DetailBreakDownFragment extends BaseFragment
+@SuppressWarnings("WeakerAccess") public class DetailBreakDownFragment extends BaseFragment
         implements DetailBreakDownPresenter.DetailBreakDownView {
     @Inject DetailBreakDownPresenter detailBreakDownPresenter;
 
@@ -48,7 +49,7 @@ public class DetailBreakDownFragment extends BaseFragment
         getComponent(UserSubscriptionComponent.class).inject(this);
     }
 
-    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
+    @Override public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.registerPresenter(detailBreakDownPresenter);
     }

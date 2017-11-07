@@ -3,8 +3,6 @@ package io.subs.android.views.screens.create_subscriptions;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
 import io.subs.android.mvp.BaseRxPresenter;
 import io.subs.android.repository.SpinnerDataRepository;
@@ -17,7 +15,6 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 import javax.inject.Inject;
-import org.joda.time.format.DateTimeFormat;
 
 import static io.subs.domain.models.constants.Constants.DATE_FORMAT;
 
@@ -29,8 +26,8 @@ public class CreateSubscriptionPresenterImpl extends BaseRxPresenter
         implements CreateSubscriptionPresenter {
 
     private CreateSubscriptionView createSubscriptionView;
-    private CreateOrUpdateSubscription createOrUpdateSubscription;
-    private DeleteSubscription deleteSubscription;
+    private final CreateOrUpdateSubscription createOrUpdateSubscription;
+    private final DeleteSubscription deleteSubscription;
 
     @Inject
     public CreateSubscriptionPresenterImpl(CreateOrUpdateSubscription createOrUpdateSubscription,
@@ -108,27 +105,18 @@ public class CreateSubscriptionPresenterImpl extends BaseRxPresenter
 
     @Override public void initializeValidationObservers(
             List<ObservableSource<Boolean>> textValidationObservable) {
-        manage(Observable.combineLatest(textValidationObservable,
-                new Function<Object[], Boolean>() {
-                    @Override public Boolean apply(@NonNull Object[] objects) throws Exception {
-                        // // TODO: 0025, September 25, 2017 Find a better solution
-                        for (Object o : objects) {
-                            if (!(boolean) o) return false;
-                        }
-                        return true;
-                    }
-                }).subscribe(new Consumer<Boolean>() {
-            @Override public void accept(Boolean allValidation) throws Exception {
-                createSubscriptionView.setAddButtonVisibility(allValidation);
+        manage(Observable.combineLatest(textValidationObservable, objects -> {
+            // // TODO: 0025, September 25, 2017 Find a better solution
+            for (Object o : objects) {
+                if (!(boolean) o) return false;
             }
-        }));
+            return true;
+        }).subscribe(
+                allValidation -> createSubscriptionView.setAddButtonVisibility(allValidation)));
     }
 
     @Override public void initializeCurrencyObserver(Observable<String> changeObservable) {
-        manage(changeObservable.subscribe(new Consumer<String>() {
-            @Override public void accept(String s) throws Exception {
-                createSubscriptionView.setAmountCurrencyMask(Currency.valueOf(s).getSymbol());
-            }
-        }));
+        manage(changeObservable.subscribe(
+                s -> createSubscriptionView.setAmountCurrencyMask(Currency.valueOf(s).getSymbol())));
     }
 }

@@ -13,7 +13,6 @@ import io.subs.domain.models.Subscription;
 
 public class AddSubscriptionActivity extends DaggerBaseActivity<SubscriptionComponent>
         implements SubscriptionListFragment.SubscriptionListListener {
-    private static final String TAG = "MainActivity";
     private static final int CREATE_SUBSCRIPTION = 100;
 
     public static Intent getCallingIntent(Context context) {

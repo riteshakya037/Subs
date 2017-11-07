@@ -2,6 +2,7 @@ package io.subs.android.views.screens.add_subscription;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -11,7 +12,6 @@ import butterknife.OnClick;
 import io.subs.android.R;
 import io.subs.android.di.components.SubscriptionComponent;
 import io.subs.android.views.base.BaseFragment;
-import io.subs.domain.models.Subscription;
 import javax.inject.Inject;
 
 /**
@@ -20,9 +20,9 @@ import javax.inject.Inject;
 
 public class AddSubscriptionFragment extends BaseFragment
         implements AddSubscriptionPresenter.AddSubscriptionView {
-    @Inject AddSubscriptionPresenter addSubscriptionPresenter;
-    @BindView(R.id.fragment_add_subs_tabs) TabLayout mTabLayout;
-    @BindView(R.id.fragment_add_subs_pager) ViewPager mViewPager;
+    @SuppressWarnings("WeakerAccess") @Inject AddSubscriptionPresenter addSubscriptionPresenter;
+    @SuppressWarnings("WeakerAccess") @BindView(R.id.fragment_add_subs_tabs) TabLayout mTabLayout;
+    @SuppressWarnings("WeakerAccess") @BindView(R.id.fragment_add_subs_pager) ViewPager mViewPager;
     private SubscriptionListFragment.SubscriptionListListener subscriptionListListener;
 
     @Override public void onAttach(Context context) {
@@ -65,15 +65,9 @@ public class AddSubscriptionFragment extends BaseFragment
         getComponent(SubscriptionComponent.class).inject(this);
     }
 
-    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
+    @Override public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.registerPresenter(addSubscriptionPresenter);
-    }
-
-    @Override public void createSubscription(Subscription subscription) {
-        if (this.subscriptionListListener != null) {
-            this.subscriptionListListener.onSubscriptionClicked(subscription);
-        }
     }
 
     @Override public void setAdapter(PagerAdapter pagerAdapter) {

@@ -7,7 +7,7 @@ package io.subs.domain.models.enums;
 public enum Cycle {
     WEEKLY("Weekly"), MONTHLY("Monthly"), YEARLY("Yearly");
 
-    private String friendlyName;
+    private final String friendlyName;
 
     Cycle(String friendlyName) {
         this.friendlyName = friendlyName;

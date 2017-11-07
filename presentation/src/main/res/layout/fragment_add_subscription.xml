@@ -23,12 +23,13 @@
                 android:textSize="18sp"
                 />
         <android.support.v7.widget.SearchView
-                android:id="@+id/search_view_collateral"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="end"
                 android:inputType="text"
+                android:paddingEnd="8dp"
                 android:paddingRight="8dp"
+                tools:ignore="RtlSymmetry"
                 style="@style/SearchViewStyle"
                 />
     </android.support.v7.widget.Toolbar>
@@ -42,8 +43,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
                 app:tabGravity="fill"
-                app:tabMode="fixed"
                 app:tabIndicatorColor="@color/colorGrey"
+                app:tabMode="fixed"
                 app:tabSelectedTextColor="@color/colorAccent"
                 app:tabTextAppearance="@style/TextAppearance.AppCompat.Medium"
                 >

@@ -1,6 +1,7 @@
 package io.subs.android.views.screens.main_screen.user_details.expense_detail;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import butterknife.BindView;
@@ -14,14 +15,14 @@ import javax.inject.Inject;
  * @author Ritesh Shakya
  */
 
-public class DetailExpenseFragment extends BaseFragment
+@SuppressWarnings("WeakerAccess") public class DetailExpenseFragment extends BaseFragment
         implements DetailExpensePresenter.DetailExpenseView {
     @Inject DetailExpensePresenter detailExpensePresenter;
 
-    @BindView(R.id.fragment_detal_expense_weekly) ExpenseView tvWeeklyExpense;
-    @BindView(R.id.fragment_detal_expense_monthly) ExpenseView tvMonthlyExpense;
-    @BindView(R.id.fragment_detal_expense_yearly) ExpenseView tvYearlyExpense;
-    @BindView(R.id.fragment_detal_expense_total) ExpenseView tvTotalExpense;
+    @BindView(R.id.fragment_detail_expense_weekly) ExpenseView tvWeeklyExpense;
+    @BindView(R.id.fragment_detail_expense_monthly) ExpenseView tvMonthlyExpense;
+    @BindView(R.id.fragment_detail_expense_yearly) ExpenseView tvYearlyExpense;
+    @BindView(R.id.fragment_detail_expense_total) ExpenseView tvTotalExpense;
 
     public static Fragment createInstance() {
         return new DetailExpenseFragment();
@@ -42,7 +43,7 @@ public class DetailExpenseFragment extends BaseFragment
         getComponent(UserSubscriptionComponent.class).inject(this);
     }
 
-    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
+    @Override public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.registerPresenter(detailExpensePresenter);
     }

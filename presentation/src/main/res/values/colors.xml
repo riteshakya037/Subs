@@ -7,8 +7,6 @@
     <color name="colorOffWhite">#DDDDDD</color>
     <color name="colorGrey">#9e9e9e</color>
     <color name="colorProgress">#1ecd3f</color>\
-    <color name="colorGraphLine">#758cbb</color>
-    <color name="colorGraphFill">#2d374c</color>
     <color name="colorRed">#da3b26</color>
     <color name="colorGreen">#81d653</color>
 </resources>

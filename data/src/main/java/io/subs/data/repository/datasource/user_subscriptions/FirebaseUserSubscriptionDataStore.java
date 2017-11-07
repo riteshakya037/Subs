@@ -8,10 +8,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Cancellable;
 import io.reactivex.functions.Function;
 import io.reactivex.subjects.ReplaySubject;
 import io.subs.data.listeners.DatabaseCompletionListener;
@@ -47,16 +45,14 @@ import static io.subs.domain.DatabaseNames.DELETED_FLAG;
 @Singleton public class FirebaseUserSubscriptionDataStore implements UserSubscriptionDataStore {
     private static final String TAG = "UserSubscription";
     private final ReplaySubject<UserSubscriptionDto> mUpdatePublisher = ReplaySubject.create();
-    private final ISessionDataStore sessionDataStore;
     private final DatabaseCompletionListener databaseCompletionListener;
-    private DatabaseReference userSubscriptionRef;
+    private final DatabaseReference userSubscriptionRef;
 
     @Inject public FirebaseUserSubscriptionDataStore(ISessionDataStore sessionDataStore,
             DatabaseCompletionListener databaseCompletionListener) {
-        this.sessionDataStore = sessionDataStore;
         this.databaseCompletionListener = databaseCompletionListener;
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        String tablePath = DatabaseNames.createPath(DatabaseNames.TALBE_USER_DATA,
+        String tablePath = DatabaseNames.createPath(DatabaseNames.TABLE_USER_DATA,
                 sessionDataStore.getUserID(), DatabaseNames.TABLE_SUBSCRIPTIONS);
         Log.e(TAG, "FirebaseUserSubscriptionDataStore: " + tablePath);
         userSubscriptionRef = firebaseDatabase.getReference().child(tablePath);
@@ -75,84 +71,67 @@ import static io.subs.domain.DatabaseNames.DELETED_FLAG;
     }
 
     private Observable<UserSubscriptionDto> filteredSubsList(final Cycle cycle) {
-        return Observable.create(new ObservableOnSubscribe<UserSubscriptionDto>() {
-            @Override
-            public void subscribe(@NonNull final ObservableEmitter<UserSubscriptionDto> emitter)
-                    throws Exception {
-                final ChildEventListener listener = userSubscriptionRef.orderByChild("cycle")
-                        .equalTo(cycle.name())
-                        .addChildEventListener(new FirebaseChildListener<UserSubscription>() {
-                            @Override
-                            public void onChildAdded(UserSubscription dataSnapshot, String s) {
-                                if (!dataSnapshot.getDeleted()) {
-                                    emitter.onNext(
-                                            new UserSubscriptionDto(dataSnapshot, Action.ADDED));
-                                }
+        return Observable.create(emitter -> {
+            final ChildEventListener listener = userSubscriptionRef.orderByChild("cycle")
+                    .equalTo(cycle.name())
+                    .addChildEventListener(new FirebaseChildListener<UserSubscription>() {
+                        @Override
+                        public void onChildAdded(UserSubscription dataSnapshot) {
+                            if (!dataSnapshot.getDeleted()) {
+                                emitter.onNext(new UserSubscriptionDto(dataSnapshot, Action.ADDED));
                             }
+                        }
 
-                            @Override
-                            public void onChildChanged(UserSubscription dataSnapshot, String s) {
-                                if (dataSnapshot.getDeleted()) {
-                                    emitter.onNext(
-                                            new UserSubscriptionDto(dataSnapshot, Action.REMOVED));
-                                } else {
-                                    emitter.onNext(
-                                            new UserSubscriptionDto(dataSnapshot, Action.UPDATED));
-                                }
-                            }
-
-                            @Override public void onChildRemoved(UserSubscription dataSnapshot) {
+                        @Override
+                        public void onChildChanged(UserSubscription dataSnapshot) {
+                            if (dataSnapshot.getDeleted()) {
                                 emitter.onNext(
                                         new UserSubscriptionDto(dataSnapshot, Action.REMOVED));
+                            } else {
+                                emitter.onNext(
+                                        new UserSubscriptionDto(dataSnapshot, Action.UPDATED));
                             }
+                        }
 
-                            @Override public void onCancelled(DatabaseError databaseError) {
-                                emitter.onError(databaseError.toException());
-                            }
-                        });
+                        @Override public void onChildRemoved(UserSubscription dataSnapshot) {
+                            emitter.onNext(new UserSubscriptionDto(dataSnapshot, Action.REMOVED));
+                        }
 
-                emitter.setCancellable(new Cancellable() {
-                    @Override public void cancel() throws Exception {
-                        userSubscriptionRef.removeEventListener(listener);
-                    }
-                });
-            }
+                        @Override public void onCancelled(DatabaseError databaseError) {
+                            emitter.onError(databaseError.toException());
+                        }
+                    });
+
+            emitter.setCancellable(() -> userSubscriptionRef.removeEventListener(listener));
         });
     }
 
     @Override
     public Observable<Void> createOrUpdateSubscription(final UserSubscription userSubscription) {
-        return Observable.create(new ObservableOnSubscribe<Void>() {
-            @Override public void subscribe(@NonNull final ObservableEmitter<Void> emitter)
-                    throws Exception {
-                String key;
-                if (TextUtils.isEmpty(userSubscription.getId())) {
-                    key = userSubscriptionRef.push().getKey();
-                } else {
-                    key = userSubscription.getId();
-                }
-                Map<String, Object> postValues = userSubscription.toMap();
-                Map<String, Object> childUpdates = new HashMap<>();
-                childUpdates.put(key, postValues);
-                databaseCompletionListener.updateChildren(userSubscriptionRef, emitter,
-                        childUpdates);
+        return Observable.create(emitter -> {
+            String key;
+            if (TextUtils.isEmpty(userSubscription.getId())) {
+                key = userSubscriptionRef.push().getKey();
+            } else {
+                key = userSubscription.getId();
             }
+            Map<String, Object> postValues = userSubscription.toMap();
+            Map<String, Object> childUpdates = new HashMap<>();
+            childUpdates.put(key, postValues);
+            databaseCompletionListener.updateChildren(userSubscriptionRef, emitter, childUpdates);
         });
     }
 
     @Override public Observable<Void> deleteSubscription(final String id) {
-        return Observable.create(new ObservableOnSubscribe<Void>() {
-            @Override public void subscribe(@NonNull final ObservableEmitter<Void> emitter)
-                    throws Exception {
-                userSubscriptionRef.child(id).child(DELETED_FLAG).setValue(true);
-                emitter.onComplete();
-            }
+        return Observable.create(emitter -> {
+            userSubscriptionRef.child(id).child(DELETED_FLAG).setValue(true);
+            emitter.onComplete();
         });
     }
 
     @Override public Observable<Integer> subscribeToCount() {
         return mUpdatePublisher.map(new Function<UserSubscriptionDto, Integer>() {
-            Set<String> countList = new HashSet<>();
+            final Set<String> countList = new HashSet<>();
 
             @Override public Integer apply(@NonNull UserSubscriptionDto userSubscriptionDto)
                     throws Exception {
@@ -170,7 +149,7 @@ import static io.subs.domain.DatabaseNames.DELETED_FLAG;
             final SubscriptionBreakdownUpdates.Params params) {
         return mUpdatePublisher.map(
                 new Function<UserSubscriptionDto, SubscriptionBreakdownUpdates.BreakdownDto>() {
-                    private List<UserSubscription> subscriptions = new ArrayList<>();
+                    private final List<UserSubscription> subscriptions = new ArrayList<>();
 
                     @Override public SubscriptionBreakdownUpdates.BreakdownDto apply(
                             @NonNull UserSubscriptionDto userSubscriptionDto) throws Exception {
@@ -227,7 +206,7 @@ import static io.subs.domain.DatabaseNames.DELETED_FLAG;
     public Observable<Float> subscribeToExpenses(final SubscriptionExpenseUpdates.Params params) {
         return filteredSubsList(params.getSubscriptionCycle()).map(
                 new Function<UserSubscriptionDto, Float>() {
-                    private List<UserSubscription> subscriptions = new ArrayList<>();
+                    private final List<UserSubscription> subscriptions = new ArrayList<>();
 
                     @Override public Float apply(@NonNull UserSubscriptionDto userSubscriptionDto)
                             throws Exception {
@@ -254,40 +233,33 @@ import static io.subs.domain.DatabaseNames.DELETED_FLAG;
     }
 
     private Observable<Void> observe(final DatabaseReference ref) {
-        return Observable.create(new ObservableOnSubscribe<DataSnapshot>() {
-            @Override public void subscribe(@NonNull ObservableEmitter<DataSnapshot> emitter)
-                    throws Exception {
-                final ChildEventListener listener = ref.orderByChild(DELETED_FLAG)
-                        .equalTo(false)
-                        .addChildEventListener(new FirebaseChildListener<UserSubscription>() {
-                            @Override
-                            public void onChildAdded(UserSubscription dataSnapshot, String s) {
-                                mUpdatePublisher.onNext(
-                                        new UserSubscriptionDto(dataSnapshot, Action.ADDED));
-                            }
+        return Observable.create((ObservableOnSubscribe<DataSnapshot>) emitter -> {
+            final ChildEventListener listener = ref.orderByChild(DELETED_FLAG)
+                    .equalTo(false)
+                    .addChildEventListener(new FirebaseChildListener<UserSubscription>() {
+                        @Override
+                        public void onChildAdded(UserSubscription dataSnapshot) {
+                            mUpdatePublisher.onNext(
+                                    new UserSubscriptionDto(dataSnapshot, Action.ADDED));
+                        }
 
-                            @Override
-                            public void onChildChanged(UserSubscription dataSnapshot, String s) {
-                                mUpdatePublisher.onNext(
-                                        new UserSubscriptionDto(dataSnapshot, Action.UPDATED));
-                            }
+                        @Override
+                        public void onChildChanged(UserSubscription dataSnapshot) {
+                            mUpdatePublisher.onNext(
+                                    new UserSubscriptionDto(dataSnapshot, Action.UPDATED));
+                        }
 
-                            @Override public void onChildRemoved(UserSubscription dataSnapshot) {
-                                mUpdatePublisher.onNext(
-                                        new UserSubscriptionDto(dataSnapshot, Action.REMOVED));
-                            }
+                        @Override public void onChildRemoved(UserSubscription dataSnapshot) {
+                            mUpdatePublisher.onNext(
+                                    new UserSubscriptionDto(dataSnapshot, Action.REMOVED));
+                        }
 
-                            @Override public void onCancelled(DatabaseError databaseError) {
-                                mUpdatePublisher.onError(databaseError.toException());
-                            }
-                        });
+                        @Override public void onCancelled(DatabaseError databaseError) {
+                            mUpdatePublisher.onError(databaseError.toException());
+                        }
+                    });
 
-                emitter.setCancellable(new Cancellable() {
-                    @Override public void cancel() throws Exception {
-                        ref.removeEventListener(listener);
-                    }
-                });
-            }
+            emitter.setCancellable(() -> ref.removeEventListener(listener));
         }).cast(Void.TYPE);
     }
 }

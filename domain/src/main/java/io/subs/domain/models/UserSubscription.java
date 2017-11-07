@@ -33,7 +33,7 @@ import static io.subs.domain.models.constants.Constants.DATE_FORMAT;
     @SerializedName("reminder") protected Reminder subscriptionReminder = Reminder.NEVER;
     @SerializedName("subscriptionCurrency") protected Currency subscriptionCurrency = Currency.USD;
     @SerializedName("color") protected String layoutColor;
-    @SerializedName(DELETED_FLAG) protected Boolean isDeleted = false;
+    @SerializedName(DELETED_FLAG) protected final Boolean isDeleted = false;
 
     public UserSubscription() {
         // required by parcel

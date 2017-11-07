@@ -13,7 +13,7 @@ import javax.inject.Inject;
 
 public class DetailExpensePresenterImpl extends BaseRxPresenter implements DetailExpensePresenter {
     private DetailExpenseView detailExpenseView;
-    private SubscriptionExpenseUpdates subscriptionExpenseUpdates;
+    private final SubscriptionExpenseUpdates subscriptionExpenseUpdates;
     private float weeklySum;
     private float monthlySum;
     private float yearlySum;
@@ -25,9 +25,6 @@ public class DetailExpensePresenterImpl extends BaseRxPresenter implements Detai
 
     @Override public void setView(DetailExpenseView mainActivityView) {
         this.detailExpenseView = mainActivityView;
-    }
-
-    @Override public void initialize() {
     }
 
     @Override public void initializeObservers() {

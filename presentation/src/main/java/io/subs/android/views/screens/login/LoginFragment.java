@@ -2,6 +2,7 @@ package io.subs.android.views.screens.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import butterknife.OnClick;
 import com.google.android.gms.auth.api.Auth;
@@ -16,7 +17,7 @@ import javax.inject.Inject;
 
 public class LoginFragment extends BaseFragment implements LoginPresenter.LoginView {
     private static final int RC_SIGN_IN = 0;
-    @Inject LoginPresenter loginPresenter;
+    @SuppressWarnings("WeakerAccess") @Inject LoginPresenter loginPresenter;
 
     @Override protected int getLayout() {
         return R.layout.activity_login;
@@ -39,7 +40,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
         getComponent(SessionComponent.class).inject(this);
     }
 
-    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
+    @Override public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.registerPresenter(loginPresenter);
     }

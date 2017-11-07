@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:gravity="center"
-                android:text="Weekly Breakdown"
+                android:text="@string/weekly_breakdown"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 />
         <com.db.chart.view.LineChartView
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:gravity="center"
-                android:text="Monthly Breakdown"
+                android:text="@string/monthly_breakdown"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 />
         <com.db.chart.view.LineChartView
@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:gravity="center"
-                android:text="Annual Breakdown"
+                android:text="@string/annual_breakdown"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 />
     </LinearLayout>

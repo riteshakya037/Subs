@@ -6,6 +6,7 @@
         android:layout_height="match_parent"
         android:clickable="true"
         android:orientation="horizontal"
+        android:focusable="true"
         >
     <TextView
             android:id="@+id/custom_mask_edit_text_mask"
@@ -24,5 +25,6 @@
             android:gravity="center"
             tools:text="123123"
             style="@style/CreateSubForm.Row.EditText"
+            android:layout_toEndOf="@id/custom_mask_edit_text_mask"
             />
 </RelativeLayout>

@@ -1,9 +1,9 @@
 package io.subs.android.views.screens.main_screen.user_subscriptions;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableObserver;
 import io.subs.android.di.PerActivity;
 import io.subs.android.exception.ErrorMessageFactory;
@@ -34,12 +34,10 @@ import javax.inject.Inject;
     private final GetUserSubscriptionList getSubscriptionList;
     private final GetUserProfile getUserProfile;
     private final SubscribeToUserSubscriptionCountUpdates subscribeToUserSubscriptionCountUpdates;
-    Disposable disposableUpdates;
-    private UserSubscriptionAdaptor addSubscriptionAdaptor;
-    private SubscribeToUserSubscriptionUpdates subscribeToSubscriptionUpdates;
-    private MainActivityFragmentPresenter.MainActivityFlowListener mainActivityFlowListener;
-    private UserSubscriptionListView viewListView;
-    private UserSubscriptionAdaptor.OnItemClickListener onItemClickListener =
+    private final UserSubscriptionAdaptor addSubscriptionAdaptor;
+    private final SubscribeToUserSubscriptionUpdates subscribeToSubscriptionUpdates;
+    private final MainActivityFragmentPresenter.MainActivityFlowListener mainActivityFlowListener;
+    private final UserSubscriptionAdaptor.OnItemClickListener onItemClickListener =
             new UserSubscriptionAdaptor.OnItemClickListener() {
                 @Override public void onItemClicked(UserSubscription subscription) {
                     if (subscription != null) {
@@ -47,15 +45,20 @@ import javax.inject.Inject;
                     }
                 }
             };
+    private final Context mContext;
+    private Disposable disposableUpdates;
+    private UserSubscriptionListView viewListView;
     private int maxSubs = 0;
     private int currentSubs = 0;
 
-    @Inject public UserSubscriptionListPresenterImpl(UserSubscriptionAdaptor addSubscriptionAdaptor,
+    @Inject public UserSubscriptionListPresenterImpl(Context context,
+            UserSubscriptionAdaptor addSubscriptionAdaptor,
             GetUserSubscriptionList getUserListUserCase,
             SubscribeToUserSubscriptionUpdates subscribeToSubscriptionUpdates,
             MainActivityFragmentPresenter.MainActivityFlowListener mainActivityFlowListener,
             GetUserProfile getUserProfile,
             SubscribeToUserSubscriptionCountUpdates subscribeToUserSubscriptionCountUpdates) {
+        this.mContext = context;
         this.addSubscriptionAdaptor = addSubscriptionAdaptor;
         this.getSubscriptionList = getUserListUserCase;
         this.subscribeToSubscriptionUpdates = subscribeToSubscriptionUpdates;
@@ -155,11 +158,8 @@ import javax.inject.Inject;
     }
 
     @Override public void initializeCycleObserver(Observable<String> changeObservable) {
-        manage(changeObservable.subscribe(new Consumer<String>() {
-            @Override public void accept(String s) throws Exception {
-                changeCycle(s.equals("All") ? null : Cycle.valueOf(s));
-            }
-        }));
+        manage(changeObservable.subscribe(
+                s -> changeCycle(s.equals("All") ? null : Cycle.valueOf(s))));
     }
 
     /**
@@ -188,8 +188,7 @@ import javax.inject.Inject;
     }
 
     private void showErrorMessage(ErrorBundle errorBundle) {
-        String errorMessage =
-                ErrorMessageFactory.create(this.viewListView.context(), errorBundle.getException());
+        String errorMessage = ErrorMessageFactory.create(mContext, errorBundle.getException());
         this.viewListView.showError(errorMessage);
     }
 

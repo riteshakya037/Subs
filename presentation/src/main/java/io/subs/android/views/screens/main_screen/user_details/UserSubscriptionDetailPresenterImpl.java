@@ -11,7 +11,7 @@ import javax.inject.Inject;
 public class UserSubscriptionDetailPresenterImpl extends BaseRxPresenter
         implements UserSubscriptionDetailPresenter {
     private UserSubscriptionDetailView subscriptionDetailView;
-    private DetailPagerAdapter detailPagerAdapter;
+    private final DetailPagerAdapter detailPagerAdapter;
 
     @Inject public UserSubscriptionDetailPresenterImpl(DetailPagerAdapter detailPagerAdapter) {
         this.detailPagerAdapter = detailPagerAdapter;

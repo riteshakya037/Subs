@@ -1,7 +1,7 @@
 package io.subs.android.views.screens.add_subscription;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import io.reactivex.observers.DisposableObserver;
 import io.subs.android.exception.ErrorMessageFactory;
 import io.subs.android.mvp.BaseRxPresenter;
@@ -13,13 +13,13 @@ import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates;
 import io.subs.domain.usecases.subscription.SubscribeToSubscriptionUpdates.SubscriptionDto;
 import javax.inject.Inject;
 
-public class SubscriptionListPresenterImpl extends BaseRxPresenter
+@SuppressWarnings("unused") public class SubscriptionListPresenterImpl extends BaseRxPresenter
         implements SubscriptionListPresenter {
 
-    private AddSubscriptionAdaptor addSubscriptionAdaptor;
-    private SubscribeToSubscriptionUpdates subscribeToSubscriptionUpdates;
+    private final AddSubscriptionAdaptor addSubscriptionAdaptor;
+    private final SubscribeToSubscriptionUpdates subscribeToSubscriptionUpdates;
     private SubscriptionListView viewListView;
-    private AddSubscriptionAdaptor.OnItemClickListener onItemClickListener =
+    private final AddSubscriptionAdaptor.OnItemClickListener onItemClickListener =
             new AddSubscriptionAdaptor.OnItemClickListener() {
                 @Override public void onItemClicked(Subscription subscription) {
                     if (subscription != null) {
@@ -27,11 +27,12 @@ public class SubscriptionListPresenterImpl extends BaseRxPresenter
                     }
                 }
             };
-    private static final String TAG = "SubscriptionListPresent";
-    private SubscriptionType subscriptionType;
+    private final Context mContext;
 
-    @Inject public SubscriptionListPresenterImpl(AddSubscriptionAdaptor addSubscriptionAdaptor,
+    @Inject public SubscriptionListPresenterImpl(Context context,
+            AddSubscriptionAdaptor addSubscriptionAdaptor,
             SubscribeToSubscriptionUpdates subscribeToSubscriptionUpdates) {
+        mContext = context;
         this.addSubscriptionAdaptor = addSubscriptionAdaptor;
         this.subscribeToSubscriptionUpdates = subscribeToSubscriptionUpdates;
     }
@@ -41,7 +42,6 @@ public class SubscriptionListPresenterImpl extends BaseRxPresenter
     }
 
     public void initialize(SubscriptionType subscriptionType) {
-        this.subscriptionType = subscriptionType;
         manage(subscribeToSubscriptionUpdates.execute(new DisposableObserver<SubscriptionDto>() {
             @Override public void onNext(@NonNull SubscriptionDto subscriptionDto) {
                 showUsersCollectionInView(subscriptionDto);
@@ -85,8 +85,7 @@ public class SubscriptionListPresenterImpl extends BaseRxPresenter
     }
 
     private void showErrorMessage(ErrorBundle errorBundle) {
-        String errorMessage =
-                ErrorMessageFactory.create(this.viewListView.context(), errorBundle.getException());
+        String errorMessage = ErrorMessageFactory.create(mContext, errorBundle.getException());
         this.viewListView.showError(errorMessage);
     }
 

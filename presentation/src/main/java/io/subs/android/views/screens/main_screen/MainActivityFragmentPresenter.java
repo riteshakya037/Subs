@@ -14,8 +14,6 @@ public interface MainActivityFragmentPresenter extends IPresenter {
 
     void setView(MainActivityView mainActivityView);
 
-    void initialize();
-
     void initializeAdaptor();
 
     interface MainActivityView extends IView {

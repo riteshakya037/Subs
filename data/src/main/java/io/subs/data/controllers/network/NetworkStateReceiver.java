@@ -1,5 +1,6 @@
 package io.subs.data.controllers.network;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,20 +16,23 @@ import javax.inject.Inject;
 
 public class NetworkStateReceiver extends BroadcastReceiver {
 
-    protected Set<NetworkStateReceiverListener> listeners;
-    protected Boolean connected;
+    private final Set<NetworkStateReceiverListener> listeners;
+    private Boolean connected;
 
     @Inject public NetworkStateReceiver() {
         listeners = new HashSet<>();
         connected = null;
     }
 
-    public void onReceive(Context context, Intent intent) {
+    @SuppressLint("UnsafeProtectedBroadcastReceiver") public void onReceive(Context context, Intent intent) {
         if (intent == null || intent.getExtras() == null) return;
 
         ConnectivityManager manager =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo ni = manager.getActiveNetworkInfo();
+        NetworkInfo ni = null;
+        if (manager != null) {
+            ni = manager.getActiveNetworkInfo();
+        }
 
         if (ni != null && ni.getState() == NetworkInfo.State.CONNECTED) {
             connected = true;
@@ -60,13 +64,9 @@ public class NetworkStateReceiver extends BroadcastReceiver {
         notifyState(l);
     }
 
-    public void removeListener(NetworkStateReceiverListener l) {
-        listeners.remove(l);
-    }
-
     public interface NetworkStateReceiverListener {
-        public void networkAvailable();
+        void networkAvailable();
 
-        public void networkUnavailable();
+        void networkUnavailable();
     }
 }

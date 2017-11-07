@@ -12,7 +12,7 @@ import javax.inject.Inject;
  */
 public class SubscribeToUserSubscriptionCountUpdates extends UseCase<Integer, Void> {
 
-    private IUserSubscriptionRepository subscriptionRepository;
+    private final IUserSubscriptionRepository subscriptionRepository;
 
     @Inject SubscribeToUserSubscriptionCountUpdates(
             IUserSubscriptionRepository subscriptionRepository, IThreadExecutor threadExecutor,

@@ -13,7 +13,7 @@ import javax.inject.Inject;
  */
 public class SubscriptionExpenseUpdates extends UseCase<Float, SubscriptionExpenseUpdates.Params> {
 
-    private IUserSubscriptionRepository subscriptionRepository;
+    private final IUserSubscriptionRepository subscriptionRepository;
 
     @Inject SubscriptionExpenseUpdates(IUserSubscriptionRepository subscriptionRepository,
             IThreadExecutor threadExecutor, IPostExecutionThread postExecutionThread) {
@@ -26,7 +26,7 @@ public class SubscriptionExpenseUpdates extends UseCase<Float, SubscriptionExpen
     }
 
     public static class Params {
-        private Cycle subscriptionCycle;
+        private final Cycle subscriptionCycle;
 
         public Params(Cycle subscriptionCycle) {
             this.subscriptionCycle = subscriptionCycle;

@@ -24,8 +24,8 @@ import javax.inject.Inject;
 
 public class AddSubscriptionAdaptor
         extends RecyclerView.Adapter<AddSubscriptionAdaptor.ViewHolder> {
-    private List<Subscription> mData = new ArrayList<>();
-    private IImageLoader iImageLoader;
+    private final List<Subscription> mData = new ArrayList<>();
+    private final IImageLoader iImageLoader;
     private OnItemClickListener onItemClickListener;
 
     @Inject public AddSubscriptionAdaptor(IImageLoader iImageLoader) {
@@ -43,7 +43,7 @@ public class AddSubscriptionAdaptor
     }
 
     @Override public int getItemCount() {
-        return (this.mData != null) ? this.mData.size() : 0;
+        return this.mData.size();
     }
 
     @Override public long getItemId(int position) {

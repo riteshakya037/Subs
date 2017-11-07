@@ -4,7 +4,6 @@ package io.subs.android.mvp;
  * Interface definition of a MVP Presenter.
  */
 public interface IPresenter {
-    void onCreate();
 
     /**
      * Lifecycle callback that is invoked from onStart of the Fragment/Activity managing the

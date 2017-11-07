@@ -19,7 +19,7 @@ import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class) public class UseCaseTest {
 
-    @Rule public ExpectedException expectedException = ExpectedException.none();
+    @Rule public final ExpectedException expectedException = ExpectedException.none();
     private UseCaseTestClass useCase;
     private TestDisposableObserver<Object> testObserver;
     @Mock private IThreadExecutor mockThreadExecutor;
@@ -74,7 +74,7 @@ import static org.mockito.BDDMockito.given;
     }
 
     private static class Params {
-        private static Params EMPTY = new Params();
+        private static final Params EMPTY = new Params();
 
         private Params() {
         }

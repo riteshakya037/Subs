@@ -16,7 +16,7 @@ import javax.inject.Inject;
 public class SubscribeToSubscriptionUpdates extends
         UseCase<SubscribeToSubscriptionUpdates.SubscriptionDto, SubscribeToSubscriptionUpdates.Params> {
 
-    private ISubscriptionRepository subscriptionRepository;
+    private final ISubscriptionRepository subscriptionRepository;
 
     @Inject SubscribeToSubscriptionUpdates(ISubscriptionRepository subscriptionRepository,
             IThreadExecutor threadExecutor, IPostExecutionThread postExecutionThread) {
@@ -51,7 +51,7 @@ public class SubscribeToSubscriptionUpdates extends
     }
 
     public static class Params {
-        private SubscriptionType subscriptionType;
+        private final SubscriptionType subscriptionType;
 
         public Params(SubscriptionType subscriptionType) {
             this.subscriptionType = subscriptionType;

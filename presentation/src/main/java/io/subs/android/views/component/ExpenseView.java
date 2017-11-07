@@ -14,7 +14,7 @@ import io.subs.android.R;
  * @author Ritesh Shakya
  */
 
-public class ExpenseView extends LinearLayout {
+@SuppressWarnings("WeakerAccess") public class ExpenseView extends LinearLayout {
 
     @BindView(R.id.custom_expense_view_title) TextView tvExpenseTitle;
     @BindView(R.id.custom_expense_view_value) TextView tvExpenseValue;
@@ -34,8 +34,8 @@ public class ExpenseView extends LinearLayout {
     }
 
     private void init(Context context, AttributeSet attrs) {
-        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.CustomView);
-        init(context, typedArray.getString(R.styleable.CustomView_android_text));
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.ExpenseView);
+        init(context, typedArray.getString(R.styleable.ExpenseView_android_text));
         typedArray.recycle();
     }
 
@@ -50,7 +50,7 @@ public class ExpenseView extends LinearLayout {
         this.tvExpenseValue.setText(getContext().getString(R.string.number_format_text, value));
     }
 
-    View getView(Context context) {
+    private View getView(Context context) {
         return inflate(context, R.layout.custom_expense_view, this);
     }
 }

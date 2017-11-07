@@ -7,7 +7,6 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import io.subs.domain.executor.IPostExecutionThread;
 import io.subs.domain.executor.IThreadExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Abstract class for a Use Case (Interactor in terms of Clean Architecture).

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
@@ -46,13 +45,11 @@ import static io.subs.domain.models.constants.Constants.DATE_FORMAT;
     @Optional @OnClick(R.id.custom_date_view_text_main) void onClick() {
         final Calendar calendar = new GregorianCalendar();
         DatePickerDialog datePickerDialog =
-                new DatePickerDialog(mContext, new DatePickerDialog.OnDateSetListener() {
-                    @Override public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                        calendar.set(i, i1, i2);
-                        SimpleDateFormat format1 =
-                                new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
-                        dateText.setText(format1.format(calendar.getTime()));
-                    }
+                new DatePickerDialog(mContext, (datePicker, i, i1, i2) -> {
+                    calendar.set(i, i1, i2);
+                    SimpleDateFormat format1 =
+                            new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
+                    dateText.setText(format1.format(calendar.getTime()));
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.setTitle("Select Date");

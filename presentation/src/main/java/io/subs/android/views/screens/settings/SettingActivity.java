@@ -11,7 +11,6 @@ import io.subs.android.views.base.DaggerBaseActivity;
 
 public class SettingActivity extends DaggerBaseActivity<SessionComponent>
         implements SettingPresenter.SettingFlowListener {
-    private static final String TAG = "SettingActivity";
 
     public static Intent getCallingIntent(Context context) {
         return new Intent(context, SettingActivity.class);
@@ -23,7 +22,7 @@ public class SettingActivity extends DaggerBaseActivity<SessionComponent>
 
     @Override protected void initializeActivity(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            addFragment(R.id.fragmentContainer, new SettingFragment());
+            addFragment(R.id.fragmentContainer, SettingFragment.createInstance());
         }
     }
 

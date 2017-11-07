@@ -15,7 +15,7 @@ import java.io.InputStream;
  * <p>
  * Sample Usage:
  * <pre>
- *     StorageReference ref = FirebaseStorage.getInstance().getReference().child("myimage");
+ *     StorageReference ref = FirebaseStorage.getInstance().getReference().child("image");
  *     ImageView iv = (ImageView) findViewById(R.id.my_image_view);
  *
  *     Glide.with(this)
@@ -24,7 +24,7 @@ import java.io.InputStream;
  *         .into(iv);
  * </pre>
  */
-public class FirebaseImageLoader implements StreamModelLoader<StorageReference> {
+class FirebaseImageLoader implements StreamModelLoader<StorageReference> {
 
     private static final String TAG = "FirebaseImageLoader";
 
@@ -35,7 +35,7 @@ public class FirebaseImageLoader implements StreamModelLoader<StorageReference> 
 
     private class FirebaseStorageFetcher implements DataFetcher<InputStream> {
 
-        private StorageReference mRef;
+        private final StorageReference mRef;
         private StreamDownloadTask mStreamTask;
         private InputStream mInputStream;
 
