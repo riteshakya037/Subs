@@ -110,6 +110,7 @@ import static io.subs.domain.DatabaseNames.DELETED_FLAG;
     public Observable<Void> createOrUpdateSubscription(final UserSubscription userSubscription) {
         return Observable.create(emitter -> {
             String key;
+            // if id is null, its a freshly created subscription.
             if (TextUtils.isEmpty(userSubscription.getId())) {
                 key = userSubscriptionRef.push().getKey();
             } else {

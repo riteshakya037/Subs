@@ -50,14 +50,12 @@ public class FirebaseSessionDataStore implements ISessionDataStore {
             return Observable.just(LoginStatusType.INACTIVE);
         } else {
             initializeRef();
-            return Observable.create(emitter -> {
-                getProfile().doOnNext(userProfile -> {
-                    if (userProfile.getData() == null) {
-                        createProfile().subscribe();
-                    }
-                }).doOnError(emitter::onError).subscribe();
-                emitter.onNext(LoginStatusType.ACTIVE);
-            });
+            return getProfile().flatMap(userProfileRxDto -> {
+                if (userProfileRxDto.getData() == null) {
+                    return createProfile();
+                }
+                return Observable.just(userProfileRxDto.getData());
+            }).map(userProfile -> LoginStatusType.ACTIVE);
         }
     }
 
