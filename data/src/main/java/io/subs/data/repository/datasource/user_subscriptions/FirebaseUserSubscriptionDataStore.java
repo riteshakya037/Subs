@@ -124,10 +124,9 @@ import static io.subs.domain.DatabaseNames.DELETED_FLAG;
     }
 
     @Override public Observable<Void> deleteSubscription(final String id) {
-        return Observable.create(emitter -> {
-            userSubscriptionRef.child(id).child(DELETED_FLAG).setValue(true);
-            emitter.onComplete();
-        });
+        return Observable.create(
+                emitter -> databaseCompletionListener.removeSubscription(userSubscriptionRef,
+                        emitter, id, DELETED_FLAG));
     }
 
     @Override public Observable<Integer> subscribeToCount() {

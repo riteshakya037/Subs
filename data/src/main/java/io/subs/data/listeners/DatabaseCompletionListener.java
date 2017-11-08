@@ -54,4 +54,25 @@ public class DatabaseCompletionListener
         isNetworkAvailable = false;
         Log.e(TAG, "networkUnavailable: ");
     }
+
+    public <T> void removeSubscription(DatabaseReference userSubscriptionRef,
+            ObservableEmitter<T> emitter, String id, String DELETED_FLAG) {
+        if (isNetworkAvailable) {
+            userSubscriptionRef.child(id)
+                    .child(DELETED_FLAG)
+                    .setValue(true)
+                    .addOnCompleteListener(task -> {
+                        if (emitter.isDisposed()) {
+                            return;
+                        }
+                        if (task.isComplete()) {
+                            emitter.onComplete();
+                        } else {
+                            emitter.onError(task.getException());
+                        }
+                    });
+        } else {
+            userSubscriptionRef.child(id).child(DELETED_FLAG).setValue(true);
+        }
+    }
 }
