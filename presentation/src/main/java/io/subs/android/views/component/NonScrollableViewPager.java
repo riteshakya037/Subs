@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 
 @SuppressWarnings({ "SameParameterValue", "ConstantConditions" }) public class NonScrollableViewPager extends ViewPager {
 
-    private final boolean isPagingEnabled = false;
+    private boolean isPagingEnabled = false;
 
     public NonScrollableViewPager(Context context) {
         super(context);
@@ -40,5 +40,9 @@ import android.view.MotionEvent;
 
     @Override public void setCurrentItem(int item) {
         super.setCurrentItem(item, false);
+    }
+
+    public void setPagingEnabled(boolean pagingEnabled) {
+        isPagingEnabled = pagingEnabled;
     }
 }

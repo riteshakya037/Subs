@@ -26,7 +26,8 @@
                 android:theme="@style/AppTheme.SlideTransition"/>
         <activity
                 android:name=".views.screens.splash.SplashScreenActivity"
-                android:theme="@style/SplashTheme">
+                android:theme="@style/SplashTheme"
+                android:resizeableActivity="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
