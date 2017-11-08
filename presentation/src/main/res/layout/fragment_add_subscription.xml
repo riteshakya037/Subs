@@ -5,50 +5,58 @@
         android:layout_height="match_parent"
         tools:context=".views.screens.add_subscription.AddSubscriptionActivity"
         >
-
-    <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+    <android.support.design.widget.AppBarLayout
+            android:id="@+id/main_appbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:layout_height="wrap_content"
+            app:elevation="4dp"
             >
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                >
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="@string/txt_add_subscription"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                />
-        <android.support.v7.widget.SearchView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:inputType="text"
-                android:paddingEnd="8dp"
-                android:paddingRight="8dp"
-                tools:ignore="RtlSymmetry"
-                style="@style/SearchViewStyle"
-                />
-    </android.support.v7.widget.Toolbar>
-    <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="48dp"
-            >
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/txt_add_subscription"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    />
+            <android.support.v7.widget.SearchView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:inputType="text"
+                    android:paddingEnd="8dp"
+                    android:paddingRight="8dp"
+                    tools:ignore="RtlSymmetry"
+                    style="@style/SearchViewStyle"
+                    />
+        </android.support.v7.widget.Toolbar>
         <android.support.design.widget.TabLayout
                 android:id="@+id/fragment_add_subs_tabs"
                 android:layout_width="match_parent"
-                android:layout_height="36dp"
+                android:layout_height="40dp"
+                app:tabBackground="?selectableItemBackgroundBorderless"
                 app:tabGravity="fill"
                 app:tabIndicatorColor="@color/colorGrey"
                 app:tabMode="fixed"
                 app:tabSelectedTextColor="@color/colorAccent"
                 app:tabTextAppearance="@style/TextAppearance.AppCompat.Medium"
-                >
-        </android.support.design.widget.TabLayout>
+                />
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            >
+
         <Button
                 android:id="@+id/fragment_add_subs_custom"
                 android:layout_width="match_parent"
@@ -63,8 +71,8 @@
                 android:id="@+id/fragment_add_subs_pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:overScrollMode="never"
                 android:layout_above="@id/fragment_add_subs_custom"
-                android:layout_below="@id/fragment_add_subs_tabs"
                 />
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
