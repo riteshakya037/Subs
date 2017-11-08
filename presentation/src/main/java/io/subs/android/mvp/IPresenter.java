@@ -12,8 +12,8 @@ public interface IPresenter {
     void onStart();
 
     /**
-     * Lifecycle callback that is invoked from onStop of the Fragment/Activity managing the
+     * Lifecycle callback that is invoked from onDestroy of the Fragment/Activity managing the
      * presenter
      */
-    void onStop();
+    void onDestroy();
 }

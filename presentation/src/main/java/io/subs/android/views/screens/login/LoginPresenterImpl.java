@@ -111,8 +111,8 @@ public class LoginPresenterImpl extends BaseRxPresenter implements LoginPresente
         mAuth.addAuthStateListener(mAuthListener);
     }
 
-    @Override public void onStop() {
-        super.onStop();
+    @Override public void onDestroy() {
+        super.onDestroy();
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }

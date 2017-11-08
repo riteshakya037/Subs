@@ -51,21 +51,21 @@ public abstract class BaseFragment extends Fragment {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
-    public void registerPresenter(@NonNull IPresenter... presenters) {
-        Collections.addAll(mPresenters, presenters);
-    }
-
-    @Override public void onStart() {
-        super.onStart();
+    @Override public void onResume() {
+        super.onResume();
         for (IPresenter presenter : mPresenters) {
             presenter.onStart();
         }
     }
 
-    @Override public void onStop() {
-        super.onStop();
+    public void registerPresenter(@NonNull IPresenter... presenters) {
+        Collections.addAll(mPresenters, presenters);
+    }
+
+    @Override public void onDestroy() {
+        super.onDestroy();
         for (IPresenter presenter : mPresenters) {
-            presenter.onStop();
+            presenter.onDestroy();
         }
     }
 

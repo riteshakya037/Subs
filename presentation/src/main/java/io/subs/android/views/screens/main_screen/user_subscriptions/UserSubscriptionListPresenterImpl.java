@@ -214,8 +214,8 @@ import javax.inject.Inject;
         this.getSubscriptionList.execute(new SubscriptionListObserver(), null);
     }
 
-    @Override public void onStop() {
-        super.onStop();
+    @Override public void onDestroy() {
+        super.onDestroy();
         if (disposableUpdates != null) disposableUpdates.dispose();
     }
 

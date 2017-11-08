@@ -24,7 +24,7 @@ public abstract class BaseRxPresenter implements IPresenter {
     @Override public void onStart() {
     }
 
-    @Override public void onStop() {
+    @Override public void onDestroy() {
         for (Disposable disposable : mDisposables) {
             disposable.dispose();
         }
