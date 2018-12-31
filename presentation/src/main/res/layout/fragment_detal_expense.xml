@@ -18,14 +18,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 >
-            <io.subs.android.views.component.ExpenseView
+            <com.riteshakya.subs.views.component.ExpenseView
                     android:id="@+id/fragment_detail_expense_weekly"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_margin="32dp"
                     android:text="@string/weekly"
                     />
-            <io.subs.android.views.component.ExpenseView
+            <com.riteshakya.subs.views.component.ExpenseView
                     android:id="@+id/fragment_detail_expense_monthly"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
@@ -38,14 +38,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 >
-            <io.subs.android.views.component.ExpenseView
+            <com.riteshakya.subs.views.component.ExpenseView
                     android:id="@+id/fragment_detail_expense_yearly"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_margin="32dp"
                     android:text="@string/yearly"
                     />
-            <io.subs.android.views.component.ExpenseView
+            <com.riteshakya.subs.views.component.ExpenseView
                     android:id="@+id/fragment_detail_expense_total"
                     android:layout_width="100dp"
                     android:layout_height="100dp"

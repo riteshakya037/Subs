@@ -14,6 +14,20 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
+enum BuildType {
+    DEBUG,
+    RELEASE
+}
+
+static def getAppName(BuildType buildType) {
+    String APP_NAME = "Subscription"
+    switch (buildType) {
+        case BuildType.DEBUG:
+            return APP_NAME + " - " + BuildType.DEBUG.name()
+        case BuildType.RELEASE:
+            return APP_NAME
+    }
+}
 
 android {
     signingConfigs {
@@ -29,37 +43,57 @@ android {
             }
         }
     }
-    compileOptions {
-        sourceCompatibility rootProject.ext.sourceCompatibility
-        targetCompatibility rootProject.ext.sourceCompatibility
-    }
-    def globalConfiguration = rootProject.extensions.getByName("ext")
-    compileSdkVersion globalConfiguration["androidCompileSdkVersion"]
-    buildToolsVersion globalConfiguration["androidBuildToolsVersion"]
-    defaultConfig {
-        minSdkVersion globalConfiguration["androidMinSdkVersion"]
-        targetSdkVersion globalConfiguration["androidTargetSdkVersion"]
+    def versionPropsFile = file('version.properties')
+    if (versionPropsFile.canRead()) {
+        Properties versionProps = new Properties()
+        versionProps.load(new FileInputStream(versionPropsFile))
 
-        applicationId globalConfiguration["androidApplicationId"]
-        versionCode globalConfiguration["androidVersionCode"]
-        versionName globalConfiguration["androidVersionName"]
-        testInstrumentationRunner globalConfiguration["testInstrumentationRunner"]
-        testApplicationId globalConfiguration["testApplicationId"]
-        multiDexEnabled true
+        def code = versionProps['VERSION_CODE'].toInteger() + 1
+
+        versionProps['VERSION_CODE'] = code.toString()
+        versionProps.store(versionPropsFile.newWriter(), null)
+
+
+        def globalConfiguration = rootProject.extensions.getByName("ext")
+        compileSdkVersion globalConfiguration["androidCompileSdkVersion"]
+        buildToolsVersion globalConfiguration["androidBuildToolsVersion"]
+        defaultConfig {
+            minSdkVersion globalConfiguration["androidMinSdkVersion"]
+            targetSdkVersion globalConfiguration["androidTargetSdkVersion"]
+
+            applicationId globalConfiguration["androidApplicationId"]
+            versionCode globalConfiguration["versionMajor"] * 1000000 + globalConfiguration["versionMinor"] * 10000 + code
+            versionName "${globalConfiguration["versionMajor"]}.${globalConfiguration["versionMinor"]}.${code}"
+            testInstrumentationRunner globalConfiguration["testInstrumentationRunner"]
+            testApplicationId globalConfiguration["testApplicationId"]
+            multiDexEnabled true
+        }
     }
+
     buildTypes {
+        debug {
+            applicationIdSuffix ".staging"
+            resValue "string", "app_name", getAppName(BuildType.DEBUG)
+        }
         release {
             minifyEnabled false
             //            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
+            resValue "string", "app_name", getAppName(BuildType.RELEASE)
         }
     }
+
+    compileOptions {
+        sourceCompatibility rootProject.ext.sourceCompatibility
+        targetCompatibility rootProject.ext.sourceCompatibility
+    }
     productFlavors {}
-}
-configurations.all {
-    resolutionStrategy {
-        force 'com.android.support:support-annotations:26.0.1'
+
+    configurations.all {
+        resolutionStrategy {
+            force 'com.android.support:support-annotations:26.0.1'
+        }
     }
 }
 

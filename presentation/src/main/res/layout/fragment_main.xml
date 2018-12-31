@@ -10,7 +10,7 @@
             android:layout_height="match_parent"
             >
 
-        <io.subs.android.views.component.NonScrollableViewPager
+        <com.riteshakya.subs.views.component.NonScrollableViewPager
                 android:id="@+id/fragment_main_pager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

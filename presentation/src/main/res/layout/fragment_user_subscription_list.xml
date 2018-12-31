@@ -43,7 +43,7 @@
             android:layout_marginTop="30dp"
             android:orientation="vertical"
             >
-        <io.subs.android.views.component.CustomSpinnerView
+        <com.riteshakya.subs.views.component.CustomSpinnerView
                 android:id="@+id/fragment_user_subscription_cycle"
                 android:layout_width="150dp"
                 android:layout_height="36dp"
