@@ -11,12 +11,11 @@ import android.widget.Toast;
 import com.riteshakya.subs.di.HasComponent;
 import com.riteshakya.subs.mvp.IPresenter;
 
-import butterknife.ButterKnife;
-import com.riteshakya.subs.di.HasComponent;
-import com.riteshakya.subs.mvp.IPresenter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+
+import butterknife.ButterKnife;
 
 /**
  * Base {@link android.app.Fragment} class for every fragment in this application.
@@ -58,7 +57,8 @@ public abstract class BaseFragment extends Fragment {
     @Override public void onResume() {
         super.onResume();
         for (IPresenter presenter : mPresenters) {
-            presenter.onStart();
+            if (presenter != null)
+                presenter.onStart();
         }
     }
 

@@ -6,18 +6,25 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.riteshakya.subs.R;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.riteshakya.subs.R;
 
 /**
  * @author Ritesh Shakya
  */
 
-@SuppressWarnings("WeakerAccess") public class ExpenseView extends LinearLayout {
+@SuppressWarnings("WeakerAccess")
+public class ExpenseView extends LinearLayout {
 
-    @BindView(R.id.custom_expense_view_title) TextView tvExpenseTitle;
-    @BindView(R.id.custom_expense_view_value) TextView tvExpenseValue;
+    @BindView(R.id.custom_expense_view_title)
+    TextView tvExpenseTitle;
+    @BindView(R.id.custom_expense_view_value)
+    TextView tvExpenseValue;
+    @BindView(R.id.root_view)
+    View rootView;
 
     public ExpenseView(Context context) {
         super(context);
@@ -35,13 +42,14 @@ import com.riteshakya.subs.R;
 
     private void init(Context context, AttributeSet attrs) {
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.ExpenseView);
-        init(context, typedArray.getString(R.styleable.ExpenseView_android_text));
+        init(context, typedArray.getString(R.styleable.ExpenseView_android_text), typedArray.getResourceId(R.styleable.ExpenseView_android_background, -1));
         typedArray.recycle();
     }
 
-    private void init(Context context, String title) {
+    private void init(Context context, String title, int background) {
         View rootView = getView(context);
         ButterKnife.bind(this, rootView);
+        this.rootView.setBackgroundResource(background);
         tvExpenseTitle.setText(title);
         setExpenseValue(0);
     }

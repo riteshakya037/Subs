@@ -40,6 +40,7 @@
     <string name="monthly">Monthly</string>
     <string name="yearly">Yearly</string>
     <string name="total">Total</string>
+    <string name="today">Today</string>
     <string name="sign_out">Sign Out</string>
     <string name="rate_the_app">Rate the App</string>
     <string name="share">Share</string>

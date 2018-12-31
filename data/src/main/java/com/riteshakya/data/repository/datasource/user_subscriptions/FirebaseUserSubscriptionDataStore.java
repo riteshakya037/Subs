@@ -2,23 +2,12 @@ package com.riteshakya.data.repository.datasource.user_subscriptions;
 
 import android.text.TextUtils;
 import android.util.Log;
+
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.riteshakya.data.listeners.DatabaseCompletionListener;
-import com.riteshakya.data.listeners.FirebaseChildListener;
-import com.riteshakya.data.repository.datasource.sessions.ISessionDataStore;
-import com.riteshakya.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionUpdates;
-import com.riteshakya.domain.usecases.user_subscriptions.SubscriptionBreakdownUpdates;
-import com.riteshakya.domain.usecases.user_subscriptions.SubscriptionExpenseUpdates;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Function;
-import io.reactivex.subjects.ReplaySubject;
 import com.riteshakya.data.listeners.DatabaseCompletionListener;
 import com.riteshakya.data.listeners.FirebaseChildListener;
 import com.riteshakya.data.repository.datasource.sessions.ISessionDataStore;
@@ -29,11 +18,12 @@ import com.riteshakya.domain.models.usecase_dtos.BreakdownModel;
 import com.riteshakya.domain.models.usecase_dtos.MonthlyBreakdownModel;
 import com.riteshakya.domain.models.usecase_dtos.WeeklyBreakdownModel;
 import com.riteshakya.domain.models.usecase_dtos.YearlyBreakdownModel;
-import com.riteshakya.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionUpdates.Action;
-import com.riteshakya.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionUpdates.Params;
-import com.riteshakya.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionUpdates.UserSubscriptionDto;
+import com.riteshakya.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionUpdates;
 import com.riteshakya.domain.usecases.user_subscriptions.SubscriptionBreakdownUpdates;
 import com.riteshakya.domain.usecases.user_subscriptions.SubscriptionExpenseUpdates;
+
+import org.joda.time.DateTime;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -41,22 +31,31 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Function;
+import io.reactivex.subjects.ReplaySubject;
 
 import static com.riteshakya.domain.DatabaseNames.DELETED_FLAG;
 
 /**
  * @author Ritesh Shakya
  */
-@Singleton public class FirebaseUserSubscriptionDataStore implements UserSubscriptionDataStore {
+@Singleton
+public class FirebaseUserSubscriptionDataStore implements UserSubscriptionDataStore {
     private static final String TAG = "UserSubscription";
     private final ReplaySubject<SubscribeToUserSubscriptionUpdates.UserSubscriptionDto> mUpdatePublisher = ReplaySubject.create();
     private final DatabaseCompletionListener databaseCompletionListener;
     private final DatabaseReference userSubscriptionRef;
 
-    @Inject public FirebaseUserSubscriptionDataStore(ISessionDataStore sessionDataStore,
-            DatabaseCompletionListener databaseCompletionListener) {
+    @Inject
+    public FirebaseUserSubscriptionDataStore(ISessionDataStore sessionDataStore,
+                                             DatabaseCompletionListener databaseCompletionListener) {
         this.databaseCompletionListener = databaseCompletionListener;
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         String tablePath = DatabaseNames.createPath(DatabaseNames.TABLE_USER_DATA,
@@ -65,11 +64,13 @@ import static com.riteshakya.domain.DatabaseNames.DELETED_FLAG;
         userSubscriptionRef = firebaseDatabase.getReference().child(tablePath);
     }
 
-    @Override public Observable<Void> subscriptionEntityList() {
+    @Override
+    public Observable<Void> subscriptionEntityList() {
         return observe(userSubscriptionRef);
     }
 
-    @Override public Observable<SubscribeToUserSubscriptionUpdates.UserSubscriptionDto> subscribe(final SubscribeToUserSubscriptionUpdates.Params params) {
+    @Override
+    public Observable<SubscribeToUserSubscriptionUpdates.UserSubscriptionDto> subscribe(final SubscribeToUserSubscriptionUpdates.Params params) {
         if (params.isAll()) {
             return mUpdatePublisher;
         } else {
@@ -100,11 +101,13 @@ import static com.riteshakya.domain.DatabaseNames.DELETED_FLAG;
                             }
                         }
 
-                        @Override public void onChildRemoved(UserSubscription dataSnapshot) {
+                        @Override
+                        public void onChildRemoved(UserSubscription dataSnapshot) {
                             emitter.onNext(new SubscribeToUserSubscriptionUpdates.UserSubscriptionDto(dataSnapshot, SubscribeToUserSubscriptionUpdates.Action.REMOVED));
                         }
 
-                        @Override public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
                             emitter.onError(databaseError.toException());
                         }
                     });
@@ -130,18 +133,19 @@ import static com.riteshakya.domain.DatabaseNames.DELETED_FLAG;
         });
     }
 
-    @Override public Observable<Void> deleteSubscription(final String id) {
-        return Observable.create(
-                emitter -> databaseCompletionListener.removeSubscription(userSubscriptionRef,
-                        emitter, id, DELETED_FLAG));
+    @Override
+    public Observable<Void> deleteSubscription(final String id) {
+        return Observable.create(emitter -> databaseCompletionListener.removeSubscription(userSubscriptionRef,
+                emitter, id, DELETED_FLAG));
     }
 
-    @Override public Observable<Integer> subscribeToCount() {
+    @Override
+    public Observable<Integer> subscribeToCount() {
         return mUpdatePublisher.map(new Function<SubscribeToUserSubscriptionUpdates.UserSubscriptionDto, Integer>() {
             final Set<String> countList = new HashSet<>();
 
-            @Override public Integer apply(@NonNull SubscribeToUserSubscriptionUpdates.UserSubscriptionDto userSubscriptionDto)
-                    throws Exception {
+            @Override
+            public Integer apply(@NonNull SubscribeToUserSubscriptionUpdates.UserSubscriptionDto userSubscriptionDto) {
                 if (userSubscriptionDto.getAction() == SubscribeToUserSubscriptionUpdates.Action.ADDED) {
                     countList.add(userSubscriptionDto.getSubscription().getId());
                 } else if (userSubscriptionDto.getAction() == SubscribeToUserSubscriptionUpdates.Action.REMOVED) {
@@ -152,14 +156,20 @@ import static com.riteshakya.domain.DatabaseNames.DELETED_FLAG;
         });
     }
 
-    @Override public Observable<SubscriptionBreakdownUpdates.BreakdownDto> subscribeToBreakdown(
+    @Override
+    public Observable<SubscriptionBreakdownUpdates.BreakdownDto> subscribeToBreakdown(
             final SubscriptionBreakdownUpdates.Params params) {
+        return getSubscriptionList().map(subscriptions -> breakDownDate(subscriptions, params));
+    }
+
+    private Observable<List<UserSubscription>> getSubscriptionList() {
         return mUpdatePublisher.map(
-                new Function<SubscribeToUserSubscriptionUpdates.UserSubscriptionDto, SubscriptionBreakdownUpdates.BreakdownDto>() {
+                new Function<SubscribeToUserSubscriptionUpdates.UserSubscriptionDto, List<UserSubscription>>() {
                     private final List<UserSubscription> subscriptions = new ArrayList<>();
 
-                    @Override public SubscriptionBreakdownUpdates.BreakdownDto apply(
-                            @NonNull SubscribeToUserSubscriptionUpdates.UserSubscriptionDto userSubscriptionDto) throws Exception {
+                    @Override
+                    public List<UserSubscription> apply(
+                            @NonNull SubscribeToUserSubscriptionUpdates.UserSubscriptionDto userSubscriptionDto) {
                         if (userSubscriptionDto.getAction() == SubscribeToUserSubscriptionUpdates.Action.ADDED) {
                             subscriptions.add(userSubscriptionDto.getSubscription());
                         } else if (userSubscriptionDto.getAction() == SubscribeToUserSubscriptionUpdates.Action.UPDATED) {
@@ -169,7 +179,7 @@ import static com.riteshakya.domain.DatabaseNames.DELETED_FLAG;
                         } else if (userSubscriptionDto.getAction() == SubscribeToUserSubscriptionUpdates.Action.REMOVED) {
                             subscriptions.remove(userSubscriptionDto.getSubscription());
                         }
-                        return breakDownDate(subscriptions, params);
+                        return subscriptions;
                     }
                 });
     }
@@ -202,11 +212,39 @@ import static com.riteshakya.domain.DatabaseNames.DELETED_FLAG;
             return new SubscriptionBreakdownUpdates.BreakdownDto(yearlyBreakdownModel);
         } else {
             return new SubscriptionBreakdownUpdates.BreakdownDto(new BreakdownModel() {
-                @Override protected int getValueCount() {
+                @Override
+                protected int getValueCount() {
                     return 0;
                 }
             });
         }
+    }
+
+    @Override
+    public Observable<List<UserSubscription>> getSubscriptionsForToday() {
+        return getSubscriptionList()
+                .map(userSubscriptions -> {
+                    List<UserSubscription> output = new ArrayList<>();
+                    DateTime currentDate = new DateTime();
+                    for (UserSubscription userSubscription : userSubscriptions) {
+                        DateTime firstBill = userSubscription.getJodaFirstBill();
+                        if (userSubscription.getSubscriptionCycle() == Cycle.WEEKLY) {
+                            if (firstBill.dayOfWeek().equals(currentDate.dayOfWeek())) {
+                                output.add(userSubscription);
+                            }
+                        } else if (userSubscription.getSubscriptionCycle() == Cycle.MONTHLY) {
+                            if (firstBill.dayOfMonth().equals(currentDate.dayOfMonth())) {
+                                output.add(userSubscription);
+                            }
+                        } else if (userSubscription.getSubscriptionCycle() == Cycle.YEARLY) {
+                            if (firstBill.monthOfYear().equals(currentDate.monthOfYear())
+                                    && firstBill.getDayOfMonth() == currentDate.getDayOfMonth()) {
+                                output.add(userSubscription);
+                            }
+                        }
+                    }
+                    return output;
+                });
     }
 
     @Override
@@ -215,12 +253,11 @@ import static com.riteshakya.domain.DatabaseNames.DELETED_FLAG;
                 new Function<SubscribeToUserSubscriptionUpdates.UserSubscriptionDto, Float>() {
                     private final List<UserSubscription> subscriptions = new ArrayList<>();
 
-                    @Override public Float apply(@NonNull SubscribeToUserSubscriptionUpdates.UserSubscriptionDto userSubscriptionDto)
-                            throws Exception {
+                    @Override
+                    public Float apply(@NonNull SubscribeToUserSubscriptionUpdates.UserSubscriptionDto userSubscriptionDto) {
                         if (userSubscriptionDto.getAction() == SubscribeToUserSubscriptionUpdates.Action.ADDED
                                 || userSubscriptionDto.getAction() == SubscribeToUserSubscriptionUpdates.Action.UPDATED) {
-                            if (subscriptions.indexOf(userSubscriptionDto.getSubscription())
-                                    == -1) {
+                            if (subscriptions.indexOf(userSubscriptionDto.getSubscription()) == -1) {
                                 subscriptions.add(userSubscriptionDto.getSubscription());
                             } else {
                                 subscriptions.set(subscriptions.indexOf(
@@ -256,12 +293,14 @@ import static com.riteshakya.domain.DatabaseNames.DELETED_FLAG;
                                     new SubscribeToUserSubscriptionUpdates.UserSubscriptionDto(dataSnapshot, SubscribeToUserSubscriptionUpdates.Action.UPDATED));
                         }
 
-                        @Override public void onChildRemoved(UserSubscription dataSnapshot) {
+                        @Override
+                        public void onChildRemoved(UserSubscription dataSnapshot) {
                             mUpdatePublisher.onNext(
                                     new SubscribeToUserSubscriptionUpdates.UserSubscriptionDto(dataSnapshot, SubscribeToUserSubscriptionUpdates.Action.REMOVED));
                         }
 
-                        @Override public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
                             mUpdatePublisher.onError(databaseError.toException());
                         }
                     });

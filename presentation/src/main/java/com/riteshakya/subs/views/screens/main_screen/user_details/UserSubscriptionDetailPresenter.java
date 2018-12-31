@@ -13,11 +13,15 @@ public interface UserSubscriptionDetailPresenter extends IPresenter {
 
     void setView(UserSubscriptionDetailView userSubscriptionDetailView);
 
+    void initialize();
+
     void initializeAdaptor();
 
     interface UserSubscriptionDetailView extends IView {
 
         void setAdapter(PagerAdapter pagerAdapter);
+
+        void setName(String userFullName);
     }
 
     interface UserSubscriptionDetailFlowListener extends FlowListener {

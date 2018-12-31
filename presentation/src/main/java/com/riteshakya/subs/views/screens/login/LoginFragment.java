@@ -4,15 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
-import butterknife.OnClick;
-import com.google.android.gms.auth.api.Auth;
-import com.riteshakya.subs.di.components.SessionComponent;
-import com.riteshakya.subs.views.base.BaseFragment;
 
+import com.google.android.gms.auth.api.Auth;
 import com.riteshakya.subs.R;
 import com.riteshakya.subs.di.components.SessionComponent;
 import com.riteshakya.subs.views.base.BaseFragment;
+
 import javax.inject.Inject;
+
+import butterknife.OnClick;
 
 /**
  * @author Ritesh Shakya
@@ -34,8 +34,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
     }
 
     @OnClick(R.id.activity_login_google) void login() {
-        Intent signInIntent =
-                Auth.GoogleSignInApi.getSignInIntent(loginPresenter.getGoogleApiClient());
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(loginPresenter.getGoogleApiClient());
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 

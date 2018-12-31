@@ -7,11 +7,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import butterknife.BindView;
+import android.widget.TextView;
+
 import com.riteshakya.subs.R;
 import com.riteshakya.subs.di.components.UserSubscriptionComponent;
 import com.riteshakya.subs.views.base.BaseFragment;
+
 import javax.inject.Inject;
+
+import butterknife.BindView;
 
 /**
  * @author Ritesh Shakya
@@ -22,6 +26,8 @@ import javax.inject.Inject;
     @Inject UserSubscriptionDetailPresenter userSubscriptionDetailPresenter;
     @BindView(R.id.fragment_user_subs_tabs) TabLayout mTabLayout;
     @BindView(R.id.fragment_user_subs_pager) ViewPager mViewPager;
+    @BindView(R.id.welcomeText)
+    TextView welcomeText;
 
     public static Fragment createInstance() {
         return new UserSubscriptionDetailFragment();
@@ -37,6 +43,7 @@ import javax.inject.Inject;
         }
         if (savedInstanceState == null) {
             setupViewPager();
+            userSubscriptionDetailPresenter.initialize();
         }
     }
 
@@ -52,6 +59,21 @@ import javax.inject.Inject;
     @Override public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.registerPresenter(userSubscriptionDetailPresenter);
+    }
+
+    @Override
+    public void setName(String userFullName) {
+        welcomeText.setText("Hey " + getFirstName(userFullName) + "!");
+    }
+
+    public String getFirstName(String fullname) {
+        String firstName;
+        if (fullname.split("\\w+").length > 1) {
+            firstName = fullname.split("\\w+")[0];
+        } else {
+            firstName = fullname;
+        }
+        return firstName;
     }
 
     @Override public void setAdapter(PagerAdapter pagerAdapter) {

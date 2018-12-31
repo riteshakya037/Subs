@@ -9,12 +9,9 @@ import com.riteshakya.domain.usecases.user_subscriptions.SubscriptionExpenseUpda
 import io.reactivex.Observable;
 import com.riteshakya.data.repository.datasource.user_subscriptions.UserSubscriptionDataStore;
 import com.riteshakya.domain.models.UserSubscription;
-import com.riteshakya.domain.repository.ISubscriptionRepository;
-import com.riteshakya.domain.repository.IUserSubscriptionRepository;
-import com.riteshakya.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionUpdates.Params;
-import com.riteshakya.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionUpdates.UserSubscriptionDto;
-import com.riteshakya.domain.usecases.user_subscriptions.SubscriptionBreakdownUpdates;
-import com.riteshakya.domain.usecases.user_subscriptions.SubscriptionExpenseUpdates;
+
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -30,16 +27,19 @@ import javax.inject.Singleton;
      *
      * @param subscriptionDataStore A factory to construct different data source implementations.
      */
-    @Inject UserSubscriptionDataRepository(UserSubscriptionDataStore subscriptionDataStore) {
+    @Inject
+    UserSubscriptionDataRepository(UserSubscriptionDataStore subscriptionDataStore) {
         this.subscriptionDataStore = subscriptionDataStore;
     }
 
-    @Override public Observable<Void> subscriptions() {
+    @Override
+    public Observable<Void> subscriptions() {
         //we always get all users from the cloud
         return subscriptionDataStore.subscriptionEntityList();
     }
 
-    @Override public Observable<SubscribeToUserSubscriptionUpdates.UserSubscriptionDto> subscribe(SubscribeToUserSubscriptionUpdates.Params params) {
+    @Override
+    public Observable<SubscribeToUserSubscriptionUpdates.UserSubscriptionDto> subscribe(SubscribeToUserSubscriptionUpdates.Params params) {
         return subscriptionDataStore.subscribe(params);
     }
 
@@ -48,15 +48,18 @@ import javax.inject.Singleton;
         return subscriptionDataStore.createOrUpdateSubscription(userSubscription);
     }
 
-    @Override public Observable<Void> deleteSubscription(String id) {
+    @Override
+    public Observable<Void> deleteSubscription(String id) {
         return subscriptionDataStore.deleteSubscription(id);
     }
 
-    @Override public Observable<Integer> subscribeToCount() {
+    @Override
+    public Observable<Integer> subscribeToCount() {
         return subscriptionDataStore.subscribeToCount();
     }
 
-    @Override public Observable<SubscriptionBreakdownUpdates.BreakdownDto> subscribeToBreakdown(
+    @Override
+    public Observable<SubscriptionBreakdownUpdates.BreakdownDto> subscribeToBreakdown(
             SubscriptionBreakdownUpdates.Params params) {
         return subscriptionDataStore.subscribeToBreakdown(params);
     }
@@ -64,5 +67,10 @@ import javax.inject.Singleton;
     @Override
     public Observable<Float> subscribeToExpenses(SubscriptionExpenseUpdates.Params params) {
         return subscriptionDataStore.subscribeToExpenses(params);
+    }
+
+    @Override
+    public Observable<List<UserSubscription>> getSubscriptionsForToday() {
+        return subscriptionDataStore.getSubscriptionsForToday();
     }
 }

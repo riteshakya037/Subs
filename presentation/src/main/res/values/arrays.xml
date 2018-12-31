@@ -15,6 +15,7 @@
         <item>Third</item>
         <item>Forth</item>
         <item>Fifth</item>
+        <item>Sixth</item>
     </string-array>
     <string-array name="month_of_the_year">
         <item>Jan</item>

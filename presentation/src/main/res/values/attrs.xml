@@ -14,5 +14,6 @@
     </declare-styleable>
     <declare-styleable name="ExpenseView">
         <attr name="android:text"/>
+        <attr name="android:background" />
     </declare-styleable>
 </resources>

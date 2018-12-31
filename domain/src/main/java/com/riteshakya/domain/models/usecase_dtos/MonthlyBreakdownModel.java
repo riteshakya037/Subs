@@ -7,6 +7,6 @@ package com.riteshakya.domain.models.usecase_dtos;
 public class MonthlyBreakdownModel extends BreakdownModel {
 
     @Override protected int getValueCount() {
-        return 5;
+        return 6;
     }
 }

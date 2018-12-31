@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
@@ -50,7 +51,8 @@ import static com.riteshakya.subs.views.component.helper.validation.ValidationHe
     @BindView(R.id.fragment_create_subscription_currency) CustomSpinnerView svSubscriptionCurrency;
     @BindView(R.id.fragment_create_subscription_delete) Button btnDeleteSubscription;
     @BindView(R.id.fragment_create_subscription_card_view) CardView cvRootView;
-    @BindView(R.id.fragment_create_subscription_add) Button btnAddSubscription;
+    @BindView(R.id.fragment_create_subscription_add)
+    ImageButton btnAddSubscription;
     @Inject CreateSubscriptionPresenter createSubscriptionPresenter;
     @Inject IImageLoader iImageLoader;
     @BindView(R.id.fragment_create_subscription_title) TextView tvFragmentTitle;
@@ -137,7 +139,6 @@ import static com.riteshakya.subs.views.component.helper.validation.ValidationHe
     private void changeModeToEdit() {
         btnDeleteSubscription.setVisibility(View.VISIBLE);
         tvFragmentTitle.setText(R.string.update_subscription);
-        btnAddSubscription.setText(R.string.update);
     }
 
     @Override public void setName(String subscriptionName) {
@@ -175,7 +176,6 @@ import static com.riteshakya.subs.views.component.helper.validation.ValidationHe
     @Override public void setColor(String layoutColor) {
         if (!TextUtils.isEmpty(layoutColor)) {
             cvRootView.setCardBackgroundColor(Color.parseColor(layoutColor));
-            btnAddSubscription.setTextColor(Color.parseColor(layoutColor));
         }
     }
 

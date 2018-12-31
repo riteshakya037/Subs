@@ -1,65 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".views.screens.add_subscription.AddSubscriptionActivity"
-        >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.screens.add_subscription.AddSubscriptionActivity">
 
-    <android.support.v7.widget.Toolbar
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/main_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="4dp">
+
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            >
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary">
 
-        <TextView
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/welcomeText"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:gravity="center"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/product_sans_bold"
+                android:gravity="center_vertical"
                 android:text="@string/my_subscriptions"
                 android:textColor="@android:color/black"
-                android:textSize="18sp"
-                />
-        <ImageButton
+                android:textSize="32sp"
+                app:layout_constraintEnd_toStartOf="@id/searchView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
                 android:id="@+id/fragment_user_subscription_add"
+                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="?attr/actionBarSize"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
                 android:layout_gravity="end"
                 android:background="?android:selectableItemBackgroundBorderless"
                 android:contentDescription="@string/add_subscription"
                 android:gravity="end"
+                android:layout_marginRight="16dp"
                 android:src="@drawable/ic_plus_accent"
                 android:textAllCaps="false"
-                tools:targetApi="lollipop"
-                style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
-                />
-    </android.support.v7.widget.Toolbar>
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="30dp"
-            android:orientation="vertical"
-            >
+                app:layout_constraintBottom_toBottomOf="@id/welcomeText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/welcomeText"
+                tools:ignore="RtlSymmetry"
+                tools:targetApi="lollipop" />
+        </android.support.constraint.ConstraintLayout>
+
         <com.riteshakya.subs.views.component.CustomSpinnerView
-                android:id="@+id/fragment_user_subscription_cycle"
-                android:layout_width="150dp"
-                android:layout_height="36dp"
-                android:layout_gravity="center"
-                android:entries="@array/array_name"
-                app:styleType="title_type"
-                />
-        <android.support.v7.widget.RecyclerView
-                android:id="@+id/fragment_user_subscription_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:overScrollMode="never"
-                tools:context=".views.screens.add_subscription.AddSubscriptionActivity"
-                tools:listitem="@layout/item_user_subscription"
-                />
-    </LinearLayout>
+            android:id="@+id/fragment_user_subscription_cycle"
+            android:layout_width="150dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="4dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:entries="@array/array_name"
+            app:styleType="title_type" />
+    </android.support.design.widget.AppBarLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/fragment_user_subscription_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".views.screens.add_subscription.AddSubscriptionActivity"
+        tools:listitem="@layout/item_user_subscription" />
 
 
 </android.support.design.widget.CoordinatorLayout>

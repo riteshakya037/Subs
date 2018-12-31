@@ -6,6 +6,8 @@ import com.riteshakya.domain.usecases.user_subscriptions.SubscribeToUserSubscrip
 import com.riteshakya.domain.usecases.user_subscriptions.SubscriptionBreakdownUpdates;
 import com.riteshakya.domain.usecases.user_subscriptions.SubscriptionExpenseUpdates;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 
 /**
@@ -29,4 +31,6 @@ public interface IUserSubscriptionRepository {
             SubscriptionBreakdownUpdates.Params params);
 
     Observable<Float> subscribeToExpenses(SubscriptionExpenseUpdates.Params params);
+
+    Observable<List<UserSubscription>> getSubscriptionsForToday();
 }

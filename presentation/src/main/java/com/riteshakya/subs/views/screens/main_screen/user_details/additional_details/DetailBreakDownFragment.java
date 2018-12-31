@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import butterknife.BindView;
+
 import com.db.chart.Tools;
 import com.db.chart.model.LineSet;
 import com.db.chart.renderer.AxisRenderer;
@@ -14,7 +14,10 @@ import com.db.chart.view.LineChartView;
 import com.riteshakya.subs.R;
 import com.riteshakya.subs.di.components.UserSubscriptionComponent;
 import com.riteshakya.subs.views.base.BaseFragment;
+
 import javax.inject.Inject;
+
+import butterknife.BindView;
 
 /**
  * @author Ritesh Shakya
@@ -72,16 +75,16 @@ import javax.inject.Inject;
     private void populateChart(String[] labels, float[] values, LineChartView graphView) {
         LineSet dataSet = new LineSet(labels, values);
         int maxValue = detailBreakDownPresenter.getMaxHeight(values);
-        dataSet.setColor(ContextCompat.getColor(context, R.color.colorGrey))
+        dataSet.setColor(ContextCompat.getColor(context, android.R.color.white))
                 .setFill(ContextCompat.getColor(context, android.R.color.transparent))
-                .setDotsColor(ContextCompat.getColor(context, R.color.colorGrey))
+                .setDotsColor(ContextCompat.getColor(context, android.R.color.white))
                 .setThickness(4)
                 .setDashed(new float[] { 10f, 10f })
                 .beginAt(0);
         // Chart
         graphView.setBorderSpacing(Tools.fromDpToPx(15))
                 .setYLabels(AxisRenderer.LabelPosition.NONE)
-                .setLabelsColor(ContextCompat.getColor(context, R.color.colorGrey))
+                .setLabelsColor(ContextCompat.getColor(context, android.R.color.white))
                 .setXAxis(false)
                 .setAxisBorderValues(0, maxValue, 2)
                 .setYAxis(false);

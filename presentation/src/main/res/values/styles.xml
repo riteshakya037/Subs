@@ -32,11 +32,11 @@
     </style>
 
     <style name="AppTheme.Widget.TextView" parent="android:Widget.Holo.Light.TextView">
-        <item name="fontPath">fonts/ProductSansRegular.ttf</item>
+        <item name="android:fontFamily">@font/product_sans_regular</item>
     </style>
 
     <style name="BlackswordFont" parent="TextAppearance.AppCompat.Large">
-        <item name="fontPath">fonts/Blacksword.otf</item>
+        <item name="android:fontFamily">@font/blacksword</item>
     </style>
 
     <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
@@ -62,19 +62,21 @@
         <item name="android:gravity">left|center</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textColorHint">@color/colorOffWhite</item>
+        <item name="android:textColorHint">
+            @color/colorOffWhite
+        </item>
         <item name="android:layout_weight">1</item>
         <item name="android:textAppearance">@style/Base.TextAppearance.AppCompat.Medium
         </item>
-        <item name="fontPath">fonts/ProductSansBold.ttf</item>
+        <item name="android:fontFamily">@font/product_sans_bold</item>
     </style>
 
     <style name="CreateSubForm.Row.EditText" parent="CreateSubForm.Row.Label">
         <item name="android:layout_gravity">end</item>
-        <item name="android:gravity">end|center</item>
+        <item name="android:gravity">start|center</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textCursorDrawable">@null</item>
-        <item name="fontPath">fonts/ProductSansRegular.ttf</item>
+        <item name="android:fontFamily">@font/product_sans_regular</item>
         <item name="android:background">@null</item>
         <item name="android:inputType">textCapSentences</item>
     </style>

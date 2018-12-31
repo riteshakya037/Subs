@@ -1,57 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
 
-    <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="vertical"
-            tools:ignore="UselessParent"
-            >
-        <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
-            <com.riteshakya.subs.views.component.ExpenseView
-                    android:id="@+id/fragment_detail_expense_weekly"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_margin="32dp"
-                    android:text="@string/weekly"
-                    />
-            <com.riteshakya.subs.views.component.ExpenseView
-                    android:id="@+id/fragment_detail_expense_monthly"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_margin="32dp"
-                    android:text="@string/monthly"
-                    />
-        </LinearLayout>
-        <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
-            <com.riteshakya.subs.views.component.ExpenseView
-                    android:id="@+id/fragment_detail_expense_yearly"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_margin="32dp"
-                    android:text="@string/yearly"
-                    />
-            <com.riteshakya.subs.views.component.ExpenseView
-                    android:id="@+id/fragment_detail_expense_total"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_margin="32dp"
-                    android:text="@string/total"
-                    />
-        </LinearLayout>
-    </LinearLayout>
-</RelativeLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_background_yellow"
+        app:layout_constraintBottom_toTopOf="@id/verticalGuidelineBottom"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.riteshakya.subs.views.component.ExpenseView
+        android:id="@+id/fragment_detail_expense_today"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_background_yellow"
+        android:text="@string/today"
+        app:layout_constraintBottom_toTopOf="@id/verticalGuidelineTop"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/item_subscription_count"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/product_sans_bold"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="@color/colorOffWhite"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/fragment_subscription_list"
+        app:layout_constraintEnd_toEndOf="@id/fragment_subscription_list"
+        app:layout_constraintStart_toStartOf="@id/fragment_subscription_list"
+        tools:text="Subs (1)" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/fragment_subscription_list"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:overScrollMode="never"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@id/verticalGuidelineBottom"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/verticalGuidelineTop"
+        tools:listitem="@layout/item_subscription_today" />
+
+
+    <com.riteshakya.subs.views.component.ExpenseView
+        android:id="@+id/fragment_detail_expense_weekly"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/rounded_background_green"
+        android:text="@string/weekly"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/verticalGuidelineBottom" />
+
+    <com.riteshakya.subs.views.component.ExpenseView
+        android:id="@+id/fragment_detail_expense_monthly"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_background_purple"
+        android:text="@string/monthly"
+        app:layout_constraintBottom_toTopOf="@+id/verticalGuidelineTop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/verticalGuidelineTop"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.riteshakya.subs.views.component.ExpenseView
+        android:id="@+id/fragment_detail_expense_yearly"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounded_background_blue"
+        android:text="@string/yearly"
+        app:layout_constraintBottom_toTopOf="@id/verticalGuidelineBottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toTopOf="@id/verticalGuidelineTop" />
+
+    <com.riteshakya.subs.views.component.ExpenseView
+        android:id="@+id/fragment_detail_expense_total"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/rounded_background_dark"
+        android:text="@string/total"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/verticalGuidelineBottom" />
+
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".5" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/verticalGuidelineTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".33" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/verticalGuidelineBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".66" />
+</android.support.constraint.ConstraintLayout>

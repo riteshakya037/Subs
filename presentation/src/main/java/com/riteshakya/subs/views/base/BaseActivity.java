@@ -18,7 +18,6 @@ import com.riteshakya.subs.di.components.ApplicationComponent;
 import com.riteshakya.subs.di.modules.ActivityModule;
 import com.riteshakya.subs.navigation.Navigator;
 import javax.inject.Inject;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Base {@link android.app.Activity} class for every Activity in this application.
@@ -26,10 +25,6 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public abstract class BaseActivity extends AppCompatActivity {
 
     @Inject protected Navigator navigator;
-
-    @Override protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

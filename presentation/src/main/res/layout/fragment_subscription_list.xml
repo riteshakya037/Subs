@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/fragment_add_subscription_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never"
-        tools:context=".views.screens.add_subscription.AddSubscriptionActivity"
-        tools:listitem="@layout/item_subscription"
-        />
+<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_add_subscription_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:overScrollMode="never"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    tools:context=".views.screens.add_subscription.AddSubscriptionActivity"
+    tools:listitem="@layout/item_subscription" />

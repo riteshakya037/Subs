@@ -36,7 +36,7 @@ import static com.riteshakya.domain.models.constants.Constants.DATE_FORMAT;
     @SerializedName("subscriptionCurrency") protected Currency subscriptionCurrency = Currency.USD;
     @SerializedName("color") protected String layoutColor;
     @SerializedName(DatabaseNames.DELETED_FLAG)
-    protected final Boolean isDeleted = false;
+    protected Boolean isDeleted = false;
 
     public UserSubscription() {
         // required by parcel

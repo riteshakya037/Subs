@@ -1,7 +1,10 @@
 package com.riteshakya.subs.views.screens.main_screen.user_details.expense_detail;
 
+import com.riteshakya.domain.models.UserSubscription;
 import com.riteshakya.subs.mvp.IPresenter;
 import com.riteshakya.subs.mvp.IView;
+
+import java.util.List;
 
 /**
  * @author Ritesh Shakya
@@ -22,5 +25,9 @@ public interface DetailExpensePresenter extends IPresenter {
         void updateYearlySum(float value);
 
         void updateTotalSum(float value);
+
+        void updateTodaySum(Float value);
+
+        void setSubscriptionsToday(List<UserSubscription> value);
     }
 }

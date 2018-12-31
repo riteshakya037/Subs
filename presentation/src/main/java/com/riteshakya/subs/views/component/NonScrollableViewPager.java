@@ -4,6 +4,10 @@ import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.Scroller;
+
+import java.lang.reflect.Field;
 
 /**
  * @author Ritesh Shakya
@@ -15,6 +19,11 @@ import android.view.MotionEvent;
 
     public NonScrollableViewPager(Context context) {
         super(context);
+        init();
+    }
+
+    private void init() {
+        setMyScroller();
     }
 
     public NonScrollableViewPager(Context context, AttributeSet attrs) {
@@ -23,7 +32,8 @@ import android.view.MotionEvent;
 
     @Override public boolean onTouchEvent(MotionEvent event) {
         performClick();
-        return this.isPagingEnabled && super.onTouchEvent(event);
+        if (this.isPagingEnabled) return super.onTouchEvent(event);
+        else return false;
     }
 
     @Override public boolean performClick() {
@@ -31,18 +41,36 @@ import android.view.MotionEvent;
     }
 
     @Override public boolean onInterceptTouchEvent(MotionEvent event) {
-        return this.isPagingEnabled && super.onInterceptTouchEvent(event);
-    }
-
-    @Override public void setCurrentItem(int item, boolean smoothScroll) {
-        super.setCurrentItem(item, false);
-    }
-
-    @Override public void setCurrentItem(int item) {
-        super.setCurrentItem(item, false);
+        if (this.isPagingEnabled) {
+            return super.onInterceptTouchEvent(event);
+        } else return false;
     }
 
     public void setPagingEnabled(boolean pagingEnabled) {
         isPagingEnabled = pagingEnabled;
+    }
+
+    private void setMyScroller() {
+        try {
+            Class<ViewPager> viewpager = ViewPager.class;
+            Field scroller = viewpager.getDeclaredField("mScroller");
+            scroller.setAccessible(true);
+            scroller.set(this, new MyScroller(getContext()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private class MyScroller extends Scroller {
+
+        MyScroller(Context context) {
+            super(context, new DecelerateInterpolator());
+        }
+
+        @Override
+        public void startScroll(int startX, int startY, int dx, int dy, int duration) {
+            super.startScroll(startX, startY, dx, dy, 350 /*1 secs*/);
+        }
     }
 }

@@ -1,11 +1,17 @@
 package com.riteshakya.subs.views.screens.main_screen.user_details.expense_detail;
 
+import com.riteshakya.domain.models.UserSubscription;
+import com.riteshakya.domain.models.enums.Cycle;
+import com.riteshakya.domain.usecases.user_subscriptions.GetSubscriptionsForToday;
+import com.riteshakya.domain.usecases.user_subscriptions.SubscriptionExpenseUpdates;
+import com.riteshakya.subs.mvp.BaseRxPresenter;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableObserver;
-import com.riteshakya.subs.mvp.BaseRxPresenter;
-import com.riteshakya.domain.models.enums.Cycle;
-import com.riteshakya.domain.usecases.user_subscriptions.SubscriptionExpenseUpdates;
-import javax.inject.Inject;
 
 /**
  * @author Ritesh Shakya
@@ -14,13 +20,15 @@ import javax.inject.Inject;
 public class DetailExpensePresenterImpl extends BaseRxPresenter implements DetailExpensePresenter {
     private DetailExpenseView detailExpenseView;
     private final SubscriptionExpenseUpdates subscriptionExpenseUpdates;
+    private GetSubscriptionsForToday getTotalForToday;
     private float weeklySum;
     private float monthlySum;
     private float yearlySum;
 
     @Inject
-    public DetailExpensePresenterImpl(SubscriptionExpenseUpdates subscriptionExpenseUpdates) {
+    public DetailExpensePresenterImpl(SubscriptionExpenseUpdates subscriptionExpenseUpdates, GetSubscriptionsForToday getTotalForToday) {
         this.subscriptionExpenseUpdates = subscriptionExpenseUpdates;
+        this.getTotalForToday = getTotalForToday;
     }
 
     @Override public void setView(DetailExpenseView mainActivityView) {
@@ -46,6 +54,29 @@ public class DetailExpensePresenterImpl extends BaseRxPresenter implements Detai
                 detailExpenseView.updateYearlySum(values);
             }
         });
+
+        manage(getTotalForToday.execute(new DisposableObserver<List<UserSubscription>>() {
+            @Override
+            public void onNext(List<UserSubscription> userSubscriptions) {
+                float value = 0f;
+                for (UserSubscription subscription :
+                        userSubscriptions) {
+                    value += subscription.getSubscriptionAmount();
+                }
+                detailExpenseView.updateTodaySum(value);
+                detailExpenseView.setSubscriptionsToday(userSubscriptions);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        }, null));
     }
 
     private void initializeIndividualObservers(Cycle cycle, final ExpenseListener expenseListener) {

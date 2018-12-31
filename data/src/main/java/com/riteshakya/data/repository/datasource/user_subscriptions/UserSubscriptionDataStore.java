@@ -6,9 +6,8 @@ import com.riteshakya.domain.usecases.user_subscriptions.SubscriptionExpenseUpda
 
 import io.reactivex.Observable;
 import com.riteshakya.domain.models.UserSubscription;
-import com.riteshakya.domain.usecases.user_subscriptions.SubscribeToUserSubscriptionUpdates;
-import com.riteshakya.domain.usecases.user_subscriptions.SubscriptionBreakdownUpdates;
-import com.riteshakya.domain.usecases.user_subscriptions.SubscriptionExpenseUpdates;
+
+import java.util.List;
 
 /**
  * @author Ritesh Shakya
@@ -29,4 +28,6 @@ public interface UserSubscriptionDataStore {
             SubscriptionBreakdownUpdates.Params params);
 
     Observable<Float> subscribeToExpenses(SubscriptionExpenseUpdates.Params params);
+
+    Observable<List<UserSubscription>> getSubscriptionsForToday();
 }
