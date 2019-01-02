@@ -68,8 +68,8 @@ import butterknife.BindView;
 
     public String getFirstName(String fullname) {
         String firstName;
-        if (fullname.split("\\w+").length > 1) {
-            firstName = fullname.split("\\w+")[0];
+        if (fullname.split("[^\\w']+").length > 1) {
+            firstName = fullname.split("[^\\w']+")[0];
         } else {
             firstName = fullname;
         }
